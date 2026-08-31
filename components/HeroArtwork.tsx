@@ -454,9 +454,16 @@ export function HeroArtwork({
       }
 
       const [scaleX, scaleY] = getCoverScale(width, height, image.naturalWidth, image.naturalHeight);
+      const rightEdgeSafeZoom = Math.min(
+        zoom,
+        (scaleX * 0.5 * 1.01) / Math.max(0.001, 1 - focusX),
+      );
       gl.uniform2f(resolutionLocation, width, height);
       gl.uniform2f(coverScaleLocation, scaleX, scaleY);
-      gl.uniform1f(zoomLocation, getResponsiveZoom(zoom, layerCssWidth));
+      gl.uniform1f(
+        zoomLocation,
+        getResponsiveZoom(zoom, layerCssWidth, rightEdgeSafeZoom),
+      );
       gl.uniform1f(navigationQuietLocation, layerCssWidth > 900 ? 1 : 0);
       draw();
     };

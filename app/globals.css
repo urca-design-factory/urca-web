@@ -1549,19 +1549,19 @@ a:focus-visible {
 
 @media (min-width: 1800px) {
   .hero-artwork {
-    --artwork-responsive-scale: 0.9;
+    --artwork-responsive-scale: 0.95;
   }
 }
 
 @media (min-width: 2200px) {
   .hero-artwork {
-    --artwork-responsive-scale: 0.78;
+    --artwork-responsive-scale: 0.92;
   }
 }
 
 @media (min-width: 2560px) {
   .hero-artwork {
-    --artwork-responsive-scale: 0.68;
+    --artwork-responsive-scale: 0.91;
   }
 }
 

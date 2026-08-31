@@ -10,7 +10,9 @@ test("cover scaling preserves image proportions across replaceable textures", ()
 test("wide viewports reduce artwork zoom without changing the 1440 composition", () => {
   assert.equal(getResponsiveZoom(1.1, 1440), 1.1);
   assert.ok(getResponsiveZoom(1.1, 1920) < 1);
-  assert.ok(getResponsiveZoom(1.1, 2560) < 0.76);
+  assert.equal(getResponsiveZoom(1.1, 2300, 0.93), 0.93);
+  assert.equal(getResponsiveZoom(1.1, 2560, 0.93), 0.93);
+  assert.ok(getResponsiveZoom(1.1, 2560, 0.93) < 1.1);
 });
 
 test("the hover reveal blends the supplied ASCII texture without procedural generation", () => {

@@ -147,8 +147,12 @@ export function getCoverScale(
     : [viewportAspect / imageAspect, 1];
 }
 
-export function getResponsiveZoom(baseZoom: number, viewportWidth: number) {
+export function getResponsiveZoom(
+  baseZoom: number,
+  viewportWidth: number,
+  minimumZoom = 0,
+) {
   const progress = Math.max(0, Math.min(1, (viewportWidth - 1440) / 1120));
   const easedProgress = progress * progress * (3 - 2 * progress);
-  return baseZoom * (1 - easedProgress * 0.32);
+  return Math.max(minimumZoom, baseZoom * (1 - easedProgress * 0.32));
 }
