@@ -754,6 +754,23 @@ a:focus-visible {
   padding-bottom: clamp(8rem, 16svh, 11rem);
 }
 
+.selected-work__intro {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  align-items: start;
+  column-gap: var(--grid-gap);
+}
+
+.selected-work__intro.t-stagger,
+.project.t-stagger {
+  --stagger-dur: 1000ms;
+  --stagger-stagger: 300ms;
+  --stagger-distance: 16px;
+  --stagger-blur: 6px;
+  --stagger-ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 .selected-work__label {
   grid-column: 1 / span 2;
   padding-top: 0.65rem;

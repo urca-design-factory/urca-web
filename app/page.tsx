@@ -2,6 +2,7 @@ import { FactorySection } from "@/components/FactorySection";
 import { FinalChapter } from "@/components/FinalChapter";
 import { HeroArtwork } from "@/components/HeroArtwork";
 import { HeroReveal } from "@/components/HeroReveal";
+import { SelectedWorkReveal } from "@/components/SelectedWorkReveal";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteLoader } from "@/components/SiteLoader";
 import brandVisual from "@/public/images/capabilities/brand.png";
@@ -160,11 +161,16 @@ export default function Home() {
         </div>
 
       <section className="selected-work page-grid" id="selected-work" aria-labelledby="work-title">
-        <p className="eyebrow selected-work__label">SELECTED WORK</p>
-        <h2 className="selected-work__title" id="work-title">
-          <span>Things we&apos;ve</span>
-          <span>brought to life.</span>
-        </h2>
+        <SelectedWorkReveal />
+        <div className="selected-work__intro t-stagger">
+          <p className="eyebrow selected-work__label t-stagger-line t-stagger-line--1">
+            SELECTED WORK
+          </p>
+          <h2 className="selected-work__title" id="work-title">
+            <span className="t-stagger-line t-stagger-line--2">Things we&apos;ve</span>
+            <span className="t-stagger-line t-stagger-line--3">brought to life.</span>
+          </h2>
+        </div>
 
         {placeholderProjects.map((project, index) => {
           const projectId = `project-${project.number}`;
@@ -172,27 +178,38 @@ export default function Home() {
 
           return (
             <article
-              className={`project project--${project.number}${index % 2 ? " project--reverse" : ""}`}
+              className={`project project--${project.number}${index % 2 ? " project--reverse" : ""} t-stagger`}
               id={projectId}
               aria-labelledby={`${projectId}-title`}
               key={project.number}
             >
               <div className="project__information">
                 <div className="project__identity">
-                  <p className="project__number">{project.number}</p>
-                  <p className="project__year">{project.year}</p>
+                  <p className="project__number t-stagger-line t-stagger-line--1">
+                    {project.number}
+                  </p>
+                  <p className="project__year t-stagger-line t-stagger-line--1">
+                    {project.year}
+                  </p>
                 </div>
 
-                <h3 className="project__title" id={`${projectId}-title`}>
+                <h3
+                  className="project__title t-stagger-line t-stagger-line--2"
+                  id={`${projectId}-title`}
+                >
                   {project.name}
                 </h3>
 
-                <p className="project__context">{project.description}</p>
+                <p className="project__context t-stagger-line t-stagger-line--3">
+                  {project.description}
+                </p>
 
-                <p className="project__disciplines">{project.disciplines}</p>
+                <p className="project__disciplines t-stagger-line t-stagger-line--3">
+                  {project.disciplines}
+                </p>
 
                 <a
-                  className="project__link"
+                  className="project__link t-stagger-line t-stagger-line--3"
                   href={`#${mediaId}`}
                   aria-label={`View placeholder media for ${project.name}`}
                 >
