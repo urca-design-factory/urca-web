@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 
 const navigation = {
   left: [
@@ -14,10 +14,87 @@ const navigation = {
   ],
 } as const;
 
-const allNavigation = [...navigation.left, ...navigation.right];
+type NavigationItem =
+  | (typeof navigation.left)[number]
+  | (typeof navigation.right)[number];
+
+const mobileNavigation = [
+  {
+    number: "01",
+    label: "Work",
+    href: "#selected-work",
+    visual: "/images/hero/hero-source-01.png",
+  },
+  {
+    number: "02",
+    label: "Capabilities",
+    href: "#capabilities",
+    visual: "/images/capabilities/brand.png",
+  },
+  {
+    number: "03",
+    label: "Studio",
+    href: "#studio",
+    visual: "/images/capabilities/interactive.png",
+  },
+  {
+    number: "04",
+    label: "Contact",
+    href: "#contact",
+    visual: "/images/capabilities/ascent.png",
+  },
+] as const;
 
 export function SiteHeader() {
   const headerRef = useRef<HTMLElement>(null);
+  const headerStateRef = useRef({
+    mode: "hero",
+    theme: "light",
+    visible: "true",
+  });
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeMobileItem, setActiveMobileItem] = useState<string | null>(null);
+
+  const closeMobileMenu = useCallback(() => {
+    setMobileMenuOpen(false);
+    setActiveMobileItem(null);
+  }, []);
+
+  useLayoutEffect(() => {
+    const header = headerRef.current;
+    if (!header) return;
+
+    header.dataset.mode = headerStateRef.current.mode;
+    header.dataset.theme = headerStateRef.current.theme;
+    header.dataset.visible = headerStateRef.current.visible;
+  }, [mobileMenuOpen]);
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+
+    const previousOverflow = document.documentElement.style.overflow;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") closeMobileMenu();
+    };
+
+    document.documentElement.style.overflow = "hidden";
+    document.addEventListener("keydown", closeOnEscape);
+
+    return () => {
+      document.documentElement.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [closeMobileMenu, mobileMenuOpen]);
+
+  useEffect(() => {
+    const mobileQuery = window.matchMedia("(max-width: 640px)");
+    const closeAboveMobile = () => {
+      if (!mobileQuery.matches) closeMobileMenu();
+    };
+
+    mobileQuery.addEventListener("change", closeAboveMobile);
+    return () => mobileQuery.removeEventListener("change", closeAboveMobile);
+  }, [closeMobileMenu]);
 
   useEffect(() => {
     const header = headerRef.current;
@@ -38,13 +115,15 @@ export function SiteHeader() {
     const setMode = (fixed: boolean) => {
       if (fixed === isFixed) return;
       isFixed = fixed;
-      header.dataset.mode = fixed ? "fixed" : "hero";
+      headerStateRef.current.mode = fixed ? "fixed" : "hero";
+      header.dataset.mode = headerStateRef.current.mode;
     };
 
     const setVisible = (visible: boolean) => {
       if (visible === isVisible) return;
       isVisible = visible;
-      header.dataset.visible = String(visible);
+      headerStateRef.current.visible = String(visible);
+      header.dataset.visible = headerStateRef.current.visible;
     };
 
     const measure = () => {
@@ -136,7 +215,8 @@ export function SiteHeader() {
     const visibleDarkSections = new Set<Element>();
 
     const setTheme = (dark: boolean) => {
-      header.dataset.theme = dark ? "dark" : "light";
+      headerStateRef.current.theme = dark ? "dark" : "light";
+      header.dataset.theme = headerStateRef.current.theme;
     };
 
     const observer = new IntersectionObserver(
@@ -184,7 +264,7 @@ export function SiteHeader() {
     return () => observer.disconnect();
   }, []);
 
-  const renderLink = ([label, href]: (typeof allNavigation)[number]) => (
+  const renderLink = ([label, href]: NavigationItem) => (
     <a
       className="site-nav__link"
       data-nav-target={href.startsWith("#") ? href : undefined}
@@ -197,33 +277,114 @@ export function SiteHeader() {
   );
 
   return (
-    <header
-      className="site-header"
-      data-mode="hero"
-      data-theme="light"
-      data-visible="true"
-      ref={headerRef}
-    >
-      <div className="site-header__reveal t-stagger-line t-stagger-line--1">
-        <nav className="site-nav" aria-label="Primary navigation">
-          <div className="site-nav__group site-nav__group--left">
-            {navigation.left.map(renderLink)}
-          </div>
+    <>
+      <header
+        className="site-header"
+        data-mode="hero"
+        data-theme="light"
+        data-visible="true"
+        data-menu-open={mobileMenuOpen}
+        ref={headerRef}
+      >
+        <div className="site-header__reveal t-stagger-line t-stagger-line--1">
+          <nav className="site-nav" aria-label="Primary navigation">
+            <div className="site-nav__group site-nav__group--left">
+              {navigation.left.map(renderLink)}
+            </div>
 
-          <a className="brand" href="#top" aria-label="Urca Design Factory, home">
-            <Image src="/wordmark_dark.svg" alt="Urca" width={171} height={40} priority />
-          </a>
+            <a
+              className="brand"
+              href="#top"
+              aria-label="Urca Design Factory, home"
+              onClick={closeMobileMenu}
+            >
+              <Image src="/wordmark_dark.svg" alt="Urca" width={171} height={40} priority />
+            </a>
 
-          <div className="site-nav__group site-nav__group--right">
-            {navigation.right.map(renderLink)}
-          </div>
+            <div className="site-nav__group site-nav__group--right">
+              {navigation.right.map(renderLink)}
+            </div>
 
-          <details className="site-nav__mobile">
-            <summary>Menu</summary>
-            <div className="site-nav__mobile-links">{allNavigation.map(renderLink)}</div>
-          </details>
-        </nav>
-      </div>
-    </header>
+            <div className="site-nav__mobile">
+              <button
+                className="site-nav__mobile-toggle"
+                type="button"
+                aria-controls="mobile-menu"
+                aria-expanded={mobileMenuOpen}
+                onClick={() => setMobileMenuOpen((open) => !open)}
+              >
+                <span>{mobileMenuOpen ? "Close" : "Menu"}</span>
+                <span className="site-nav__mobile-icon" aria-hidden="true">
+                  <i />
+                  <i />
+                  <i />
+                  <i />
+                </span>
+              </button>
+            </div>
+          </nav>
+        </div>
+      </header>
+
+      <nav
+        className="mobile-menu t-panel-slide"
+        id="mobile-menu"
+        aria-label="Mobile navigation"
+        data-open={mobileMenuOpen}
+        aria-hidden={!mobileMenuOpen}
+        inert={!mobileMenuOpen}
+      >
+        <div className="mobile-menu__list">
+          {mobileNavigation.map((item) => {
+            const itemId = `mobile-menu-${item.number}`;
+            const isOpen = activeMobileItem === item.number;
+
+            return (
+              <div
+                className="mobile-menu__item t-acc"
+                data-open={isOpen}
+                key={item.number}
+              >
+                <button
+                  className="mobile-menu__head t-acc-head"
+                  type="button"
+                  aria-controls={`${itemId}-panel`}
+                  aria-expanded={isOpen}
+                  onClick={() =>
+                    setActiveMobileItem((active) =>
+                      active === item.number ? null : item.number,
+                    )
+                  }
+                >
+                  <span className="mobile-menu__number">{item.number}</span>
+                  <span className="mobile-menu__title">{item.label}</span>
+                  <span className="mobile-menu__mark" aria-hidden="true" />
+                </button>
+
+                <div className="mobile-menu__panel t-acc-panel" id={`${itemId}-panel`}>
+                  <div className="mobile-menu__panel-inner t-acc-panel-inner">
+                    <div className="mobile-menu__visual">
+                      <Image
+                        className="mobile-menu__image"
+                        src={item.visual}
+                        alt=""
+                        fill
+                        sizes="100vw"
+                      />
+                      <div className="mobile-menu__visual-meta">
+                        <span>Placeholder visual / {item.number}</span>
+                        <a href={item.href} onClick={closeMobileMenu}>
+                          Open section <span aria-hidden="true">↗</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </nav>
+    </>
   );
 }

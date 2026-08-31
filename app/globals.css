@@ -39,6 +39,15 @@
   --stagger-stagger: 40ms;
   --stagger-blur: 3px;
   --stagger-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --panel-open-dur: 400ms;
+  --panel-close-dur: 350ms;
+  --panel-translate-y: 100px;
+  --panel-blur: 2px;
+  --panel-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --acc-expand: 250ms;
+  --acc-collapse: 250ms;
+  --acc-chevron: 250ms;
+  --acc-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 * {
@@ -96,7 +105,7 @@ html[data-site-loading="true"] body {
 }
 .t-skel.is-revealed .t-skel-content {
   opacity: 1;
-  filter: blur(0);
+  filter: none;
 }
 /* Snap-back when replaying: kill transitions so the reverse
    (revealed → skeleton) is instant. Drop `.is-resetting`
@@ -162,6 +171,82 @@ html[data-site-loading="true"] body {
 
 @media (prefers-reduced-motion: reduce) {
   .t-stagger-line { transition: none !important; }
+}
+
+.t-panel-slide {
+  transform: translateY(var(--panel-translate-y));
+  opacity: 0;
+  filter: blur(var(--panel-blur));
+  pointer-events: none;
+  transition:
+    transform var(--panel-close-dur) var(--panel-ease),
+    opacity   var(--panel-close-dur) var(--panel-ease),
+    filter    var(--panel-close-dur) var(--panel-ease);
+  will-change: transform, opacity, filter;
+}
+.t-panel-slide[data-open="true"] {
+  transform: translateY(0);
+  opacity: 1;
+  filter: blur(0);
+  pointer-events: auto;
+  transition:
+    transform var(--panel-open-dur) var(--panel-ease),
+    opacity   var(--panel-open-dur) var(--panel-ease),
+    filter    var(--panel-open-dur) var(--panel-ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-panel-slide { transition: none !important; }
+}
+
+/* grid-template-rows 0fr → 1fr gives a clean height animation
+   with no JS measurement; the inner element clips overflow. */
+.t-acc-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--acc-collapse) var(--acc-ease);
+}
+.t-acc[data-open="true"] .t-acc-panel {
+  grid-template-rows: 1fr;
+  transition: grid-template-rows var(--acc-expand) var(--acc-ease);
+}
+.t-acc-panel-inner {
+  overflow: hidden;
+  opacity: 0;
+  filter: blur(2px);
+  transition:
+    opacity var(--acc-collapse) var(--acc-ease),
+    filter var(--acc-collapse) var(--acc-ease);
+}
+.t-acc[data-open="true"] .t-acc-panel-inner {
+  opacity: 1;
+  filter: blur(0);
+  transition:
+    opacity var(--acc-expand) var(--acc-ease),
+    filter var(--acc-expand) var(--acc-ease);
+}
+/* Flip the chevron vertically to turn the "v" into a "^".
+   scaleY(-1) about the centre passes through a flat line at
+   the midpoint (same look as a d: path morph) but animates
+   in every browser, unlike CSS d: morphing (Chromium only).
+   The chevron path is symmetric about the 16x16 viewBox
+   centre, so the flip lands exactly on the "^"; non-scaling
+   -stroke keeps the stroke width constant through the flip. */
+.t-acc-chevron {
+  display: inline-flex;
+  transform: scaleY(1);
+  transform-origin: center;
+  transition: transform var(--acc-chevron) var(--acc-ease);
+}
+.t-acc-chevron path { vector-effect: non-scaling-stroke; }
+.t-acc[data-open="true"] .t-acc-chevron {
+  transform: scaleY(-1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-acc-panel, .t-acc-panel-inner, .t-acc-chevron {
+    transition: none !important;
+  }
 }
 
 .hero-chapter.t-stagger {
@@ -328,18 +413,13 @@ a:focus-visible {
   filter: brightness(0) invert(1);
 }
 
-.site-header[data-theme="dark"]::before,
-.site-header[data-theme="dark"] .site-nav__mobile-links {
+.site-header[data-theme="dark"]::before {
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
 
-.site-header[data-theme="dark"] .site-nav__mobile summary {
+.site-header[data-theme="dark"] .site-nav__mobile-toggle {
   color: var(--color-canvas);
-}
-
-.site-header[data-theme="dark"] .site-nav__mobile-links a {
-  border-color: color-mix(in srgb, var(--color-canvas) 20%, transparent);
 }
 
 .site-header[data-mode="fixed"]::before {
@@ -433,6 +513,10 @@ a:focus-visible {
 }
 
 .site-nav__mobile {
+  display: none;
+}
+
+.mobile-menu {
   display: none;
 }
 
@@ -2100,6 +2184,28 @@ a:focus-visible {
     opacity: 1;
   }
 
+  .site-header[data-menu-open="true"] {
+    color: var(--color-canvas);
+    transform: translateY(0);
+  }
+
+  .site-header[data-menu-open="true"]::before {
+    opacity: 0;
+  }
+
+  .site-header[data-menu-open="true"] .brand {
+    transform: scale(1);
+  }
+
+  .site-header[data-menu-open="true"] .brand img {
+    filter: brightness(0) invert(1);
+  }
+
+  .site-header__reveal {
+    position: relative;
+    z-index: 1;
+  }
+
   .brand {
     grid-column: 1;
     justify-self: start;
@@ -2117,43 +2223,216 @@ a:focus-visible {
   }
 
   .site-nav__mobile {
+    z-index: 1;
     display: block;
     grid-column: 2;
     justify-self: end;
   }
 
-  .site-nav__mobile summary {
+  .site-nav__mobile-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
     padding: 0.75rem 0;
+    border: 0;
+    background: transparent;
     color: var(--color-ink);
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
     cursor: pointer;
-    list-style: none;
   }
 
-  .site-nav__mobile summary:focus-visible {
+  .site-header[data-menu-open="true"] .site-nav__mobile-toggle {
+    color: var(--color-canvas);
+  }
+
+  .site-nav__mobile-toggle:focus-visible {
     outline: 2px solid var(--color-signal);
     outline-offset: 4px;
   }
 
-  .site-nav__mobile summary::-webkit-details-marker {
-    display: none;
-  }
-
-  .site-nav__mobile-links {
-    position: fixed;
-    top: var(--masthead-height);
-    right: 0;
-    left: 0;
+  .site-nav__mobile-icon {
     display: grid;
-    gap: 0;
-    padding: 0 var(--gutter) 1rem;
-    background: var(--masthead-surface);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    grid-template-columns: repeat(2, 3px);
+    gap: 3px;
   }
 
-  .site-nav__mobile-links a {
-    padding-block: 0.85rem;
-    border-top: var(--rule);
+  .site-nav__mobile-icon i {
+    width: 3px;
+    height: 3px;
+    background: currentColor;
+  }
+
+  .mobile-menu {
+    --panel-open-dur: 620ms;
+    --panel-close-dur: 480ms;
+    --panel-translate-y: 2rem;
+    --panel-blur: 2px;
+    --acc-expand: 600ms;
+    --acc-collapse: 440ms;
+    --acc-chevron: 420ms;
+
+    position: fixed;
+    z-index: calc(var(--z-header) - 1);
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    padding-top: var(--masthead-height);
+    overflow: hidden;
+    background: var(--color-ink);
+    color: var(--color-canvas);
+    text-transform: none;
+  }
+
+  .mobile-menu__list {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+    padding-bottom: env(safe-area-inset-bottom);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-top: 1px solid color-mix(in srgb, var(--color-canvas) 16%, transparent);
+  }
+
+  .mobile-menu__item {
+    display: flex;
+    flex: 1 0 auto;
+    flex-direction: column;
+    min-height: 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-canvas) 16%, transparent);
+  }
+
+  .mobile-menu__head {
+    display: grid;
+    flex: 1;
+    grid-template-columns: 2rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    min-height: 7rem;
+    padding: 1.25rem var(--gutter);
+    border: 0;
+    background: transparent;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition:
+      min-height var(--acc-expand) var(--acc-ease),
+      color var(--duration-medium) var(--ease-out);
+  }
+
+  .mobile-menu__list:has(.mobile-menu__item[data-open="true"])
+    .mobile-menu__head {
+    min-height: 4.75rem;
+    color: color-mix(in srgb, var(--color-canvas) 38%, transparent);
+  }
+
+  .mobile-menu__list:has(.mobile-menu__item[data-open="true"])
+    .mobile-menu__item[data-open="true"]
+    .mobile-menu__head {
+    min-height: 5.75rem;
+    color: var(--color-canvas);
+  }
+
+  .mobile-menu__head:focus-visible,
+  .mobile-menu__visual-meta a:focus-visible {
+    outline: 2px solid var(--color-signal);
+    outline-offset: -4px;
+  }
+
+  .mobile-menu__number,
+  .mobile-menu__visual-meta {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .mobile-menu__number {
+    color: color-mix(in srgb, currentColor 68%, transparent);
+  }
+
+  .mobile-menu__title {
+    font-family: var(--font-sans);
+    font-size: clamp(2.2rem, 11vw, 3.35rem);
+    font-weight: 400;
+    line-height: 0.92;
+    letter-spacing: -0.055em;
+  }
+
+  .mobile-menu__mark {
+    position: relative;
+    width: 1.1rem;
+    height: 1.1rem;
+    color: color-mix(in srgb, currentColor 78%, transparent);
+  }
+
+  .mobile-menu__mark::before,
+  .mobile-menu__mark::after {
+    position: absolute;
+    top: calc(50% - 0.5px);
+    left: 0;
+    width: 100%;
+    height: 1px;
+    content: "";
+    background: currentColor;
+    transition: transform var(--acc-chevron) var(--acc-ease);
+  }
+
+  .mobile-menu__mark::after {
+    transform: rotate(90deg) scaleX(1);
+  }
+
+  .mobile-menu__item[data-open="true"] .mobile-menu__mark::after {
+    transform: rotate(90deg) scaleX(0);
+  }
+
+  .mobile-menu__panel-inner {
+    min-height: 0;
+  }
+
+  .mobile-menu__visual {
+    position: relative;
+    height: clamp(13rem, 38svh, 20rem);
+    overflow: hidden;
+    background: var(--color-muted);
+  }
+
+  .mobile-menu__image {
+    object-fit: cover;
+    filter: grayscale(1) contrast(1.12) brightness(0.7);
+  }
+
+  .mobile-menu__visual-meta {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.85rem var(--gutter);
+    background: rgb(29 29 27 / 78%);
+  }
+
+  .mobile-menu__visual-meta > span {
+    color: color-mix(in srgb, var(--color-canvas) 64%, transparent);
+  }
+
+  .mobile-menu__visual-meta a {
+    flex: none;
+    padding-block: 0.35rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-menu__head,
+    .mobile-menu__mark::before,
+    .mobile-menu__mark::after {
+      transition: none !important;
+    }
   }
 
   .site-header[data-mode="fixed"] .brand {
