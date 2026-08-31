@@ -180,6 +180,10 @@ html[data-site-loading="true"] body {
   transition-delay: calc(var(--stagger-stagger) * 3);
 }
 
+.t-stagger-line--5 {
+  transition-delay: calc(var(--stagger-stagger) * 4);
+}
+
 .site-header__reveal {
   --stagger-distance: -12px;
 
@@ -1224,6 +1228,15 @@ a:focus-visible {
   overflow: clip;
   background: var(--color-ink);
   color: var(--color-canvas);
+}
+
+.factory__intro.t-stagger,
+.factory__stage.t-stagger {
+  --stagger-dur: 1000ms;
+  --stagger-stagger: 280ms;
+  --stagger-distance: 16px;
+  --stagger-blur: 6px;
+  --stagger-ease: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .factory__intro {

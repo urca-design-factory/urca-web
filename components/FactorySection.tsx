@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 
 import { FactorySigil } from "@/components/FactorySigil";
+import { ViewportReveal } from "@/components/ViewportReveal";
 import { FACTORY_SIGIL_STAGE_KEYS } from "@/components/factory-sigil-states";
 
 const factoryStages = [
@@ -41,14 +42,20 @@ export function FactorySection() {
 
   return (
     <section className="factory page-grid" id="factory" aria-labelledby="factory-title">
-      <div className="factory__intro">
-        <p className="eyebrow factory__label">THE FACTORY</p>
+      <ViewportReveal
+        containerSelector="#factory"
+        blockSelector=".factory__intro.t-stagger, .factory__stage.t-stagger"
+      />
+      <div className="factory__intro t-stagger">
+        <p className="eyebrow factory__label t-stagger-line t-stagger-line--1">
+          THE FACTORY
+        </p>
         <h2 className="factory__title" id="factory-title">
-          <span>One process.</span>
-          <span>No hand-offs</span>
-          <span>between worlds.</span>
+          <span className="t-stagger-line t-stagger-line--2">One process.</span>
+          <span className="t-stagger-line t-stagger-line--3">No hand-offs</span>
+          <span className="t-stagger-line t-stagger-line--4">between worlds.</span>
         </h2>
-        <p className="factory__summary">
+        <p className="factory__summary t-stagger-line t-stagger-line--5">
           Strategy, design and engineering work as one continuous system — from the first
           question to launch and beyond.
         </p>
@@ -70,7 +77,7 @@ export function FactorySection() {
 
             return (
               <li
-                className="factory__stage"
+                className="factory__stage t-stagger"
                 data-active={activeStage === index}
                 data-stage-index={index}
                 ref={(element) => {
@@ -81,12 +88,18 @@ export function FactorySection() {
                 <span className="factory__stage-sigil" aria-hidden="true">
                   <FactorySigil stage={FACTORY_SIGIL_STAGE_KEYS[index]} />
                 </span>
-                <p className="factory__stage-number">{number}</p>
+                <p className="factory__stage-number">
+                  <span className="t-stagger-line t-stagger-line--1">{number}</span>
+                </p>
                 <div className="factory__stage-content">
                   <h3 className="factory__stage-title" id={stageId}>
-                    {title}
+                    <span className="t-stagger-line t-stagger-line--2">{title}</span>
                   </h3>
-                  <p className="factory__stage-description">{description}</p>
+                  <p className="factory__stage-description">
+                    <span className="t-stagger-line t-stagger-line--3">
+                      {description}
+                    </span>
+                  </p>
                 </div>
               </li>
             );
