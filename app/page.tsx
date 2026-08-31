@@ -2,9 +2,9 @@ import { FactorySection } from "@/components/FactorySection";
 import { FinalChapter } from "@/components/FinalChapter";
 import { HeroArtwork } from "@/components/HeroArtwork";
 import { HeroReveal } from "@/components/HeroReveal";
-import { SelectedWorkReveal } from "@/components/SelectedWorkReveal";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteLoader } from "@/components/SiteLoader";
+import { ViewportReveal } from "@/components/ViewportReveal";
 import brandVisual from "@/public/images/capabilities/brand.png";
 import intelligenceVisual from "@/public/images/capabilities/intelligence.png";
 import interactiveVisual from "@/public/images/capabilities/interactive.png";
@@ -161,7 +161,10 @@ export default function Home() {
         </div>
 
       <section className="selected-work page-grid" id="selected-work" aria-labelledby="work-title">
-        <SelectedWorkReveal />
+        <ViewportReveal
+          containerSelector="#selected-work"
+          blockSelector=".selected-work__intro.t-stagger, .project.t-stagger"
+        />
         <div className="selected-work__intro t-stagger">
           <p className="eyebrow selected-work__label t-stagger-line t-stagger-line--1">
             SELECTED WORK
@@ -232,12 +235,20 @@ export default function Home() {
       </section>
 
       <section className="capabilities page-grid" id="capabilities" aria-labelledby="capabilities-title">
-        <p className="eyebrow capabilities__label">WHAT WE MAKE</p>
-        <h2 className="capabilities__title" id="capabilities-title">
-          <span>From identity</span>
-          <span>to interface</span>
-          <span>to infrastructure.</span>
-        </h2>
+        <ViewportReveal
+          containerSelector="#capabilities"
+          blockSelector=".capabilities__intro.t-stagger, .capability-row.t-stagger"
+        />
+        <div className="capabilities__intro t-stagger">
+          <p className="eyebrow capabilities__label t-stagger-line t-stagger-line--1">
+            WHAT WE MAKE
+          </p>
+          <h2 className="capabilities__title" id="capabilities-title">
+            <span className="t-stagger-line t-stagger-line--2">From identity</span>
+            <span className="t-stagger-line t-stagger-line--3">to interface</span>
+            <span className="t-stagger-line t-stagger-line--4">to infrastructure.</span>
+          </h2>
+        </div>
 
         <div className="capability-list">
           {capabilities.map((capability) => {
@@ -245,19 +256,25 @@ export default function Home() {
 
             return (
               <article
-                className="capability-row"
+                className="capability-row t-stagger"
                 aria-labelledby={`${capabilityId}-title`}
                 tabIndex={0}
                 key={capability.number}
               >
-                <p className="capability-row__number">{capability.number}</p>
+                <p className="capability-row__number">
+                  <span className="t-stagger-line t-stagger-line--1">
+                    {capability.number}
+                  </span>
+                </p>
 
                 <div className="capability-row__content">
-                  <div className="capability-row__heading">
+                  <div className="capability-row__heading t-stagger-line t-stagger-line--2">
                     <h3 id={`${capabilityId}-title`}>{capability.name}</h3>
                   </div>
 
-                  <p className="capability-row__description">{capability.description}</p>
+                  <p className="capability-row__description t-stagger-line t-stagger-line--3">
+                    {capability.description}
+                  </p>
 
                   <div className="capability-row__visual" aria-hidden="true">
                     <Image
@@ -270,7 +287,9 @@ export default function Home() {
 
                   <ul className="capability-row__services" aria-label={`${capability.name} capabilities`}>
                     {capability.services.map((service) => (
-                      <li key={service}>{service}</li>
+                      <li className="t-stagger-line t-stagger-line--3" key={service}>
+                        {service}
+                      </li>
                     ))}
                   </ul>
                 </div>

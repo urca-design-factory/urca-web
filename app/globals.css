@@ -176,6 +176,10 @@ html[data-site-loading="true"] body {
   transition-delay: calc(var(--stagger-stagger) * 2);
 }
 
+.t-stagger-line--4 {
+  transition-delay: calc(var(--stagger-stagger) * 3);
+}
+
 .site-header__reveal {
   --stagger-distance: -12px;
 
@@ -964,6 +968,23 @@ a:focus-visible {
 .capabilities {
   padding-bottom: clamp(7.5rem, 16svh, 11rem);
   scroll-margin-top: calc(var(--masthead-height) + var(--grid-gap));
+}
+
+.capabilities__intro {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  align-items: start;
+  column-gap: var(--grid-gap);
+}
+
+.capabilities__intro.t-stagger,
+.capability-row.t-stagger {
+  --stagger-dur: 1000ms;
+  --stagger-stagger: 300ms;
+  --stagger-distance: 16px;
+  --stagger-blur: 6px;
+  --stagger-ease: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .capabilities__label {

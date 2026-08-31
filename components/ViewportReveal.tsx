@@ -2,14 +2,17 @@
 
 import { useEffect } from "react";
 
-export function SelectedWorkReveal() {
-  useEffect(() => {
-    const section = document.querySelector<HTMLElement>("#selected-work");
-    if (!section) return;
+type ViewportRevealProps = {
+  blockSelector: string;
+  containerSelector: string;
+};
 
-    const blocks = section.querySelectorAll<HTMLElement>(
-      ".selected-work__intro.t-stagger, .project.t-stagger",
-    );
+export function ViewportReveal({ blockSelector, containerSelector }: ViewportRevealProps) {
+  useEffect(() => {
+    const container = document.querySelector<HTMLElement>(containerSelector);
+    if (!container) return;
+
+    const blocks = container.querySelectorAll<HTMLElement>(blockSelector);
 
     const showText = (block: HTMLElement) => {
       block.classList.remove("is-hiding");
@@ -30,7 +33,7 @@ export function SelectedWorkReveal() {
 
     blocks.forEach((block) => observer.observe(block));
     return () => observer.disconnect();
-  }, []);
+  }, [blockSelector, containerSelector]);
 
   return null;
 }
