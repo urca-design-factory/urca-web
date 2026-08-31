@@ -15,6 +15,12 @@ export function SiteLoader() {
     if (!loader || !counter) return;
 
     const root = document.documentElement;
+    const shell = loader.closest<HTMLElement>(".t-skel");
+    const styles = getComputedStyle(root);
+    const numberValue = (name: string, fallback: number) => {
+      const value = Number.parseFloat(styles.getPropertyValue(name));
+      return Number.isFinite(value) ? value : fallback;
+    };
     let displayedProgress = 0;
     let targetProgress = getReportedHeroProgress();
     let heroReady = targetProgress >= 100 || root.dataset.heroReady === "true";
@@ -38,11 +44,13 @@ export function SiteLoader() {
       closing = true;
       writeProgress(100);
       loader.dataset.state = "complete";
+      shell?.classList.add("is-revealed");
+      if (shell) shell.dataset.state = "ready";
 
       closeTimer = window.setTimeout(() => {
         loader.hidden = true;
         delete root.dataset.siteLoading;
-      }, reducedMotion.matches ? 0 : 760);
+      }, reducedMotion.matches ? 0 : numberValue("--reveal-dur", 400));
     };
 
     const handleProgress = (event: Event) => {
@@ -89,13 +97,14 @@ export function SiteLoader() {
       window.clearTimeout(closeTimer);
       window.clearTimeout(failsafe);
       window.removeEventListener(HERO_PROGRESS_EVENT, handleProgress);
+      shell?.classList.remove("is-revealed");
       delete root.dataset.siteLoading;
     };
   }, []);
 
   return (
     <div
-      className="site-loader"
+      className="site-loader t-skel-skeleton is-pulsing"
       data-state="loading"
       role="status"
       aria-label="Loading Urca Design Factory"

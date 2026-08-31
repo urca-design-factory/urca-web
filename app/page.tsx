@@ -112,9 +112,10 @@ const studioPrinciples = [
 
 export default function Home() {
   return (
-    <main>
+    <main className="t-skel" data-state="loading">
       <SiteLoader />
-      <SiteHeader />
+      <div className="site-content t-skel-content">
+        <SiteHeader />
 
       <section
         className="hero"
@@ -295,7 +296,8 @@ export default function Home() {
         </ol>
       </section>
 
-      <FinalChapter />
+        <FinalChapter />
+      </div>
     </main>
   );
 }
