@@ -8,6 +8,7 @@ import {
   getResponsiveZoom,
   VERTEX_SHADER,
 } from "./hero-artwork";
+import { reportHeroProgress } from "./site-loading";
 
 type HeroArtworkProps = {
   source: string;
@@ -213,9 +214,14 @@ export function HeroArtwork({
     const titleInverse = hero.querySelector<HTMLElement>(".hero__title-inverse");
     const summaryInverse = hero.querySelector<HTMLElement>(".hero__summary-inverse");
 
+    let disposed = false;
+
     const showFallback = () => {
       delete layer.dataset.rendered;
       layer.dataset.fallback = "true";
+      void image.decode().catch(() => null).then(() => {
+        if (!disposed) reportHeroProgress(100);
+      });
     };
 
     const gl = canvas.getContext("webgl", {
@@ -230,7 +236,6 @@ export function HeroArtwork({
       return;
     }
 
-    let disposed = false;
     let vertexShader: WebGLShader | null = null;
     let fragmentShader: WebGLShader | null = null;
     let program: WebGLProgram | null = null;
@@ -527,6 +532,7 @@ export function HeroArtwork({
 
         delete layer.dataset.fallback;
         layer.dataset.rendered = "true";
+        reportHeroProgress(100);
       } catch {
         if (!disposed) showFallback();
         return;
@@ -614,6 +620,7 @@ export function HeroArtwork({
           priority
           unoptimized
           sizes="100vw"
+          onLoad={() => reportHeroProgress(70)}
         />
         <Image
           ref={asciiRef}
@@ -624,6 +631,7 @@ export function HeroArtwork({
           loading="eager"
           unoptimized
           sizes="100vw"
+          onLoad={() => reportHeroProgress(85)}
         />
         <canvas ref={canvasRef} />
       </div>

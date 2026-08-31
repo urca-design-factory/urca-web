@@ -2,6 +2,7 @@ import { FactorySection } from "@/components/FactorySection";
 import { FinalChapter } from "@/components/FinalChapter";
 import { HeroArtwork } from "@/components/HeroArtwork";
 import { SiteHeader } from "@/components/SiteHeader";
+import { SiteLoader } from "@/components/SiteLoader";
 import brandVisual from "@/public/images/capabilities/brand.png";
 import intelligenceVisual from "@/public/images/capabilities/intelligence.png";
 import interactiveVisual from "@/public/images/capabilities/interactive.png";
@@ -112,6 +113,7 @@ const studioPrinciples = [
 export default function Home() {
   return (
     <main>
+      <SiteLoader />
       <SiteHeader />
 
       <section
