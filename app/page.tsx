@@ -1,6 +1,7 @@
 import { FactorySection } from "@/components/FactorySection";
 import { FinalChapter } from "@/components/FinalChapter";
 import { HeroArtwork } from "@/components/HeroArtwork";
+import { HeroReveal } from "@/components/HeroReveal";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteLoader } from "@/components/SiteLoader";
 import brandVisual from "@/public/images/capabilities/brand.png";
@@ -115,39 +116,48 @@ export default function Home() {
     <main className="t-skel" data-state="loading">
       <SiteLoader />
       <div className="site-content t-skel-content">
-        <SiteHeader />
+        <div className="hero-chapter t-stagger">
+          <SiteHeader />
 
-      <section
-        className="hero"
-        id="top"
-        aria-labelledby="hero-title"
-        data-inverse-text="true"
-      >
-        <HeroArtwork
-          source="/images/hero/hero-source-01.png"
-          asciiSource="/images/hero/hero-source-01_ascii.png"
-          focalPoint={[0.455, 0.52]}
-          zoom={1.1}
-        />
+          <section
+            className="hero"
+            id="top"
+            aria-labelledby="hero-title"
+            data-inverse-text="true"
+          >
+            <HeroReveal />
+            <HeroArtwork
+              source="/images/hero/hero-source-01.png"
+              asciiSource="/images/hero/hero-source-01_ascii.png"
+              focalPoint={[0.455, 0.52]}
+              zoom={1.1}
+            />
 
-        <h1 id="hero-title" className="hero__title">
-          <span className="hero__title-base">
-            <span>We design ideas,</span>
-            <em>we build experiences.</em>
-          </span>
-        </h1>
-        <div className="hero__title hero__title-inverse" aria-hidden="true">
-          <span>We design ideas,</span>
-          <em>we build experiences.</em>
+            <h1 id="hero-title" className="hero__title">
+              <span className="hero__title-base t-stagger-line t-stagger-line--2">
+                <span>We design ideas,</span>
+                <em>we build experiences.</em>
+              </span>
+            </h1>
+            <div className="hero__title hero__title-inverse" aria-hidden="true">
+              <span className="hero__title-inverse-content t-stagger-line t-stagger-line--2">
+                <span>We design ideas,</span>
+                <em>we build experiences.</em>
+              </span>
+            </div>
+
+            <p className="hero__summary">
+              <span className="hero__summary-base t-stagger-line t-stagger-line--3">
+                {heroSummary}
+              </span>
+            </p>
+            <div className="hero__summary hero__summary-inverse" aria-hidden="true">
+              <span className="hero__summary-inverse-content t-stagger-line t-stagger-line--3">
+                {heroSummary}
+              </span>
+            </div>
+          </section>
         </div>
-
-        <p className="hero__summary">
-          <span className="hero__summary-base">{heroSummary}</span>
-        </p>
-        <div className="hero__summary hero__summary-inverse" aria-hidden="true">
-          {heroSummary}
-        </div>
-      </section>
 
       <section className="selected-work page-grid" id="selected-work" aria-labelledby="work-title">
         <p className="eyebrow selected-work__label">SELECTED WORK</p>

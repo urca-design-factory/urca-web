@@ -45,12 +45,12 @@ export function SiteLoader() {
       writeProgress(100);
       loader.dataset.state = "complete";
       shell?.classList.add("is-revealed");
-      if (shell) shell.dataset.state = "ready";
 
       closeTimer = window.setTimeout(() => {
         loader.hidden = true;
+        if (shell) shell.dataset.state = "ready";
         delete root.dataset.siteLoading;
-      }, reducedMotion.matches ? 0 : numberValue("--reveal-dur", 400));
+      }, reducedMotion.matches ? 0 : numberValue("--reveal-dur", 780));
     };
 
     const handleProgress = (event: Event) => {
@@ -66,11 +66,11 @@ export function SiteLoader() {
       previousFrameAt = now;
 
       if (!heroReady) {
-        const stagedProgress = Math.min(88, ((now - startedAt) / 2400) * 88);
+        const stagedProgress = Math.min(88, ((now - startedAt) / 3600) * 88);
         targetProgress = Math.max(targetProgress, stagedProgress);
       }
 
-      const responseSeconds = heroReady ? 0.12 : 0.48;
+      const responseSeconds = heroReady ? 0.34 : 0.78;
       const damping = 1 - Math.exp(-deltaSeconds / responseSeconds);
       displayedProgress += (targetProgress - displayedProgress) * damping;
       writeProgress(displayedProgress);

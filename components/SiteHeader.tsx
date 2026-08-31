@@ -204,24 +204,26 @@ export function SiteHeader() {
       data-visible="true"
       ref={headerRef}
     >
-      <nav className="site-nav" aria-label="Primary navigation">
-        <div className="site-nav__group site-nav__group--left">
-          {navigation.left.map(renderLink)}
-        </div>
+      <div className="site-header__reveal t-stagger-line t-stagger-line--1">
+        <nav className="site-nav" aria-label="Primary navigation">
+          <div className="site-nav__group site-nav__group--left">
+            {navigation.left.map(renderLink)}
+          </div>
 
-        <a className="brand" href="#top" aria-label="Urca Design Factory, home">
-          <Image src="/wordmark_dark.svg" alt="Urca" width={171} height={40} priority />
-        </a>
+          <a className="brand" href="#top" aria-label="Urca Design Factory, home">
+            <Image src="/wordmark_dark.svg" alt="Urca" width={171} height={40} priority />
+          </a>
 
-        <div className="site-nav__group site-nav__group--right">
-          {navigation.right.map(renderLink)}
-        </div>
+          <div className="site-nav__group site-nav__group--right">
+            {navigation.right.map(renderLink)}
+          </div>
 
-        <details className="site-nav__mobile">
-          <summary>Menu</summary>
-          <div className="site-nav__mobile-links">{allNavigation.map(renderLink)}</div>
-        </details>
-      </nav>
+          <details className="site-nav__mobile">
+            <summary>Menu</summary>
+            <div className="site-nav__mobile-links">{allNavigation.map(renderLink)}</div>
+          </details>
+        </nav>
+      </div>
     </header>
   );
 }
