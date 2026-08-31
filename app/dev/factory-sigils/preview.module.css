@@ -1,0 +1,83 @@
+.preview {
+  min-height: 100svh;
+  padding: clamp(3rem, 7vw, 7rem);
+  background: #1d1d1b;
+  color: #fbfbf9;
+}
+
+.preview h1,
+.preview h2,
+.preview p {
+  margin: 0;
+}
+
+.preview h1,
+.preview h2,
+.preview figcaption,
+.preview p {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.preview h1,
+.preview h2 {
+  font-size: 0.75rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(5rem, 1fr));
+  gap: clamp(1.5rem, 3vw, 3.5rem);
+  margin-top: clamp(4rem, 9vw, 8rem);
+}
+
+.item {
+  margin: 0;
+  display: grid;
+  justify-items: center;
+  gap: 1.5rem;
+}
+
+.item :global(.factory-sigil) {
+  width: clamp(3rem, 4vw, 3.5rem);
+  height: clamp(3rem, 4vw, 3.5rem);
+  color: var(--color-signal);
+}
+
+.item figcaption,
+.morph p {
+  color: color-mix(in srgb, var(--color-canvas) 54%, transparent);
+  font-size: 0.625rem;
+}
+
+.morph {
+  display: grid;
+  justify-items: center;
+  gap: 1.75rem;
+  margin-top: clamp(7rem, 15vw, 13rem);
+}
+
+.morph h2 {
+  margin-bottom: 2rem;
+}
+
+.morph :global(.factory-sigil) {
+  width: 4rem;
+  height: 4rem;
+  color: var(--color-signal);
+}
+
+@media (max-width: 800px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(5rem, 1fr));
+    row-gap: 4rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preview :global(.factory-sigil__segment) {
+    transition: none;
+  }
+}

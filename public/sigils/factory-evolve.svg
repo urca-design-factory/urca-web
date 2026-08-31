@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#d95a2f">
+  <path id="segment-1" d="M-7-2.5H5L7-.5v3H-5L-7 .5Z" transform="translate(22 20) rotate(20)" />
+  <path id="segment-2" d="M-7-2.5H5L7-.5v3H-5L-7 .5Z" transform="translate(35 18) rotate(-10)" />
+  <path id="segment-3" d="M-7-2.5H5L7-.5v3H-5L-7 .5Z" transform="translate(45 27) rotate(70)" />
+  <path id="segment-4" d="M-7-2.5H5L7-.5v3H-5L-7 .5Z" transform="translate(43 40) rotate(-20)" />
+  <path id="segment-5" d="M-7-2.5H5L7-.5v3H-5L-7 .5Z" transform="translate(31 46) rotate(10)" />
+  <path id="segment-6" d="M-7-2.5H5L7-.5v3H-5L-7 .5Z" transform="translate(19 40) rotate(70)" />
+  <path id="segment-7" d="M-7-2.5H5L7-.5v3H-5L-7 .5Z" transform="translate(18 29) rotate(-20)" />
+  <path id="segment-8" d="M-7-2.5H5L7-.5v3H-5L-7 .5Z" transform="translate(32 32) rotate(70)" />
+</svg>
