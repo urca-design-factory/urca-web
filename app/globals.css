@@ -184,6 +184,10 @@ html[data-site-loading="true"] body {
   transition-delay: calc(var(--stagger-stagger) * 4);
 }
 
+.t-stagger-line--6 {
+  transition-delay: calc(var(--stagger-stagger) * 5);
+}
+
 .site-header__reveal {
   --stagger-distance: -12px;
 
@@ -1405,6 +1409,15 @@ a:focus-visible {
 .studio {
   background: var(--color-canvas);
   color: var(--color-ink);
+}
+
+.studio__opening.t-stagger,
+.studio-principle.t-stagger {
+  --stagger-dur: 1000ms;
+  --stagger-stagger: 280ms;
+  --stagger-distance: 16px;
+  --stagger-blur: 6px;
+  --stagger-ease: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .studio__opening {

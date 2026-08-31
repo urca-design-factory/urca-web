@@ -302,21 +302,29 @@ export default function Home() {
       <FactorySection />
 
       <section className="studio page-grid" id="studio" aria-labelledby="studio-title">
-        <div className="studio__opening">
-          <p className="eyebrow studio__label">STUDIO / HOW WE THINK</p>
+        <ViewportReveal
+          containerSelector="#studio"
+          blockSelector=".studio__opening.t-stagger, .studio-principle.t-stagger"
+        />
+        <div className="studio__opening t-stagger">
+          <p className="eyebrow studio__label t-stagger-line t-stagger-line--1">
+            STUDIO / HOW WE THINK
+          </p>
 
           <h2 className="studio__statement" id="studio-title">
             <span className="studio__statement-group studio__statement-group--primary">
-              <span>Design shouldn&apos;t</span>
-              <span>stop at the screen.</span>
+              <span className="t-stagger-line t-stagger-line--2">Design shouldn&apos;t</span>
+              <span className="t-stagger-line t-stagger-line--3">stop at the screen.</span>
             </span>
             <em className="studio__statement-group studio__statement-group--secondary">
-              <span>Technology shouldn&apos;t</span>
-              <span>start after design.</span>
+              <span className="t-stagger-line t-stagger-line--4">
+                Technology shouldn&apos;t
+              </span>
+              <span className="t-stagger-line t-stagger-line--5">start after design.</span>
             </em>
           </h2>
 
-          <p className="studio__summary">
+          <p className="studio__summary t-stagger-line t-stagger-line--6">
             We work where strategy, identity and technology meet. The goal is not simply
             to make something look good or make something work. The goal is to make the
             whole thing make sense.
@@ -325,18 +333,36 @@ export default function Home() {
 
         <ol className="studio__principles" aria-label="How we think">
           {studioPrinciples.map((principle) => (
-            <li className="studio-principle" key={principle.number}>
-              <p className="studio-principle__number">{principle.number}</p>
+            <li className="studio-principle t-stagger" key={principle.number}>
+              <p className="studio-principle__number">
+                <span className="t-stagger-line t-stagger-line--1">
+                  {principle.number}
+                </span>
+              </p>
               <h3 className="studio-principle__title">
                 {principle.title.map((line, lineIndex) =>
                   lineIndex === principle.serifLine ? (
-                    <em key={line}>{line}</em>
+                    <em
+                      className={`t-stagger-line t-stagger-line--${lineIndex + 2}`}
+                      key={line}
+                    >
+                      {line}
+                    </em>
                   ) : (
-                    <span key={line}>{line}</span>
+                    <span
+                      className={`t-stagger-line t-stagger-line--${lineIndex + 2}`}
+                      key={line}
+                    >
+                      {line}
+                    </span>
                   ),
                 )}
               </h3>
-              <p className="studio-principle__description">{principle.description}</p>
+              <p
+                className={`studio-principle__description t-stagger-line t-stagger-line--${principle.title.length + 2}`}
+              >
+                {principle.description}
+              </p>
             </li>
           ))}
         </ol>
