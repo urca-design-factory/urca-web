@@ -1,13 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import ascentArtwork from "@/public/images/capabilities/ascent.png";
 import ascentForeground from "@/public/images/capabilities/ascent-foreground.png";
 
 type ArtworkLayer = "background" | "wordmark" | "foreground";
 
 export function FooterArtwork() {
+  const compositionRef = useRef<HTMLDivElement>(null);
   const loadedLayers = useRef(new Set<ArtworkLayer>());
   const [isReady, setIsReady] = useState(false);
 
@@ -17,8 +18,30 @@ export function FooterArtwork() {
     if (loadedLayers.current.size === 3) setIsReady(true);
   }, []);
 
+  useEffect(() => {
+    if (!isReady) return;
+
+    const footer = compositionRef.current?.closest<HTMLElement>(".site-footer");
+    if (!footer) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting) return;
+
+        footer.classList.add("is-shown");
+        observer.disconnect();
+      },
+      { rootMargin: "0px 0px -12% 0px", threshold: 0 },
+    );
+
+    observer.observe(footer);
+
+    return () => observer.disconnect();
+  }, [isReady]);
+
   return (
     <div
+      ref={compositionRef}
       className="footer-artwork__composition"
       data-ready={isReady}
       aria-hidden="true"
