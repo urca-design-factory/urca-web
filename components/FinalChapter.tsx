@@ -24,7 +24,7 @@ function ContactIntro() {
           Tell us what you&apos;re trying to make, change or solve.
         </p>
         <div className="contact__action-reveal t-stagger-line t-stagger-line--5">
-          <a className="contact__action" href="mailto:hello@urca.ro">
+          <a className="contact__action" href="mailto:contact@urcadesign.com">
             <span>Start a project</span>
             <span aria-hidden="true">↗</span>
           </a>
@@ -39,9 +39,9 @@ function FooterMeta({ currentYear }: { currentYear: number }) {
     <div className="site-footer__meta page-grid">
       <a
         className="site-footer__email t-stagger-line t-stagger-line--6"
-        href="mailto:hello@urca.ro"
+        href="mailto:contact@urcadesign.com"
       >
-        hello@urca.ro <span aria-hidden="true">↗</span>
+        contact@urcadesign.com <span aria-hidden="true">↗</span>
       </a>
 
       <nav

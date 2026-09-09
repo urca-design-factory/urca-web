@@ -352,7 +352,7 @@ Supporting copy:
 
 Primary contact:
 
-`hello@urca.ro`
+`contact@urcadesign.com`
 
 Secondary links may include:
 
