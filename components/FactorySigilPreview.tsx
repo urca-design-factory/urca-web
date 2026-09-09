@@ -3,16 +3,22 @@
 import { useEffect, useState } from "react";
 
 import { FactorySigil } from "@/components/FactorySigil";
-import { FACTORY_SIGIL_STAGE_KEYS } from "@/components/factory-sigil-states";
+import {
+  FACTORY_SIGIL_HOLD_MS,
+  FACTORY_SIGIL_MORPH_MS,
+  FACTORY_SIGIL_STAGE_KEYS,
+} from "@/components/factory-sigil-states";
 import styles from "@/app/dev/factory-sigils/preview.module.css";
 
 export function FactorySigilPreview() {
   const [activeStage, setActiveStage] = useState(0);
 
   useEffect(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     const interval = window.setInterval(() => {
+      if (reduced.matches || document.hidden) return;
       setActiveStage((current) => (current + 1) % FACTORY_SIGIL_STAGE_KEYS.length);
-    }, 1800);
+    }, FACTORY_SIGIL_HOLD_MS + FACTORY_SIGIL_MORPH_MS);
 
     return () => window.clearInterval(interval);
   }, []);

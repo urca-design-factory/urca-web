@@ -1,34 +1,16 @@
-import { mkdir, writeFile } from "node:fs/promises";
-import { fileURLToPath } from "node:url";
+import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 
-import {
-  FACTORY_SIGIL_SEGMENT_PATH,
-  FACTORY_SIGIL_STAGE_KEYS,
-  FACTORY_SIGIL_STATES,
-} from "../components/factory-sigil-states.ts";
+const source = new URL("../updated-morph/", import.meta.url);
+const output = new URL("../public/sigils/", import.meta.url);
+const shapes = JSON.parse(await readFile(new URL("shapes.json", source), "utf8"));
 
-const outputDirectory = fileURLToPath(new URL("../public/sigils/", import.meta.url));
-
-function segmentTransform({ x, y, rotation, scaleX = 1, scaleY = 1 }) {
-  const scale = scaleX === 1 && scaleY === 1 ? "" : ` scale(${scaleX} ${scaleY})`;
-  return `translate(${x} ${y}) rotate(${rotation})${scale}`;
+await mkdir(output, { recursive: true });
+for (const { name } of shapes) {
+  const stage = name.toLowerCase();
+  await copyFile(new URL(`${stage}.svg`, source), new URL(`factory-${stage}.svg`, output));
 }
-
-function createSigilSvg(stage) {
-  const segments = FACTORY_SIGIL_STATES[stage]
-    .map(
-      (segment, index) =>
-        `  <path id="segment-${index + 1}" d="${FACTORY_SIGIL_SEGMENT_PATH}" transform="${segmentTransform(segment)}" />`,
-    )
-    .join("\n");
-
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#d95a2f">\n${segments}\n</svg>\n`;
-}
-
-await mkdir(outputDirectory, { recursive: true });
-
-await Promise.all(
-  FACTORY_SIGIL_STAGE_KEYS.map((stage) =>
-    writeFile(`${outputDirectory}factory-${stage}.svg`, createSigilSvg(stage), "utf8"),
-  ),
+await writeFile(
+  new URL("../components/factory-sigil-data.json", import.meta.url),
+  JSON.stringify(Object.fromEntries(shapes.map(({ name, points }) => [name.toLowerCase(), points])),
+    (_, value) => typeof value === "number" ? Number(value.toFixed(8)) : value) + "\n",
 );

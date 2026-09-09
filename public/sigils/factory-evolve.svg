@@ -1,10 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#d95a2f">
-  <path id="segment-1" d="M-7-2.5H5L7-.5v3H-5L-7 .5Z" transform="translate(22 20) rotate(20)" />
-  <path id="segment-2" d="M-7-2.5H5L7-.5v3H-5L-7 .5Z" transform="translate(35 18) rotate(-10)" />
-  <path id="segment-3" d="M-7-2.5H5L7-.5v3H-5L-7 .5Z" transform="translate(45 27) rotate(70)" />
-  <path id="segment-4" d="M-7-2.5H5L7-.5v3H-5L-7 .5Z" transform="translate(43 40) rotate(-20)" />
-  <path id="segment-5" d="M-7-2.5H5L7-.5v3H-5L-7 .5Z" transform="translate(31 46) rotate(10)" />
-  <path id="segment-6" d="M-7-2.5H5L7-.5v3H-5L-7 .5Z" transform="translate(19 40) rotate(70)" />
-  <path id="segment-7" d="M-7-2.5H5L7-.5v3H-5L-7 .5Z" transform="translate(18 29) rotate(-20)" />
-  <path id="segment-8" d="M-7-2.5H5L7-.5v3H-5L-7 .5Z" transform="translate(32 32) rotate(70)" />
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 100 100" style="enable-background:new 0 0 100 100;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#F46B38;}
+</style>
+<path class="st0" d="M31.5,46.5v3.7v3.7v3.7v3.7v3.7v3.7v3.7v3.7v3.7V83v3.7v3.7V94l-2.5-2.4l-2.5-2.4l-2.5-2.4l-2.5-2.4l-2.5-2.4
+	l-2.5-2.4l-2.5-2.4L11.8,75l-2.5-2.4l-2.5-2.4l2.7-2.6l2.7-2.6l2.7-2.6l2.7-2.6l2.7-2.6l2.7-2.6l2.7-2.6l2.7-2.6L31.5,46.5z"/>
+<path class="st0" d="M68.5,46.5h5.3H79h5.3v5.1v-1.9v5.1v5.1v5.1L81,68.2l-3.3,3.3l-3.3,3.3l-3.3,3.3h-5.7h-5.7h-5.7h-5.7h-5.7h-5.7
+	h-5.7v-5.3v-5.3v-5.3h6.2h6.2H50h6.2h6.2h6.2v-5.7v-5.7v1.3V46.5z"/>
+<path class="st0" d="M60.4,52.4v-3.7v-3.7v-3.7v-3.7v-3.7v-3.7v-3.7v-3.7v-3.7v-3.7v-3.7V8.5V4.9l2.5,2.4l2.5,2.4l2.5,2.4l2.5,2.4
+	l2.5,2.4l2.5,2.4l2.5,2.4l2.5,2.4l2.5,2.4l2.5,2.4l-2.7,2.6l-2.7,2.6l-2.7,2.6l-2.7,2.6l-2.7,2.6l-2.7,2.6l-2.7,2.6l-2.7,2.6
+	L60.4,52.4z"/>
+<path class="st0" d="M23.5,52.4h-5.3h-5.3H7.6v-5.1v1.9v-5.1V39v-5.1l3.3-3.3l3.3-3.3l3.3-3.3l3.3-3.3h5.7h5.7h5.7h5.7h5.7h5.7h5.7
+	V26v5.3v5.3h-6.2h-6.2H42h-6.2h-6.2h-6.2v5.7V48v-1.3V52.4z"/>
 </svg>
