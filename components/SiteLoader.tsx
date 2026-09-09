@@ -1,21 +1,41 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { getReportedHeroProgress, HERO_PROGRESS_EVENT } from "./site-loading";
+import { useLayoutEffect, useRef } from "react";
+import { getReportedHeroProgress, hasVisitedSite, markSiteVisited, HERO_PROGRESS_EVENT } from "./site-loading";
 
 const FAILSAFE_DELAY = 10_000;
+const LOADER_DELAY = 180;
 
 export function SiteLoader() {
   const loaderRef = useRef<HTMLDivElement>(null);
   const counterRef = useRef<HTMLOutputElement>(null);
+  const skipRef = useRef<boolean | null>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const loader = loaderRef.current;
     const counter = counterRef.current;
     if (!loader || !counter) return;
 
     const root = document.documentElement;
     const shell = loader.closest<HTMLElement>(".t-skel");
+    if (!shell) return;
+    skipRef.current ??= hasVisitedSite();
+    markSiteVisited();
+
+    const imagesReady = () => {
+      const images = shell.querySelectorAll<HTMLImageElement>(".hero-artwork img");
+      return images.length > 0 && [...images].every((image) => image.complete && image.naturalWidth > 0);
+    };
+    const revealImmediately = () => {
+      loader.hidden = true;
+      shell.dataset.state = "ready";
+      shell.classList.add("is-revealed");
+      delete root.dataset.siteLoading;
+    };
+    if (skipRef.current || imagesReady()) {
+      revealImmediately();
+      return;
+    }
     const styles = getComputedStyle(root);
     const numberValue = (name: string, fallback: number) => {
       const value = Number.parseFloat(styles.getPropertyValue(name));
@@ -89,13 +109,23 @@ export function SiteLoader() {
     }, FAILSAFE_DELAY);
 
     window.addEventListener(HERO_PROGRESS_EVENT, handleProgress);
-    writeProgress(0);
-    frame = window.requestAnimationFrame(animate);
+    const startTimer = window.setTimeout(() => {
+      if (imagesReady() || heroReady) {
+        closing = true;
+        window.clearTimeout(failsafe);
+        revealImmediately();
+      } else {
+        loader.hidden = false;
+        writeProgress(0);
+        frame = window.requestAnimationFrame(animate);
+      }
+    }, LOADER_DELAY);
 
     return () => {
       window.cancelAnimationFrame(frame);
       window.clearTimeout(closeTimer);
       window.clearTimeout(failsafe);
+      window.clearTimeout(startTimer);
       window.removeEventListener(HERO_PROGRESS_EVENT, handleProgress);
       shell?.classList.remove("is-revealed");
       delete root.dataset.siteLoading;
@@ -109,6 +139,7 @@ export function SiteLoader() {
       role="status"
       aria-label="Loading Urca Design Factory"
       ref={loaderRef}
+      hidden
     >
       <p className="site-loader__counter" aria-hidden="true">
         <output ref={counterRef}>000</output>

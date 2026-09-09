@@ -18,6 +18,8 @@
   --duration-medium: 320ms;
   --duration-reveal: 280ms;
   --duration-visual: 720ms;
+  --duration-page: 480ms;
+  --distance-page: 12px;
   --artwork-material-filter: grayscale(1) contrast(1.55) brightness(1.18);
   --masthead-height: 4rem;
   --masthead-hero-offset: 1.5rem;
@@ -106,6 +108,36 @@ html[data-site-loading="true"] body {
 .t-skel.is-revealed .t-skel-content {
   opacity: 1;
   filter: none;
+}
+
+.t-skel[data-state="ready"] > .site-content {
+  opacity: 1;
+  filter: none;
+  transition: none;
+}
+
+.route-transition {
+  animation: page-enter var(--duration-page) var(--ease-out);
+}
+
+.route-transition main > section:first-of-type {
+  animation: page-content-enter var(--duration-page) var(--ease-out);
+}
+
+@keyframes page-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes page-content-enter {
+  from { transform: translateY(var(--distance-page)); }
+  to { transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-transition, .route-transition main > section:first-of-type {
+    animation: none;
+  }
 }
 /* Snap-back when replaying: kill transitions so the reverse
    (revealed → skeleton) is instant. Drop `.is-resetting`

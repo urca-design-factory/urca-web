@@ -8,7 +8,7 @@
     "build": "next build",
     "lint": "eslint .",
     "sigils:generate": "node scripts/generate-factory-sigils.mjs",
-    "test": "node --test components/hero-artwork.test.ts components/factory-sigil-states.test.ts",
+    "test": "node --test components/hero-artwork.test.ts components/factory-sigil-states.test.ts components/site-loading.test.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 
-import { FactorySigil } from "@/components/FactorySigil";
 import { FinalChapter } from "@/components/FinalChapter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { ViewportReveal } from "@/components/ViewportReveal";
@@ -9,6 +8,7 @@ import intelligence from "@/public/images/capabilities/intelligence.png";
 import brand from "@/public/images/capabilities/brand.png";
 import interactive from "@/public/images/capabilities/interactive.png";
 import styles from "./page.module.css";
+import { ServiceAccordion } from "./ServiceAccordion";
 
 export const metadata: Metadata = {
   title: "Capabilities — Urca Design Factory",
@@ -18,31 +18,51 @@ export const metadata: Metadata = {
 const capabilities = [
   {
     id: "intelligence", number: "01", title: ["Intelligence", "& Products"],
-    stage: "product", image: intelligence,
+    image: intelligence,
     description: "We turn complex workflows and product ideas into useful software.",
     context: "A new product to validate. A workflow to simplify. An AI capability to turn into something useful.",
-    services: ["Product strategy", "UX / UI design", "AI applications", "Web platforms", "SaaS development", "Automation", "Integrations"],
+    services: [
+      ["Product strategy", "Define the problem, the priorities and what to build first."],
+      ["UX / UI design", "Turn complex needs into clear flows and considered interfaces."],
+      ["AI applications", "Bring AI into products around a specific, useful task."],
+      ["Web platforms", "Design and build the tools people use in the browser."],
+      ["SaaS development", "Take a software product from its core experience to a working platform."],
+      ["Automation", "Connect repetitive steps into workflows that need less manual work."],
+      ["Integrations", "Make products, services and data work together."],
+    ],
   },
   {
     id: "brand", number: "02", title: ["Brand", "& Digital"],
-    stage: "identity", image: brand,
+    image: brand,
     description: "We give brands a clear identity and a digital presence built around it.",
     context: "A new identity. A brand ready to evolve. A website that brings it into focus.",
-    services: ["Brand strategy", "Visual identity", "Art direction", "Design systems", "Websites", "Digital platforms"],
+    services: [
+      ["Brand strategy", "Clarify what the brand stands for and how it should be understood."],
+      ["Visual identity", "Build a distinctive language of type, colour, imagery and form."],
+      ["Art direction", "Give every visual expression a clear, consistent point of view."],
+      ["Design systems", "Connect the identity to reusable foundations for digital products."],
+      ["Websites", "Bring the brand into an experience built around content and purpose."],
+      ["Digital platforms", "Extend the brand across the places people interact with it."],
+    ],
   },
   {
     id: "interactive", number: "03", title: ["Interactive", "& Mobile"],
-    stage: "launch", image: interactive,
+    image: interactive,
     description: "We design and build experiences people can use, explore and play with.",
     context: "An experience built for mobile. An idea that needs a working prototype. A new way for people to interact.",
-    services: ["Mobile applications", "Interactive experiences", "Games", "Prototypes"],
+    services: [
+      ["Mobile applications", "Shape useful, considered experiences for the way people use their phones."],
+      ["Interactive experiences", "Make participation part of the idea through responsive digital experiences."],
+      ["Games", "Bring design and development together around play and exploration."],
+      ["Prototypes", "Make an idea tangible enough to test, learn from and develop further."],
+    ],
   },
 ] as const;
 
 const startingPoints = [
-  { number: "01", title: "Make something new.", description: "Shape an early idea into a clear direction, a distinctive identity and a working product.", stage: "idea" },
-  { number: "02", title: "Improve what exists.", description: "Rethink an existing brand, website or product around what it needs to do next.", stage: "build" },
-  { number: "03", title: "Keep it evolving.", description: "Extend the system, introduce new capabilities and improve the experience after launch.", stage: "evolve" },
+  { number: "01", title: "Make something new.", description: "Shape an early idea into a clear direction, a distinctive identity and a working product." },
+  { number: "02", title: "Improve what exists.", description: "Rethink an existing brand, website or product around what it needs to do next." },
+  { number: "03", title: "Keep it evolving.", description: "Extend the system, introduce new capabilities and improve the experience after launch." },
 ] as const;
 
 export default function CapabilitiesPage() {
@@ -67,9 +87,8 @@ export default function CapabilitiesPage() {
           <nav className={styles.index} aria-label="Explore our capabilities">
             {capabilities.map(({ id, number, title }) => (
               <a href={`#${id}`} key={id}>
-                <span className={styles.number}>{number}</span>
-                <span>{title.join(" ")}</span>
-                <span aria-hidden="true">↓</span>
+                <span className={styles.indexMeta}><span className={styles.number}>({number})</span><span className={styles.indexArrow} aria-hidden="true">↘</span></span>
+                <span className={styles.indexTitle}><span>{title[0]}</span><em>{title[1]}</em></span>
               </a>
             ))}
           </nav>
@@ -83,7 +102,6 @@ export default function CapabilitiesPage() {
                 <h2 className="t-stagger-line t-stagger-line--2" id={`${capability.id}-title`}>
                   {capability.title.map(line => <span key={line}>{line}</span>)}
                 </h2>
-                <div className={styles.sigil}><FactorySigil stage={capability.stage} /></div>
               </div>
               <div className={styles.visual} aria-hidden="true">
                 <Image src={capability.image} alt="" sizes="(max-width: 760px) 100vw, 50vw" />
@@ -92,9 +110,7 @@ export default function CapabilitiesPage() {
                 <p className={`${styles.description} t-stagger-line t-stagger-line--1`}>{capability.description}</p>
                 <p className={`${styles.context} t-stagger-line t-stagger-line--2`}>{capability.context}</p>
                 <p className={`${styles.includes} eyebrow`}>WHAT WE DO</p>
-                <ul className={styles.services}>
-                  {capability.services.map(service => <li key={service}>{service}</li>)}
-                </ul>
+                <ServiceAccordion id={capability.id} services={capability.services} />
                 <a className={styles.textLink} href="#contact">Let’s talk {capability.id === "intelligence" ? "product" : capability.id === "brand" ? "brand" : "experience"}<span aria-hidden="true">↗</span></a>
               </div>
             </section>
@@ -112,7 +128,6 @@ export default function CapabilitiesPage() {
                   <h3 className="t-stagger-line t-stagger-line--1">{point.title}</h3>
                   <p className="t-stagger-line t-stagger-line--2">{point.description}</p>
                 </div>
-                <div className={styles.sigil}><FactorySigil stage={point.stage} /></div>
               </article>
             ))}
           </div>

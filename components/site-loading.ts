@@ -1,4 +1,23 @@
 export const HERO_PROGRESS_EVENT = "urca:hero-progress";
+const VISIT_KEY = "urca:visited";
+let visited = false;
+
+export function hasVisitedSite() {
+  try {
+    return visited || sessionStorage.getItem(VISIT_KEY) === "true";
+  } catch {
+    return visited;
+  }
+}
+
+export function markSiteVisited() {
+  visited = true;
+  try {
+    sessionStorage.setItem(VISIT_KEY, "true");
+  } catch {
+    // The in-memory flag still covers navigation when storage is unavailable.
+  }
+}
 
 export function reportHeroProgress(progress: number) {
   if (typeof window === "undefined") return;
