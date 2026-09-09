@@ -175,63 +175,70 @@ export default function Home() {
           </h2>
         </div>
 
-        {placeholderProjects.map((project, index) => {
-          const projectId = `project-${project.number}`;
-          const mediaId = `${projectId}-media`;
+        <div
+          className="selected-work__projects"
+          role="region"
+          aria-label="Selected work projects. Swipe or use arrow keys to browse on small screens."
+          tabIndex={0}
+        >
+          {placeholderProjects.map((project, index) => {
+            const projectId = `project-${project.number}`;
+            const mediaId = `${projectId}-media`;
 
-          return (
-            <article
-              className={`project project--${project.number}${index % 2 ? " project--reverse" : ""} t-stagger`}
-              id={projectId}
-              aria-labelledby={`${projectId}-title`}
-              key={project.number}
-            >
-              <div className="project__information">
-                <div className="project__identity">
-                  <p className="project__number t-stagger-line t-stagger-line--1">
-                    {project.number}
+            return (
+              <article
+                className={`project project--${project.number}${index % 2 ? " project--reverse" : ""} t-stagger`}
+                id={projectId}
+                aria-labelledby={`${projectId}-title`}
+                key={project.number}
+              >
+                <div className="project__information">
+                  <div className="project__identity">
+                    <p className="project__number t-stagger-line t-stagger-line--1">
+                      {project.number}
+                    </p>
+                    <p className="project__year t-stagger-line t-stagger-line--1">
+                      {project.year}
+                    </p>
+                  </div>
+
+                  <h3
+                    className="project__title t-stagger-line t-stagger-line--2"
+                    id={`${projectId}-title`}
+                  >
+                    {project.name}
+                  </h3>
+
+                  <p className="project__context t-stagger-line t-stagger-line--3">
+                    {project.description}
                   </p>
-                  <p className="project__year t-stagger-line t-stagger-line--1">
-                    {project.year}
+
+                  <p className="project__disciplines t-stagger-line t-stagger-line--3">
+                    {project.disciplines}
                   </p>
+
+                  <a
+                    className="project__link t-stagger-line t-stagger-line--3"
+                    href={`#${mediaId}`}
+                    aria-label={`View placeholder media for ${project.name}`}
+                  >
+                    View project <span aria-hidden="true">↗</span>
+                  </a>
                 </div>
 
-                <h3
-                  className="project__title t-stagger-line t-stagger-line--2"
-                  id={`${projectId}-title`}
+                <div
+                  className="project__media"
+                  id={mediaId}
+                  role="img"
+                  aria-label={`Placeholder media awaiting approved imagery for ${project.name}`}
+                  tabIndex={-1}
                 >
-                  {project.name}
-                </h3>
-
-                <p className="project__context t-stagger-line t-stagger-line--3">
-                  {project.description}
-                </p>
-
-                <p className="project__disciplines t-stagger-line t-stagger-line--3">
-                  {project.disciplines}
-                </p>
-
-                <a
-                  className="project__link t-stagger-line t-stagger-line--3"
-                  href={`#${mediaId}`}
-                  aria-label={`View placeholder media for ${project.name}`}
-                >
-                  View project <span aria-hidden="true">↗</span>
-                </a>
-              </div>
-
-              <div
-                className="project__media"
-                id={mediaId}
-                role="img"
-                aria-label={`Placeholder media awaiting approved imagery for ${project.name}`}
-                tabIndex={-1}
-              >
-                <div className="project__media-surface" aria-hidden="true" />
-              </div>
-            </article>
-          );
-        })}
+                  <div className="project__media-surface" aria-hidden="true" />
+                </div>
+              </article>
+            );
+          })}
+        </div>
       </section>
 
       <section className="capabilities page-grid" id="capabilities" aria-labelledby="capabilities-title">
