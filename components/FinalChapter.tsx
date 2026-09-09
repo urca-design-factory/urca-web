@@ -1,7 +1,8 @@
 import { FooterArtwork } from "@/components/FooterArtwork";
 import { ViewportReveal } from "@/components/ViewportReveal";
+import Link from "next/link";
 
-function ContactIntro() {
+function ContactIntro({ capabilities = false }: { capabilities?: boolean }) {
   return (
     <section
       className="contact page-grid t-stagger"
@@ -13,15 +14,15 @@ function ContactIntro() {
       </p>
 
       <h2 className="contact__title" id="contact-title">
-        <span className="t-stagger-line t-stagger-line--2">Have something</span>
+        <span className="t-stagger-line t-stagger-line--2">{capabilities ? "What are you" : "Have something"}</span>
         <em className="t-stagger-line t-stagger-line--3">
-          worth building<span className="contact__signal">?</span>
+          {capabilities ? "working on" : "worth building"}<span className="contact__signal">?</span>
         </em>
       </h2>
 
       <div className="contact__invitation">
         <p className="t-stagger-line t-stagger-line--4">
-          Tell us what you&apos;re trying to make, change or solve.
+          {capabilities ? "Tell us what you want to make, what needs to change or where you’re stuck." : "Tell us what you’re trying to make, change or solve."}
         </p>
         <div className="contact__action-reveal t-stagger-line t-stagger-line--5">
           <a className="contact__action" href="mailto:contact@urcadesign.com">
@@ -48,9 +49,9 @@ function FooterMeta({ currentYear }: { currentYear: number }) {
         className="site-footer__navigation t-stagger-line t-stagger-line--6"
         aria-label="Footer navigation"
       >
-        <a href="#selected-work">Work</a>
-        <a href="#capabilities">Capabilities</a>
-        <a href="#studio">Studio</a>
+        <Link href="/#selected-work">Work</Link>
+        <Link href="/capabilities">Capabilities</Link>
+        <Link href="/#studio">Studio</Link>
         <a href="#contact">Contact</a>
       </nav>
 
@@ -61,7 +62,7 @@ function FooterMeta({ currentYear }: { currentYear: number }) {
   );
 }
 
-export function FinalChapter() {
+export function FinalChapter({ capabilities = false }: { capabilities?: boolean }) {
   const currentYear = new Date().getFullYear();
 
   return (
@@ -70,7 +71,7 @@ export function FinalChapter() {
         containerSelector=".final-chapter"
         blockSelector=".contact.t-stagger"
       />
-      <ContactIntro />
+      <ContactIntro capabilities={capabilities} />
 
       <footer className="site-footer t-stagger">
         <div className="footer-artwork">

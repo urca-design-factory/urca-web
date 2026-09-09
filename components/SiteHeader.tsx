@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 
 const navigation = {
@@ -9,7 +10,7 @@ const navigation = {
     ["Capabilities", "/capabilities"],
   ],
   right: [
-    ["Studio", "/studio"],
+    ["Studio", "/#studio"],
     ["Contact", "#contact"],
   ],
 } as const;
@@ -28,13 +29,13 @@ const mobileNavigation = [
   {
     number: "02",
     label: "Capabilities",
-    href: "#capabilities",
+    href: "/capabilities",
     visual: "/images/capabilities/brand.png",
   },
   {
     number: "03",
     label: "Studio",
-    href: "#studio",
+    href: "/#studio",
     visual: "/images/capabilities/interactive.png",
   },
   {
@@ -45,10 +46,10 @@ const mobileNavigation = [
   },
 ] as const;
 
-export function SiteHeader() {
+export function SiteHeader({ currentPage }: { currentPage?: "capabilities" }) {
   const headerRef = useRef<HTMLElement>(null);
   const headerStateRef = useRef({
-    mode: "hero",
+    mode: currentPage ? "fixed" : "hero",
     theme: "light",
     visible: "true",
   });
@@ -208,7 +209,7 @@ export function SiteHeader() {
 
   useEffect(() => {
     const header = headerRef.current;
-    const darkSections = document.querySelectorAll<HTMLElement>("#factory");
+    const darkSections = document.querySelectorAll<HTMLElement>('#factory, [data-header-theme="dark"]');
 
     if (!header || !darkSections.length) return;
 
@@ -264,42 +265,46 @@ export function SiteHeader() {
     return () => observer.disconnect();
   }, []);
 
+  const resolveHref = (href: string) => currentPage && href === "#selected-work" ? `/${href}` : href;
+
   const renderLink = ([label, href]: NavigationItem) => (
-    <a
+    <Link
       className="site-nav__link"
       data-nav-target={href.startsWith("#") ? href : undefined}
-      href={href}
+      href={resolveHref(href)}
+      aria-current={currentPage && href === `/${currentPage}` ? "page" : undefined}
+      data-active={currentPage && href === `/${currentPage}` ? "true" : undefined}
       key={label}
       onClick={(event) => event.currentTarget.closest("details")?.removeAttribute("open")}
     >
       {label}
-    </a>
+    </Link>
   );
 
   return (
     <>
       <header
         className="site-header"
-        data-mode="hero"
+        data-mode={currentPage ? "fixed" : "hero"}
         data-theme="light"
         data-visible="true"
         data-menu-open={mobileMenuOpen}
         ref={headerRef}
       >
-        <div className="site-header__reveal t-stagger-line t-stagger-line--1">
+        <div className={`site-header__reveal${currentPage ? "" : " t-stagger-line t-stagger-line--1"}`}>
           <nav className="site-nav" aria-label="Primary navigation">
             <div className="site-nav__group site-nav__group--left">
               {navigation.left.map(renderLink)}
             </div>
 
-            <a
+            <Link
               className="brand"
-              href="#top"
+              href={currentPage ? "/" : "#top"}
               aria-label="Urca Design Factory, home"
               onClick={closeMobileMenu}
             >
               <Image src="/wordmark_dark.svg" alt="Urca" width={171} height={40} priority />
-            </a>
+            </Link>
 
             <div className="site-nav__group site-nav__group--right">
               {navigation.right.map(renderLink)}
@@ -373,9 +378,9 @@ export function SiteHeader() {
                       />
                       <div className="mobile-menu__visual-meta">
                         <span>Placeholder visual / {item.number}</span>
-                        <a href={item.href} onClick={closeMobileMenu}>
-                          Open section <span aria-hidden="true">↗</span>
-                        </a>
+                        <Link href={resolveHref(item.href)} onClick={closeMobileMenu} aria-current={currentPage && item.href === `/${currentPage}` ? "page" : undefined}>
+                          Explore {item.label.toLowerCase()} <span aria-hidden="true">↗</span>
+                        </Link>
                       </div>
                     </div>
                   </div>
