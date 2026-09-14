@@ -363,6 +363,7 @@ export function SiteHeader({ currentPage }: { currentPage?: "capabilities" }) {
       <nav
         className="mobile-menu t-panel-slide"
         id="mobile-menu"
+        data-lenis-prevent
         aria-label="Mobile navigation"
         data-open={mobileMenuOpen}
         aria-hidden={!mobileMenuOpen}

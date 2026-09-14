@@ -292,7 +292,37 @@ try {
     "0",
   );
   assert.deepEqual(hoverErrors, []);
+  await hover.waitForFunction(() => !document.documentElement.classList.contains("lenis"));
+  await hover.emulateMedia({ reducedMotion: "no-preference" });
+  await hover.waitForSelector("html.lenis");
+  await hover.mouse.wheel(0, 1000);
+  await hover.waitForFunction(() => window.scrollY > 100);
+  await hover.waitForFunction(() => !document.documentElement.classList.contains("lenis-scrolling"));
+  assert.ok(await hover.evaluate(() => window.scrollY > 700), "Lenis should complete wheel scrolling");
+  await hover.setViewportSize({ width: 390, height: 844 });
+  await hover.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+  await hover.getByRole("button", { name: "Menu", exact: true }).click();
+  await hover.waitForSelector("html.lenis-stopped");
+  const lockedScroll = await hover.evaluate(() => window.scrollY);
+  await hover.mouse.wheel(0, 800);
+  await hover.waitForTimeout(300);
+  assert.equal(await hover.evaluate(() => window.scrollY), lockedScroll, "Menu must lock background scroll");
+  await hover.keyboard.press("Escape");
+  await hover.waitForFunction(() => !document.documentElement.classList.contains("lenis-stopped"));
+  await hover.setViewportSize({ width: 1440, height: 900 });
+  await hover.getByRole("link", { name: "Capabilities", exact: true }).first().click();
+  await hover.waitForURL(baseURL + "/capabilities");
+  await hover.waitForSelector("html.lenis");
+  await hover.getByRole("link", { name: "Home", exact: true }).click();
+  await hover.waitForURL(baseURL + "/");
+  await hover.waitForSelector("html.lenis");
   await hover.close();
+  const touch = await browser.newPage({
+    viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true,
+  });
+  await touch.goto(baseURL, { waitUntil: "networkidle" });
+  assert.equal(await touch.locator("html.lenis").count(), 0, "Touch devices keep native scroll");
+  await touch.close();
   const response = await fetch(baseURL + "/dev/factory-sigils");
   assert.equal(response.status, 404);
 } catch (error) {
