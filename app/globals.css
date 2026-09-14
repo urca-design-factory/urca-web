@@ -628,15 +628,6 @@ a {
   column-gap: var(--grid-gap);
 }
 
-.capabilities__intro.t-stagger,
-.capability-row.t-stagger {
-  --stagger-dur: 1000ms;
-  --stagger-stagger: 300ms;
-  --stagger-distance: 16px;
-  --stagger-blur: 6px;
-  --stagger-ease: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
 .capabilities__label {
   grid-column: 2 / span 1;
   padding-top: 0.7rem;
@@ -867,15 +858,6 @@ a {
   color: var(--color-canvas);
 }
 
-.factory__intro.t-stagger,
-.factory__stage.t-stagger {
-  --stagger-dur: 1000ms;
-  --stagger-stagger: 280ms;
-  --stagger-distance: 16px;
-  --stagger-blur: 6px;
-  --stagger-ease: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
 .factory__intro {
   position: sticky;
   top: calc(var(--masthead-height) + clamp(4rem, 10svh, 7rem));
@@ -1040,15 +1022,6 @@ a {
   color: var(--color-ink);
 }
 
-.studio__opening.t-stagger,
-.studio-principle.t-stagger {
-  --stagger-dur: 1000ms;
-  --stagger-stagger: 280ms;
-  --stagger-distance: 16px;
-  --stagger-blur: 6px;
-  --stagger-ease: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
 .studio__opening {
   grid-column: 1 / -1;
   display: grid;
@@ -1201,14 +1174,6 @@ a {
   padding-block: clamp(8rem, 15svh, 11rem) clamp(8rem, 17svh, 13rem);
 }
 
-.contact.t-stagger {
-  --stagger-dur: 1000ms;
-  --stagger-stagger: 300ms;
-  --stagger-distance: 16px;
-  --stagger-blur: 6px;
-  --stagger-ease: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
 .contact__label {
   grid-column: 1 / -1;
   color: var(--color-muted);
@@ -1276,12 +1241,6 @@ a {
 }
 
 .site-footer {
-  --stagger-dur: 1000ms;
-  --stagger-stagger: 370ms;
-  --stagger-distance: 18px;
-  --stagger-blur: 5px;
-  --stagger-ease: cubic-bezier(0.4, 0, 0.2, 1);
-
   position: relative;
   overflow: clip;
   background: var(--color-canvas);

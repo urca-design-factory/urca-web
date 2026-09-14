@@ -30,7 +30,8 @@ export function ViewportReveal({
           if (entry.isIntersecting) showText(entry.target as HTMLElement);
         });
       },
-      { rootMargin: "0px 0px -12% 0px", threshold: 0 },
+      // Start before content enters the viewport, including when scrolling back up.
+      { rootMargin: "200px 0px", threshold: 0 },
     );
 
     blocks.forEach((block) => {
