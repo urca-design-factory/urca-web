@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:cloudflare": "opennextjs-cloudflare build",
+    "preview:cloudflare": "opennextjs-cloudflare preview",
+    "deploy:cloudflare": "opennextjs-cloudflare deploy",
     "lint": "eslint .",
     "sigils:generate": "node scripts/generate-factory-sigils.mjs",
     "test": "node --test components/hero-artwork.test.ts components/factory-sigil-states.test.ts",
@@ -14,6 +17,7 @@
     "test:site": "node scripts/check-site.mjs"
   },
   "dependencies": {
+    "@opennextjs/cloudflare": "^1.20.6",
     "next": "^16.3.5",
     "react": "19.2.4",
     "react-dom": "19.2.4"
@@ -26,6 +30,7 @@
     "eslint": "^9",
     "eslint-config-next": "^16.3.5",
     "playwright": "^1.63.0",
-    "typescript": "^5"
+    "typescript": "^5",
+    "wrangler": "^4.131.2"
   }
 }
