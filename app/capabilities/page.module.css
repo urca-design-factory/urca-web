@@ -11,16 +11,8 @@
   overflow-wrap: anywhere;
 }
 
-.skipLink {
-  position: fixed;
-  top: 1rem;
-  left: var(--gutter);
-  z-index: var(--z-loader);
-  padding: 1rem;
-  background: var(--color-canvas);
-  transform: translateY(-200%);
-}
-.skipLink:focus { transform: none; }
+.start { --color-signal-text: var(--color-signal-on-ink); }
+
 .page :global(.eyebrow) { font-size: var(--cap-meta); }
 .label { grid-column: 1 / -1; color: var(--color-muted); }
 .hero {
@@ -40,7 +32,7 @@
 }
 .heroTitle > span, .heroTitle > em { display: block; }
 .heroTitle em { margin-left: 17%; font-weight: 400; }
-.period { color: var(--color-signal); }
+.period { color: var(--color-signal-text); }
 .heroSummary {
   grid-column: 8 / -1;
   margin: 0;
@@ -69,7 +61,7 @@
   top: -1px;
   inset-inline: 0;
   height: 2px;
-  background: var(--color-signal);
+  background: var(--color-signal-text);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform var(--cap-interaction-duration) var(--ease-out);
@@ -91,14 +83,14 @@
 .indexTitle em { font-family: var(--font-display); font-weight: 400; }
 .index a:focus-visible::before { transform: scaleX(1); }
 .index a:focus-visible .indexTitle { transform: translateX(var(--cap-interaction-shift)); }
-.index a:focus-visible .indexArrow { color: var(--color-signal); transform: translateY(var(--cap-interaction-shift)) rotate(45deg); }
+.index a:focus-visible .indexArrow { color: var(--color-signal-text); transform: translateY(var(--cap-interaction-shift)) rotate(45deg); }
 @media (hover: hover) {
   .index a:hover::before { transform: scaleX(1); }
   .index a:hover .indexTitle { transform: translateX(var(--cap-interaction-shift)); }
-  .index a:hover .indexArrow { color: var(--color-signal); transform: translateY(var(--cap-interaction-shift)) rotate(45deg); }
+  .index a:hover .indexArrow { color: var(--color-signal-text); transform: translateY(var(--cap-interaction-shift)) rotate(45deg); }
 }
-.number { color: var(--color-signal); font: var(--cap-meta)/1.4 var(--font-mono); }
-.textLink:hover { color: var(--color-signal); }
+.number { color: var(--color-signal-text); font: var(--cap-meta)/1.4 var(--font-mono); }
+.textLink:hover { color: var(--color-signal-text); }
 .discipline {
   padding-block: var(--cap-gap) var(--cap-space);
   scroll-margin-top: calc(var(--masthead-height) + 2rem);
@@ -145,7 +137,7 @@
   font: inherit;
   padding-inline: 0;
 }
-.serviceTrigger:focus-visible { outline: 2px solid var(--color-signal); outline-offset: 5px; }
+.serviceTrigger:focus-visible { outline: 2px solid var(--color-signal-text); outline-offset: 5px; }
 .serviceNumber {
   font: 0.625rem/1.4 var(--font-mono);
   color: var(--color-muted);
@@ -177,7 +169,7 @@
   inset-inline: 0;
   bottom: 0;
   height: 1px;
-  background: var(--color-signal);
+  background: var(--color-signal-text);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform var(--cap-interaction-duration) var(--ease-out);
@@ -194,17 +186,17 @@
   transition: transform var(--cap-interaction-duration) var(--ease-out);
 }
 .serviceMark::after { transform: rotate(90deg); }
-.service[data-open="true"] .serviceMark::after { transform: rotate(0); }
+.service[open] .serviceMark::after { transform: rotate(0); }
 .serviceDescription { margin: 0 1.75rem 1.25rem 2.25rem; max-width: 40ch; font-size: 1rem; line-height: 1.5; color: var(--color-muted); }
-.service[data-open="true"] .serviceName, .serviceTrigger:focus-visible .serviceName { color: var(--color-signal); transform: translateX(var(--cap-interaction-shift)); }
-.service[data-open="true"] .serviceName::after, .serviceTrigger:focus-visible .serviceName::after { transform: scaleX(1); }
-.service[data-open="true"] .serviceNumber { color: var(--color-signal); }
-.service[data-open="true"] .serviceNameBase, .serviceTrigger:focus-visible .serviceNameBase { transform: translateY(-130%); }
-.service[data-open="true"] .serviceNameAlternate, .serviceTrigger:focus-visible .serviceNameAlternate { transform: translateY(0); }
+.service[open] .serviceName, .serviceTrigger:focus-visible .serviceName { color: var(--color-signal-text); transform: translateX(var(--cap-interaction-shift)); }
+.service[open] .serviceName::after, .serviceTrigger:focus-visible .serviceName::after { transform: scaleX(1); }
+.service[open] .serviceNumber { color: var(--color-signal-text); }
+.service[open] .serviceNameBase, .serviceTrigger:focus-visible .serviceNameBase { transform: translateY(-130%); }
+.service[open] .serviceNameAlternate, .serviceTrigger:focus-visible .serviceNameAlternate { transform: translateY(0); }
 @media (hover: hover) {
-  .serviceTrigger:hover .serviceName { color: var(--color-signal); transform: translateX(var(--cap-interaction-shift)); }
+  .serviceTrigger:hover .serviceName { color: var(--color-signal-text); transform: translateX(var(--cap-interaction-shift)); }
   .serviceTrigger:hover .serviceName::after { transform: scaleX(1); }
-  .serviceTrigger:hover .serviceNumber { color: var(--color-signal); }
+  .serviceTrigger:hover .serviceNumber { color: var(--color-signal-text); }
   .serviceTrigger:hover .serviceNameBase { transform: translateY(-130%); }
   .serviceTrigger:hover .serviceNameAlternate { transform: translateY(0); }
 }
@@ -225,7 +217,7 @@
 .approachTitle { grid-column: 1 / -1; margin: 0; font-size: clamp(2.5rem, 5.5vw, 6.5rem); font-weight: 400; letter-spacing: -0.06em; line-height: 1.05; }
 .approachTitle em { font-family: var(--font-display); font-weight: 400; }
 .connection { grid-column: 1 / 6; display: flex; justify-content: space-between; align-self: center; position: relative; font: var(--cap-meta)/1.4 var(--font-mono); padding-bottom: 2rem; border-bottom: var(--cap-rule); }
-.connection span::after { content: ""; position: absolute; bottom: -3px; width: 5px; height: 5px; margin-left: -2px; background: var(--color-signal); }
+.connection span::after { content: ""; position: absolute; bottom: -3px; width: 5px; height: 5px; margin-left: -2px; background: var(--color-signal-text); }
 .connection span:first-child::after { left: 0; }
 .connection span:nth-child(2)::after { left: 50%; }
 .connection span:last-child::after { right: 0; }
@@ -273,3 +265,6 @@
   .serviceNumber, .serviceMark::before, .serviceMark::after,
   .serviceNameBase, .serviceNameAlternate { transition: none; }
 }
+
+.serviceTrigger { list-style: none; }
+.serviceTrigger::-webkit-details-marker { display: none; }

@@ -1,14 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { type CSSProperties, useEffect, useRef, useState } from "react";
+import { type CSSProperties, useEffect, useRef } from "react";
 import {
   FRAGMENT_SHADER,
   getCoverScale,
   getResponsiveZoom,
   VERTEX_SHADER,
 } from "./hero-artwork";
-import { reportHeroProgress } from "./site-loading";
 
 type HeroArtworkProps = {
   source: string;
@@ -34,8 +33,6 @@ type HeroParameters = {
   invertText: boolean;
 };
 
-type NumericParameter = Exclude<keyof HeroParameters, "invertText">;
-
 const DEFAULT_PARAMETERS: HeroParameters = {
   radius: 110,
   feather: 160,
@@ -53,101 +50,15 @@ const DEFAULT_PARAMETERS: HeroParameters = {
   invertText: true,
 };
 
-const CONTROL_GROUPS = [
-  {
-    label: "MASK",
-    controls: [
-      ["radius", "Radius", 50, 260, 1],
-      ["feather", "Feather", 10, 160, 1],
-      ["opacity", "Opacity", 0, 1, 0.01],
-      ["aspectX", "Width", 0.55, 1.5, 0.01],
-      ["aspectY", "Height", 0.55, 1.5, 0.01],
-    ],
-  },
-  {
-    label: "FORM",
-    controls: [
-      ["warp", "Warp", 0, 0.65, 0.01],
-      ["noiseAmount", "Breakup", 0, 0.9, 0.01],
-      ["noiseScale", "Noise scale", 0.002, 0.014, 0.0005],
-      ["grainAmount", "Film grain", 0, 1, 0.01],
-      ["materialInfluence", "Image guide", 0, 2, 0.01],
-    ],
-  },
-  {
-    label: "MOTION",
-    controls: [
-      ["pointerFollow", "Pointer lag", 0.05, 1.4, 0.01],
-      ["revealTime", "Reveal", 0.05, 1.8, 0.01],
-      ["hideTime", "Hide", 0.05, 2.4, 0.01],
-    ],
-  },
-] as const satisfies ReadonlyArray<{
-  label: string;
-  controls: ReadonlyArray<readonly [NumericParameter, string, number, number, number]>;
-}>;
-
-function formatValue(value: number, step: number) {
-  if (step < 0.001) return value.toFixed(4);
-  if (step < 0.01) return value.toFixed(3);
-  if (step < 1) return value.toFixed(2);
-  return value.toFixed(0);
-}
-
-function HeroControls({
-  parameters,
-  onChange,
-  onReset,
-}: {
-  parameters: HeroParameters;
-  onChange: (key: keyof HeroParameters, value: number | boolean) => void;
-  onReset: () => void;
-}) {
-  return (
-    <details className="hero-controls">
-      <summary>HERO TUNER</summary>
-      <div className="hero-controls__body">
-        {CONTROL_GROUPS.map((group) => (
-          <fieldset key={group.label}>
-            <legend>{group.label}</legend>
-            {group.controls.map(([key, label, min, max, step]) => (
-              <label className="hero-control" htmlFor={`hero-control-${key}`} key={key}>
-                <span>{label}</span>
-                <output>{formatValue(parameters[key], step)}</output>
-                <input
-                  id={`hero-control-${key}`}
-                  type="range"
-                  min={min}
-                  max={max}
-                  step={step}
-                  value={parameters[key]}
-                  onChange={(event) => onChange(key, Number(event.currentTarget.value))}
-                />
-              </label>
-            ))}
-          </fieldset>
-        ))}
-
-        <label className="hero-control hero-control--toggle">
-          <span>Inverse type</span>
-          <input
-            type="checkbox"
-            checked={parameters.invertText}
-            onChange={(event) => onChange("invertText", event.currentTarget.checked)}
-          />
-        </label>
-
-        <button type="button" onClick={onReset}>RESET</button>
-      </div>
-    </details>
-  );
-}
-
 function damping(deltaSeconds: number, responseSeconds: number) {
   return 1 - Math.exp(-deltaSeconds / responseSeconds);
 }
 
-function compileShader(gl: WebGLRenderingContext, type: number, source: string) {
+function compileShader(
+  gl: WebGLRenderingContext,
+  type: number,
+  source: string,
+) {
   const shader = gl.createShader(type);
   if (!shader) throw new Error("WebGL shader creation failed");
 
@@ -184,45 +95,44 @@ export function HeroArtwork({
   const layerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fallbackRef = useRef<HTMLImageElement>(null);
-  const asciiRef = useRef<HTMLImageElement>(null);
-  const [parameters, setParameters] = useState(DEFAULT_PARAMETERS);
-  const parametersRef = useRef(parameters);
-  const redrawRef = useRef<() => void>(() => undefined);
   const [focusX, focusY] = focalPoint;
-
-  useEffect(() => {
-    parametersRef.current = parameters;
-
-    const hero = layerRef.current?.parentElement;
-    if (hero) hero.dataset.inverseText = String(parameters.invertText);
-
-    redrawRef.current();
-  }, [parameters]);
 
   useEffect(() => {
     const layer = layerRef.current;
     const canvas = canvasRef.current;
     const image = fallbackRef.current;
-    const asciiImage = asciiRef.current;
-    if (!layer || !canvas || !image || !asciiImage) return;
+    if (!layer || !canvas || !image) return;
+    const asciiImage = new window.Image();
 
     const hero = layer.parentElement;
     if (!hero) return;
 
     const title = hero.querySelector<HTMLElement>("#hero-title");
-    const summary = hero.querySelector<HTMLElement>(".hero__summary:not(.hero__summary-inverse)");
-    const titleInverse = hero.querySelector<HTMLElement>(".hero__title-inverse");
-    const summaryInverse = hero.querySelector<HTMLElement>(".hero__summary-inverse");
+    const summary = hero.querySelector<HTMLElement>(
+      ".hero__summary:not(.hero__summary-inverse)",
+    );
+    const titleInverse = hero.querySelector<HTMLElement>(
+      ".hero__title-inverse",
+    );
+    const summaryInverse = hero.querySelector<HTMLElement>(
+      ".hero__summary-inverse",
+    );
 
     let disposed = false;
 
     const showFallback = () => {
       delete layer.dataset.rendered;
       layer.dataset.fallback = "true";
-      void image.decode().catch(() => null).then(() => {
-        if (!disposed) reportHeroProgress(100);
-      });
     };
+
+    // Touch and reduced-motion visitors use the same artwork without GPU setup.
+    if (
+      window.matchMedia("(prefers-reduced-motion: reduce), (pointer: coarse)")
+        .matches
+    ) {
+      showFallback();
+      return;
+    }
 
     const gl = canvas.getContext("webgl", {
       alpha: true,
@@ -242,6 +152,14 @@ export function HeroArtwork({
     let buffer: WebGLBuffer | null = null;
     let imageTexture: WebGLTexture | null = null;
     let asciiTexture: WebGLTexture | null = null;
+    const releaseResources = () => {
+      if (asciiTexture) gl.deleteTexture(asciiTexture);
+      if (imageTexture) gl.deleteTexture(imageTexture);
+      if (buffer) gl.deleteBuffer(buffer);
+      if (program) gl.deleteProgram(program);
+      if (vertexShader) gl.deleteShader(vertexShader);
+      if (fragmentShader) gl.deleteShader(fragmentShader);
+    };
     let frame = 0;
     let ready = false;
     let asciiReady = false;
@@ -270,7 +188,8 @@ export function HeroArtwork({
       buffer = gl.createBuffer();
       imageTexture = createTexture(gl, gl.TEXTURE0);
       asciiTexture = createTexture(gl, gl.TEXTURE1);
-      if (!program || !buffer) throw new Error("WebGL resource creation failed");
+      if (!program || !buffer)
+        throw new Error("WebGL resource creation failed");
 
       gl.activeTexture(gl.TEXTURE1);
       gl.bindTexture(gl.TEXTURE_2D, asciiTexture);
@@ -289,7 +208,8 @@ export function HeroArtwork({
       gl.attachShader(program, vertexShader);
       gl.attachShader(program, fragmentShader);
       gl.linkProgram(program);
-      if (!gl.getProgramParameter(program, gl.LINK_STATUS)) throw new Error("WebGL link failed");
+      if (!gl.getProgramParameter(program, gl.LINK_STATUS))
+        throw new Error("WebGL link failed");
 
       gl.useProgram(program);
       gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
@@ -303,6 +223,7 @@ export function HeroArtwork({
       gl.enableVertexAttribArray(position);
       gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
     } catch {
+      releaseResources();
       showFallback();
       return;
     }
@@ -312,28 +233,39 @@ export function HeroArtwork({
     const focusLocation = gl.getUniformLocation(program, "u_focus");
     const pointerLocation = gl.getUniformLocation(program, "u_pointer");
     const zoomLocation = gl.getUniformLocation(program, "u_zoom");
-    const maskStrengthLocation = gl.getUniformLocation(program, "u_maskStrength");
+    const maskStrengthLocation = gl.getUniformLocation(
+      program,
+      "u_maskStrength",
+    );
     const maskRadiusLocation = gl.getUniformLocation(program, "u_maskRadius");
     const maskFeatherLocation = gl.getUniformLocation(program, "u_maskFeather");
     const maskAspectLocation = gl.getUniformLocation(program, "u_maskAspect");
     const warpAmountLocation = gl.getUniformLocation(program, "u_warpAmount");
     const noiseScaleLocation = gl.getUniformLocation(program, "u_noiseScale");
     const noiseAmountLocation = gl.getUniformLocation(program, "u_noiseAmount");
-    const materialInfluenceLocation = gl.getUniformLocation(program, "u_materialInfluence");
-    const navigationQuietLocation = gl.getUniformLocation(program, "u_navigationQuiet");
+    const materialInfluenceLocation = gl.getUniformLocation(
+      program,
+      "u_materialInfluence",
+    );
+    const navigationQuietLocation = gl.getUniformLocation(
+      program,
+      "u_navigationQuiet",
+    );
 
     gl.uniform1i(gl.getUniformLocation(program, "u_texture"), 0);
     gl.uniform1i(gl.getUniformLocation(program, "u_asciiTexture"), 1);
     gl.uniform2f(focusLocation, focusX, focusY);
 
-    const interactionAllowed = () => finePointer.matches && !reducedMotion.matches;
+    const interactionAllowed = () =>
+      finePointer.matches && !reducedMotion.matches;
 
     const updateInverseText = (current: HeroParameters) => {
       const outerRadius = current.radius + current.feather * 0.55;
       const innerStop = Math.min(88, (current.radius / outerRadius) * 100);
-      const strength = asciiReady && current.opacity > 0
-        ? Math.min(1, maskStrength / current.opacity)
-        : 0;
+      const strength =
+        asciiReady && current.opacity > 0
+          ? Math.min(1, maskStrength / current.opacity)
+          : 0;
       const width = `${outerRadius * current.aspectX}px`;
       const height = `${outerRadius * current.aspectY}px`;
       const inner = `${innerStop}%`;
@@ -345,7 +277,10 @@ export function HeroArtwork({
       ) => {
         if (!element) return;
 
-        element.style.setProperty("--hover-text-x", `${offsetX + pointerX * layerCssWidth}px`);
+        element.style.setProperty(
+          "--hover-text-x",
+          `${offsetX + pointerX * layerCssWidth}px`,
+        );
         element.style.setProperty(
           "--hover-text-y",
           `${offsetY + (1 - pointerY) * layerCssHeight}px`,
@@ -363,12 +298,20 @@ export function HeroArtwork({
     };
 
     const draw = () => {
-      const current = parametersRef.current;
+      if (!interactionAllowed()) {
+        pointerInside = false;
+        maskStrength = 0;
+      }
+      const current = DEFAULT_PARAMETERS;
       gl.uniform2f(pointerLocation, pointerX, pointerY);
       gl.uniform1f(maskStrengthLocation, asciiReady ? maskStrength : 0);
       gl.uniform1f(maskRadiusLocation, current.radius * pixelRatio);
       gl.uniform1f(maskFeatherLocation, current.feather * pixelRatio);
-      gl.uniform2f(maskAspectLocation, 1 / current.aspectX, 1 / current.aspectY);
+      gl.uniform2f(
+        maskAspectLocation,
+        1 / current.aspectX,
+        1 / current.aspectY,
+      );
       gl.uniform1f(warpAmountLocation, current.warp);
       gl.uniform1f(noiseScaleLocation, current.noiseScale / pixelRatio);
       gl.uniform1f(noiseAmountLocation, current.noiseAmount);
@@ -384,7 +327,7 @@ export function HeroArtwork({
         : 1 / 60;
       previousFrameAt = now;
 
-      const current = parametersRef.current;
+      const current = DEFAULT_PARAMETERS;
       const pointerDamping = damping(deltaSeconds, current.pointerFollow);
       const strengthDamping = damping(
         deltaSeconds,
@@ -396,23 +339,30 @@ export function HeroArtwork({
       maskStrength += (targetStrength - maskStrength) * strengthDamping;
       draw();
 
-      const pointerMoving = Math.abs(targetX - pointerX) + Math.abs(targetY - pointerY) > 0.0002;
+      const pointerMoving =
+        Math.abs(targetX - pointerX) + Math.abs(targetY - pointerY) > 0.0002;
       const strengthMoving = Math.abs(targetStrength - maskStrength) > 0.002;
-      if (visible && interactionAllowed() && (pointerMoving || strengthMoving)) {
+      if (
+        visible &&
+        interactionAllowed() &&
+        (pointerMoving || strengthMoving)
+      ) {
         frame = requestAnimationFrame(animate);
       }
     };
 
     const startAnimation = () => {
-      if (!frame && ready && asciiReady && visible && interactionAllowed()) {
+      if (
+        !frame &&
+        ready &&
+        asciiReady &&
+        visible &&
+        !document.hidden &&
+        interactionAllowed()
+      ) {
         previousFrameAt = 0;
         frame = requestAnimationFrame(animate);
       }
-    };
-
-    redrawRef.current = () => {
-      if (ready) draw();
-      startAnimation();
     };
 
     const resize = () => {
@@ -458,7 +408,12 @@ export function HeroArtwork({
         gl.viewport(0, 0, width, height);
       }
 
-      const [scaleX, scaleY] = getCoverScale(width, height, image.naturalWidth, image.naturalHeight);
+      const [scaleX, scaleY] = getCoverScale(
+        width,
+        height,
+        image.naturalWidth,
+        image.naturalHeight,
+      );
       const rightEdgeSafeZoom = Math.min(
         zoom,
         (scaleX * 0.5 * 1.01) / Math.max(0.001, 1 - focusX),
@@ -478,14 +433,16 @@ export function HeroArtwork({
 
       if (
         event.target instanceof Element &&
-        event.target.closest(".site-header, .hero-controls")
+        event.target.closest(".site-header")
       ) {
         pointerInside = false;
         startAnimation();
         return;
       }
 
-      const bounds = layer.parentElement?.getBoundingClientRect() ?? layer.getBoundingClientRect();
+      const bounds =
+        layer.parentElement?.getBoundingClientRect() ??
+        layer.getBoundingClientRect();
       pointerInside =
         event.clientX >= bounds.left &&
         event.clientX <= bounds.right &&
@@ -493,6 +450,7 @@ export function HeroArtwork({
         event.clientY <= bounds.bottom;
 
       if (pointerInside) {
+        void loadAscii();
         const layerBounds = layer.getBoundingClientRect();
         targetX = (event.clientX - layerBounds.left) / layerBounds.width;
         targetY = 1 - (event.clientY - layerBounds.top) / layerBounds.height;
@@ -516,8 +474,6 @@ export function HeroArtwork({
     });
 
     const initialize = async () => {
-      const asciiDecoded = asciiImage.decode().catch(() => null);
-
       try {
         await image.decode();
         if (disposed || !image.naturalWidth || !image.naturalHeight) return;
@@ -525,28 +481,49 @@ export function HeroArtwork({
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D, imageTexture);
         gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+        gl.texImage2D(
+          gl.TEXTURE_2D,
+          0,
+          gl.RGBA,
+          gl.RGBA,
+          gl.UNSIGNED_BYTE,
+          image,
+        );
         ready = true;
         resize();
         if (disposed) return;
 
         delete layer.dataset.fallback;
         layer.dataset.rendered = "true";
-        reportHeroProgress(100);
       } catch {
         if (!disposed) showFallback();
         return;
       }
+    };
 
-      await asciiDecoded;
-      if (disposed || !asciiImage.naturalWidth || !asciiImage.naturalHeight) return;
-
-      gl.activeTexture(gl.TEXTURE1);
-      gl.bindTexture(gl.TEXTURE_2D, asciiTexture);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, asciiImage);
-      asciiReady = true;
-      draw();
-      startAnimation();
+    let asciiLoading = false;
+    const loadAscii = async () => {
+      if (!ready || asciiLoading || !interactionAllowed()) return;
+      asciiLoading = true;
+      asciiImage.src = asciiSource;
+      try {
+        await asciiImage.decode();
+        if (disposed || !ready) return;
+        gl.activeTexture(gl.TEXTURE1);
+        gl.bindTexture(gl.TEXTURE_2D, asciiTexture);
+        gl.texImage2D(
+          gl.TEXTURE_2D,
+          0,
+          gl.RGBA,
+          gl.RGBA,
+          gl.UNSIGNED_BYTE,
+          asciiImage,
+        );
+        asciiReady = true;
+        if (!document.hidden) startAnimation();
+      } catch {
+        // The base artwork remains visible when the optional texture fails.
+      }
     };
 
     const handleMotionPreference = () => {
@@ -562,7 +539,21 @@ export function HeroArtwork({
     const handleContextLost = (event: Event) => {
       event.preventDefault();
       cancelAnimationFrame(frame);
+      frame = 0;
+      ready = false;
+      maskStrength = 0;
+      updateInverseText(DEFAULT_PARAMETERS);
       showFallback();
+    };
+
+    const handleVisibility = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(frame);
+        frame = 0;
+        pointerInside = false;
+      } else {
+        startAnimation();
+      }
     };
 
     resizeObserver.observe(layer);
@@ -571,7 +562,11 @@ export function HeroArtwork({
     intersectionObserver.observe(layer);
     reducedMotion.addEventListener("change", handleMotionPreference);
     finePointer.addEventListener("change", handleMotionPreference);
-    document.documentElement.addEventListener("pointerleave", handlePointerLeave);
+    document.documentElement.addEventListener(
+      "pointerleave",
+      handlePointerLeave,
+    );
+    document.addEventListener("visibilitychange", handleVisibility);
     window.addEventListener("blur", handlePointerLeave);
     window.addEventListener("pointermove", handlePointer, { passive: true });
     canvas.addEventListener("webglcontextlost", handleContextLost);
@@ -579,7 +574,6 @@ export function HeroArtwork({
 
     return () => {
       disposed = true;
-      redrawRef.current = () => undefined;
       title?.style.removeProperty("--hover-text-strength");
       titleInverse?.style.removeProperty("--hover-text-strength");
       summary?.style.removeProperty("--hover-text-strength");
@@ -589,16 +583,15 @@ export function HeroArtwork({
       intersectionObserver.disconnect();
       reducedMotion.removeEventListener("change", handleMotionPreference);
       finePointer.removeEventListener("change", handleMotionPreference);
-      document.documentElement.removeEventListener("pointerleave", handlePointerLeave);
+      document.documentElement.removeEventListener(
+        "pointerleave",
+        handlePointerLeave,
+      );
+      document.removeEventListener("visibilitychange", handleVisibility);
       window.removeEventListener("blur", handlePointerLeave);
       window.removeEventListener("pointermove", handlePointer);
       canvas.removeEventListener("webglcontextlost", handleContextLost);
-      if (asciiTexture) gl.deleteTexture(asciiTexture);
-      if (imageTexture) gl.deleteTexture(imageTexture);
-      if (buffer) gl.deleteBuffer(buffer);
-      if (program) gl.deleteProgram(program);
-      if (vertexShader) gl.deleteShader(vertexShader);
-      if (fragmentShader) gl.deleteShader(fragmentShader);
+      releaseResources();
     };
   }, [source, asciiSource, focusX, focusY, zoom]);
 
@@ -610,28 +603,20 @@ export function HeroArtwork({
 
   return (
     <>
-      <div ref={layerRef} className="hero-artwork" aria-hidden="true" style={fallbackStyle}>
+      <div
+        ref={layerRef}
+        className="hero-artwork"
+        aria-hidden="true"
+        style={fallbackStyle}
+      >
         <Image
           ref={fallbackRef}
           className="hero-artwork__fallback"
           src={source}
           alt=""
           fill
-          priority
-          unoptimized
+          preload
           sizes="100vw"
-          onLoad={() => reportHeroProgress(70)}
-        />
-        <Image
-          ref={asciiRef}
-          className="hero-artwork__source"
-          src={asciiSource}
-          alt=""
-          fill
-          loading="eager"
-          unoptimized
-          sizes="100vw"
-          onLoad={() => reportHeroProgress(85)}
         />
         <canvas ref={canvasRef} />
       </div>
@@ -639,15 +624,11 @@ export function HeroArtwork({
       <div
         className="hero-grain"
         aria-hidden="true"
-        style={{ "--hero-grain-opacity": parameters.grainAmount } as CSSProperties}
-      />
-
-      <HeroControls
-        parameters={parameters}
-        onChange={(key, value) => {
-          setParameters((current) => ({ ...current, [key]: value }));
-        }}
-        onReset={() => setParameters(DEFAULT_PARAMETERS)}
+        style={
+          {
+            "--hero-grain-opacity": DEFAULT_PARAMETERS.grainAmount,
+          } as CSSProperties
+        }
       />
     </>
   );

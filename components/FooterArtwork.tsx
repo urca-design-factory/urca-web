@@ -1,58 +1,16 @@
-"use client";
-
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
-import ascentArtwork from "@/public/images/capabilities/ascent.png";
-import ascentForeground from "@/public/images/capabilities/ascent-foreground.png";
-
-type ArtworkLayer = "background" | "wordmark" | "foreground";
+import ascentArtwork from "@/public/images/capabilities/ascent.webp";
+import ascentForeground from "@/public/images/capabilities/ascent-foreground.webp";
 
 export function FooterArtwork() {
-  const compositionRef = useRef<HTMLDivElement>(null);
-  const loadedLayers = useRef(new Set<ArtworkLayer>());
-  const [isReady, setIsReady] = useState(false);
-
-  const markLayerReady = useCallback((layer: ArtworkLayer) => {
-    loadedLayers.current.add(layer);
-
-    if (loadedLayers.current.size === 3) setIsReady(true);
-  }, []);
-
-  useEffect(() => {
-    if (!isReady) return;
-
-    const footer = compositionRef.current?.closest<HTMLElement>(".site-footer");
-    if (!footer) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry?.isIntersecting) return;
-
-        footer.classList.add("is-shown");
-        observer.disconnect();
-      },
-      { rootMargin: "0px 0px -12% 0px", threshold: 0 },
-    );
-
-    observer.observe(footer);
-
-    return () => observer.disconnect();
-  }, [isReady]);
-
   return (
-    <div
-      ref={compositionRef}
-      className="footer-artwork__composition"
-      data-ready={isReady}
-      aria-hidden="true"
-    >
+    <div className="footer-artwork__composition" aria-hidden="true">
       <Image
         className="footer-artwork__image footer-artwork__image--background"
         src={ascentArtwork}
         alt=""
         fill
         sizes="100vw"
-        onLoad={() => markLayerReady("background")}
       />
 
       <div className="footer-artwork__wordmark">
@@ -62,7 +20,6 @@ export function FooterArtwork() {
           width={171}
           height={40}
           unoptimized
-          onLoad={() => markLayerReady("wordmark")}
         />
       </div>
 
@@ -72,7 +29,6 @@ export function FooterArtwork() {
         alt=""
         fill
         sizes="100vw"
-        onLoad={() => markLayerReady("foreground")}
       />
 
       <div className="footer-artwork__grain" />

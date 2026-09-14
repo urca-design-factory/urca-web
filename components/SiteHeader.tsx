@@ -2,11 +2,17 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 
 const navigation = {
   left: [
-    ["Work", "#selected-work"],
+    ["Home", "/"],
     ["Capabilities", "/capabilities"],
   ],
   right: [
@@ -16,38 +22,33 @@ const navigation = {
 } as const;
 
 type NavigationItem =
-  | (typeof navigation.left)[number]
-  | (typeof navigation.right)[number];
+  (typeof navigation.left)[number] | (typeof navigation.right)[number];
 
 const mobileNavigation = [
   {
     number: "01",
-    label: "Work",
-    href: "#selected-work",
-    visual: "/images/hero/hero-source-01.png",
+    label: "Capabilities",
+    href: "/capabilities",
+    visual: "/images/capabilities/brand.webp",
   },
   {
     number: "02",
-    label: "Capabilities",
-    href: "/capabilities",
-    visual: "/images/capabilities/brand.png",
+    label: "Studio",
+    href: "/#studio",
+    visual: "/images/capabilities/interactive.webp",
   },
   {
     number: "03",
-    label: "Studio",
-    href: "/#studio",
-    visual: "/images/capabilities/interactive.png",
-  },
-  {
-    number: "04",
     label: "Contact",
     href: "#contact",
-    visual: "/images/capabilities/ascent.png",
+    visual: "/images/capabilities/ascent.webp",
   },
 ] as const;
 
 export function SiteHeader({ currentPage }: { currentPage?: "capabilities" }) {
   const headerRef = useRef<HTMLElement>(null);
+  const navigationRef = useRef<HTMLDivElement>(null);
+  const menuToggleRef = useRef<HTMLButtonElement>(null);
   const headerStateRef = useRef({
     mode: currentPage ? "fixed" : "hero",
     theme: "light",
@@ -73,17 +74,51 @@ export function SiteHeader({ currentPage }: { currentPage?: "capabilities" }) {
   useEffect(() => {
     if (!mobileMenuOpen) return;
 
+    const navigation = navigationRef.current;
+    const menuToggle = menuToggleRef.current;
     const previousOverflow = document.documentElement.style.overflow;
+    const background = [
+      ...document.querySelectorAll<HTMLElement>(
+        "main, .final-chapter, .skip-link",
+      ),
+    ];
+    const previousInert = background.map((element) => element.inert);
+    background.forEach((element) => {
+      element.inert = true;
+    });
     const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") closeMobileMenu();
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeMobileMenu();
+      }
+      if (event.key !== "Tab") return;
+      const focusable = [
+        ...(navigation?.querySelectorAll<HTMLElement>("a[href], button") ?? []),
+      ].filter(
+        (element) =>
+          !element.closest("[inert]") && element.getClientRects().length > 0,
+      );
+      const first = focusable[0];
+      const last = focusable.at(-1);
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first?.focus();
+      }
     };
 
     document.documentElement.style.overflow = "hidden";
     document.addEventListener("keydown", closeOnEscape);
 
     return () => {
+      background.forEach((element, index) => {
+        element.inert = previousInert[index];
+      });
       document.documentElement.style.overflow = previousOverflow;
       document.removeEventListener("keydown", closeOnEscape);
+      if (navigation?.contains(document.activeElement)) menuToggle?.focus();
     };
   }, [closeMobileMenu, mobileMenuOpen]);
 
@@ -131,7 +166,9 @@ export function SiteHeader({ currentPage }: { currentPage?: "capabilities" }) {
       const rect = hero.getBoundingClientRect();
       const heroTop = rect.top + window.scrollY;
 
-      enterAt = mobileQuery.matches ? heroTop + 8 : heroTop + rect.height * 0.15;
+      enterAt = mobileQuery.matches
+        ? heroTop + 8
+        : heroTop + rect.height * 0.15;
       restoreAt = mobileQuery.matches ? heroTop + 2 : heroTop + 32;
     };
 
@@ -209,7 +246,9 @@ export function SiteHeader({ currentPage }: { currentPage?: "capabilities" }) {
 
   useEffect(() => {
     const header = headerRef.current;
-    const darkSections = document.querySelectorAll<HTMLElement>('#factory, [data-header-theme="dark"]');
+    const darkSections = document.querySelectorAll<HTMLElement>(
+      '#factory, [data-header-theme="dark"]',
+    );
 
     if (!header || !darkSections.length) return;
 
@@ -240,49 +279,30 @@ export function SiteHeader({ currentPage }: { currentPage?: "capabilities" }) {
     };
   }, []);
 
-  useEffect(() => {
-    const work = document.querySelector<HTMLElement>("#selected-work");
-    const workLinks = document.querySelectorAll<HTMLAnchorElement>(
-      '[data-nav-target="#selected-work"]',
-    );
-
-    if (!work || !workLinks.length) return;
-
-    const setWorkActive = (active: boolean) => {
-      workLinks.forEach((link) => {
-        link.dataset.active = String(active);
-        if (active) link.setAttribute("aria-current", "location");
-        else link.removeAttribute("aria-current");
-      });
-    };
-
-    const observer = new IntersectionObserver(
-      ([entry]) => setWorkActive(entry.isIntersecting),
-      { rootMargin: "-38% 0px -48%", threshold: 0 },
-    );
-
-    observer.observe(work);
-    return () => observer.disconnect();
-  }, []);
-
-  const resolveHref = (href: string) => currentPage && href === "#selected-work" ? `/${href}` : href;
-
   const renderLink = ([label, href]: NavigationItem) => (
     <Link
       className="site-nav__link"
       data-nav-target={href.startsWith("#") ? href : undefined}
-      href={resolveHref(href)}
-      aria-current={currentPage && href === `/${currentPage}` ? "page" : undefined}
-      data-active={currentPage && href === `/${currentPage}` ? "true" : undefined}
+      href={href}
+      aria-current={
+        currentPage && href === `/${currentPage}` ? "page" : undefined
+      }
+      data-active={
+        currentPage && href === `/${currentPage}` ? "true" : undefined
+      }
       key={label}
-      onClick={(event) => event.currentTarget.closest("details")?.removeAttribute("open")}
     >
       {label}
     </Link>
   );
 
   return (
-    <>
+    <div
+      ref={navigationRef}
+      role={mobileMenuOpen ? "dialog" : undefined}
+      aria-modal={mobileMenuOpen || undefined}
+      aria-label={mobileMenuOpen ? "Site navigation" : undefined}
+    >
       <header
         className="site-header"
         data-mode={currentPage ? "fixed" : "hero"}
@@ -291,7 +311,9 @@ export function SiteHeader({ currentPage }: { currentPage?: "capabilities" }) {
         data-menu-open={mobileMenuOpen}
         ref={headerRef}
       >
-        <div className={`site-header__reveal${currentPage ? "" : " t-stagger-line t-stagger-line--1"}`}>
+        <div
+          className={`site-header__reveal t-enter-line${currentPage ? "" : " t-stagger-line t-stagger-line--1"}`}
+        >
           <nav className="site-nav" aria-label="Primary navigation">
             <div className="site-nav__group site-nav__group--left">
               {navigation.left.map(renderLink)}
@@ -303,7 +325,13 @@ export function SiteHeader({ currentPage }: { currentPage?: "capabilities" }) {
               aria-label="Urca Design Factory, home"
               onClick={closeMobileMenu}
             >
-              <Image src="/wordmark_dark.svg" alt="Urca" width={171} height={40} priority />
+              <Image
+                src="/wordmark_dark.svg"
+                alt="Urca"
+                width={171}
+                height={40}
+                priority
+              />
             </Link>
 
             <div className="site-nav__group site-nav__group--right">
@@ -312,6 +340,7 @@ export function SiteHeader({ currentPage }: { currentPage?: "capabilities" }) {
 
             <div className="site-nav__mobile">
               <button
+                ref={menuToggleRef}
                 className="site-nav__mobile-toggle"
                 type="button"
                 aria-controls="mobile-menu"
@@ -366,20 +395,38 @@ export function SiteHeader({ currentPage }: { currentPage?: "capabilities" }) {
                   <span className="mobile-menu__mark" aria-hidden="true" />
                 </button>
 
-                <div className="mobile-menu__panel t-acc-panel" id={`${itemId}-panel`}>
+                <div
+                  className="mobile-menu__panel t-acc-panel"
+                  id={`${itemId}-panel`}
+                  aria-hidden={!isOpen}
+                  inert={!isOpen}
+                >
                   <div className="mobile-menu__panel-inner t-acc-panel-inner">
                     <div className="mobile-menu__visual">
-                      <Image
-                        className="mobile-menu__image"
-                        src={item.visual}
-                        alt=""
-                        fill
-                        sizes="100vw"
-                      />
+                      {mobileMenuOpen && isOpen && (
+                        <Image
+                          className="mobile-menu__image"
+                          src={item.visual}
+                          alt=""
+                          fill
+                          sizes="100vw"
+                        />
+                      )}
                       <div className="mobile-menu__visual-meta">
-                        <span>Placeholder visual / {item.number}</span>
-                        <Link href={resolveHref(item.href)} onClick={closeMobileMenu} aria-current={currentPage && item.href === `/${currentPage}` ? "page" : undefined}>
-                          Explore {item.label.toLowerCase()} <span aria-hidden="true">↗</span>
+                        <span aria-hidden="true">
+                          {item.number} / {item.label}
+                        </span>
+                        <Link
+                          href={item.href}
+                          onClick={closeMobileMenu}
+                          aria-current={
+                            currentPage && item.href === `/${currentPage}`
+                              ? "page"
+                              : undefined
+                          }
+                        >
+                          Explore {item.label.toLowerCase()}{" "}
+                          <span aria-hidden="true">↗</span>
                         </Link>
                       </div>
                     </div>
@@ -390,6 +437,14 @@ export function SiteHeader({ currentPage }: { currentPage?: "capabilities" }) {
           })}
         </div>
       </nav>
-    </>
+      <noscript>
+        <nav className="no-script-nav" aria-label="Mobile navigation">
+          <Link href="/capabilities">Capabilities</Link>
+          <Link href="/#studio">Studio</Link>
+          <a href="#contact">Contact</a>
+        </nav>
+        <style>{`.site-nav__mobile { display: none !important; }`}</style>
+      </noscript>
+    </div>
   );
 }

@@ -1,18 +1,17 @@
 import { FactorySection } from "@/components/FactorySection";
 import { FinalChapter } from "@/components/FinalChapter";
 import { HeroArtwork } from "@/components/HeroArtwork";
-import { HeroReveal } from "@/components/HeroReveal";
 import { SiteHeader } from "@/components/SiteHeader";
-import { SiteLoader } from "@/components/SiteLoader";
 import { ViewportReveal } from "@/components/ViewportReveal";
-import brandVisual from "@/public/images/capabilities/brand.png";
-import intelligenceVisual from "@/public/images/capabilities/intelligence.png";
-import interactiveVisual from "@/public/images/capabilities/interactive.png";
+import brandVisual from "@/public/images/capabilities/brand.webp";
+import intelligenceVisual from "@/public/images/capabilities/intelligence.webp";
+import interactiveVisual from "@/public/images/capabilities/interactive.webp";
 import Image from "next/image";
 
 const heroSummary =
   "Brand identities, AI-powered products, software and interactive experiences — from first idea to launch and beyond.";
 
+/* Selected Work is parked until approved project content is available.
 const placeholderProjects = [
   {
     number: "01",
@@ -43,6 +42,7 @@ const placeholderProjects = [
     disciplines: "Mobile / Interactive / Product",
   },
 ] as const;
+*/
 
 const capabilities = [
   {
@@ -63,7 +63,8 @@ const capabilities = [
   {
     number: "02",
     name: "Brand & Digital",
-    description: "Brand identities, design systems, websites and digital experiences.",
+    description:
+      "Brand identities, design systems, websites and digital experiences.",
     services: [
       "Brand Strategy",
       "Visual Identity",
@@ -114,53 +115,66 @@ const studioPrinciples = [
 
 export default function Home() {
   return (
-    <main className="t-skel" data-state="loading">
-      <SiteLoader />
-      <div className="site-content t-skel-content">
-        <div className="hero-chapter t-stagger">
-          <SiteHeader />
+    <>
+      <a className="skip-link" href="#top">
+        Skip to content
+      </a>
+      <div className="site-content">
+        <SiteHeader />
+        <main id="main-content">
+          <div className="hero-chapter t-stagger is-shown">
+            <section
+              className="hero"
+              id="top"
+              tabIndex={-1}
+              aria-labelledby="hero-title"
+              data-inverse-text="true"
+            >
+              <HeroArtwork
+                source="/images/hero/hero-source-01.webp"
+                asciiSource="/images/hero/hero-source-01_ascii.webp"
+                focalPoint={[0.455, 0.52]}
+                zoom={1.1}
+              />
 
-          <section
-            className="hero"
-            id="top"
-            aria-labelledby="hero-title"
-            data-inverse-text="true"
-          >
-            <HeroReveal />
-            <HeroArtwork
-              source="/images/hero/hero-source-01.png"
-              asciiSource="/images/hero/hero-source-01_ascii.png"
-              focalPoint={[0.455, 0.52]}
-              zoom={1.1}
-            />
+              <h1 id="hero-title" className="hero__title">
+                <span className="hero__title-base t-stagger-line t-stagger-line--2">
+                  <span className="t-enter-line">We design ideas,</span>
+                  <em className="t-enter-line t-stagger-line--2">
+                    we build experiences.
+                  </em>
+                </span>
+              </h1>
+              <div
+                className="hero__title hero__title-inverse"
+                aria-hidden="true"
+              >
+                <span className="hero__title-inverse-content t-stagger-line t-stagger-line--2">
+                  <span className="t-enter-line">We design ideas,</span>
+                  <em className="t-enter-line t-stagger-line--2">
+                    we build experiences.
+                  </em>
+                </span>
+              </div>
 
-            <h1 id="hero-title" className="hero__title">
-              <span className="hero__title-base t-stagger-line t-stagger-line--2">
-                <span>We design ideas,</span>
-                <em>we build experiences.</em>
-              </span>
-            </h1>
-            <div className="hero__title hero__title-inverse" aria-hidden="true">
-              <span className="hero__title-inverse-content t-stagger-line t-stagger-line--2">
-                <span>We design ideas,</span>
-                <em>we build experiences.</em>
-              </span>
-            </div>
+              <p className="hero__summary">
+                <span className="hero__summary-base t-stagger-line t-stagger-line--3 t-enter-line">
+                  {heroSummary}
+                </span>
+              </p>
+              <div
+                className="hero__summary hero__summary-inverse"
+                aria-hidden="true"
+              >
+                <span className="hero__summary-inverse-content t-stagger-line t-stagger-line--3 t-enter-line">
+                  {heroSummary}
+                </span>
+              </div>
+            </section>
+          </div>
 
-            <p className="hero__summary">
-              <span className="hero__summary-base t-stagger-line t-stagger-line--3">
-                {heroSummary}
-              </span>
-            </p>
-            <div className="hero__summary hero__summary-inverse" aria-hidden="true">
-              <span className="hero__summary-inverse-content t-stagger-line t-stagger-line--3">
-                {heroSummary}
-              </span>
-            </div>
-          </section>
-        </div>
-
-      <section className="selected-work page-grid" id="selected-work" aria-labelledby="work-title">
+          {/* Selected Work — retained for the next content release.
+<section className="selected-work page-grid" id="selected-work" aria-labelledby="work-title">
         <ViewportReveal
           containerSelector="#selected-work"
           blockSelector=".selected-work__intro.t-stagger, .project.t-stagger"
@@ -240,143 +254,175 @@ export default function Home() {
           })}
         </div>
       </section>
+          */}
 
-      <section className="capabilities page-grid" id="capabilities" aria-labelledby="capabilities-title">
-        <ViewportReveal
-          containerSelector="#capabilities"
-          blockSelector=".capabilities__intro.t-stagger, .capability-row.t-stagger"
-        />
-        <div className="capabilities__intro t-stagger">
-          <p className="eyebrow capabilities__label t-stagger-line t-stagger-line--1">
-            WHAT WE MAKE
-          </p>
-          <h2 className="capabilities__title" id="capabilities-title">
-            <span className="t-stagger-line t-stagger-line--2">From identity</span>
-            <span className="t-stagger-line t-stagger-line--3">to interface</span>
-            <span className="t-stagger-line t-stagger-line--4">to infrastructure.</span>
-          </h2>
-        </div>
-
-        <div className="capability-list">
-          {capabilities.map((capability) => {
-            const capabilityId = `capability-${capability.number}`;
-
-            return (
-              <article
-                className="capability-row t-stagger"
-                aria-labelledby={`${capabilityId}-title`}
-                tabIndex={0}
-                key={capability.number}
-              >
-                <p className="capability-row__number">
-                  <span className="t-stagger-line t-stagger-line--1">
-                    {capability.number}
-                  </span>
-                </p>
-
-                <div className="capability-row__content">
-                  <div className="capability-row__heading t-stagger-line t-stagger-line--2">
-                    <h3 id={`${capabilityId}-title`}>{capability.name}</h3>
-                  </div>
-
-                  <p className="capability-row__description t-stagger-line t-stagger-line--3">
-                    {capability.description}
-                  </p>
-
-                  <div className="capability-row__visual" aria-hidden="true">
-                    <Image
-                      loading="eager"
-                      src={capability.visual}
-                      alt=""
-                      sizes="(min-width: 1800px) 42rem, (min-width: 901px) 39vw, calc(100vw - 2rem)"
-                    />
-                  </div>
-
-                  <ul className="capability-row__services" aria-label={`${capability.name} capabilities`}>
-                    {capability.services.map((service) => (
-                      <li className="t-stagger-line t-stagger-line--3" key={service}>
-                        {service}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </article>
-            );
-          })}
-        </div>
-      </section>
-
-      <FactorySection />
-
-      <section className="studio page-grid" id="studio" aria-labelledby="studio-title">
-        <ViewportReveal
-          containerSelector="#studio"
-          blockSelector=".studio__opening.t-stagger, .studio-principle.t-stagger"
-        />
-        <div className="studio__opening t-stagger">
-          <p className="eyebrow studio__label t-stagger-line t-stagger-line--1">
-            STUDIO / HOW WE THINK
-          </p>
-
-          <h2 className="studio__statement" id="studio-title">
-            <span className="studio__statement-group studio__statement-group--primary">
-              <span className="t-stagger-line t-stagger-line--2">Design shouldn&apos;t</span>
-              <span className="t-stagger-line t-stagger-line--3">stop at the screen.</span>
-            </span>
-            <em className="studio__statement-group studio__statement-group--secondary">
-              <span className="t-stagger-line t-stagger-line--4">
-                Technology shouldn&apos;t
-              </span>
-              <span className="t-stagger-line t-stagger-line--5">start after design.</span>
-            </em>
-          </h2>
-
-          <p className="studio__summary t-stagger-line t-stagger-line--6">
-            We work where strategy, identity and technology meet. The goal is not simply
-            to make something look good or make something work. The goal is to make the
-            whole thing make sense.
-          </p>
-        </div>
-
-        <ol className="studio__principles" aria-label="How we think">
-          {studioPrinciples.map((principle) => (
-            <li className="studio-principle t-stagger" key={principle.number}>
-              <p className="studio-principle__number">
-                <span className="t-stagger-line t-stagger-line--1">
-                  {principle.number}
+          <section
+            className="capabilities page-grid"
+            id="capabilities"
+            aria-labelledby="capabilities-title"
+          >
+            <ViewportReveal
+              containerSelector="#capabilities"
+              blockSelector=".capabilities__intro.t-stagger, .capability-row.t-stagger"
+            />
+            <div className="capabilities__intro t-stagger">
+              <p className="eyebrow capabilities__label t-stagger-line t-stagger-line--1">
+                WHAT WE MAKE
+              </p>
+              <h2 className="capabilities__title" id="capabilities-title">
+                <span className="t-stagger-line t-stagger-line--2">
+                  From identity
                 </span>
-              </p>
-              <h3 className="studio-principle__title">
-                {principle.title.map((line, lineIndex) =>
-                  lineIndex === principle.serifLine ? (
-                    <em
-                      className={`t-stagger-line t-stagger-line--${lineIndex + 2}`}
-                      key={line}
-                    >
-                      {line}
-                    </em>
-                  ) : (
-                    <span
-                      className={`t-stagger-line t-stagger-line--${lineIndex + 2}`}
-                      key={line}
-                    >
-                      {line}
-                    </span>
-                  ),
-                )}
-              </h3>
-              <p
-                className={`studio-principle__description t-stagger-line t-stagger-line--${principle.title.length + 2}`}
-              >
-                {principle.description}
-              </p>
-            </li>
-          ))}
-        </ol>
-      </section>
+                <span className="t-stagger-line t-stagger-line--3">
+                  to interface
+                </span>
+                <span className="t-stagger-line t-stagger-line--4">
+                  to infrastructure.
+                </span>
+              </h2>
+            </div>
 
+            <div className="capability-list">
+              {capabilities.map((capability) => {
+                const capabilityId = `capability-${capability.number}`;
+
+                return (
+                  <article
+                    className="capability-row t-stagger"
+                    aria-labelledby={`${capabilityId}-title`}
+                    tabIndex={0}
+                    key={capability.number}
+                  >
+                    <p className="capability-row__number">
+                      <span className="t-stagger-line t-stagger-line--1">
+                        {capability.number}
+                      </span>
+                    </p>
+
+                    <div className="capability-row__content">
+                      <div className="capability-row__heading t-stagger-line t-stagger-line--2">
+                        <h3 id={`${capabilityId}-title`}>{capability.name}</h3>
+                      </div>
+
+                      <p className="capability-row__description t-stagger-line t-stagger-line--3">
+                        {capability.description}
+                      </p>
+
+                      <div
+                        className="capability-row__visual"
+                        aria-hidden="true"
+                      >
+                        <Image
+                          src={capability.visual}
+                          alt=""
+                          sizes="(min-width: 1800px) 42rem, (min-width: 901px) 39vw, calc(100vw - 2rem)"
+                        />
+                      </div>
+
+                      <ul
+                        className="capability-row__services"
+                        aria-label={`${capability.name} capabilities`}
+                      >
+                        {capability.services.map((service) => (
+                          <li
+                            className="t-stagger-line t-stagger-line--3"
+                            key={service}
+                          >
+                            {service}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+
+          <FactorySection />
+
+          <section
+            className="studio page-grid"
+            id="studio"
+            aria-labelledby="studio-title"
+          >
+            <ViewportReveal
+              containerSelector="#studio"
+              blockSelector=".studio__opening.t-stagger, .studio-principle.t-stagger"
+            />
+            <div className="studio__opening t-stagger">
+              <p className="eyebrow studio__label t-stagger-line t-stagger-line--1">
+                STUDIO / HOW WE THINK
+              </p>
+
+              <h2 className="studio__statement" id="studio-title">
+                <span className="studio__statement-group studio__statement-group--primary">
+                  <span className="t-stagger-line t-stagger-line--2">
+                    Design shouldn&apos;t
+                  </span>
+                  <span className="t-stagger-line t-stagger-line--3">
+                    stop at the screen.
+                  </span>
+                </span>
+                <em className="studio__statement-group studio__statement-group--secondary">
+                  <span className="t-stagger-line t-stagger-line--4">
+                    Technology shouldn&apos;t
+                  </span>
+                  <span className="t-stagger-line t-stagger-line--5">
+                    start after design.
+                  </span>
+                </em>
+              </h2>
+
+              <p className="studio__summary t-stagger-line t-stagger-line--6">
+                We work where strategy, identity and technology meet. The goal
+                is not simply to make something look good or make something
+                work. The goal is to make the whole thing make sense.
+              </p>
+            </div>
+
+            <ol className="studio__principles" aria-label="How we think">
+              {studioPrinciples.map((principle) => (
+                <li
+                  className="studio-principle t-stagger"
+                  key={principle.number}
+                >
+                  <p className="studio-principle__number">
+                    <span className="t-stagger-line t-stagger-line--1">
+                      {principle.number}
+                    </span>
+                  </p>
+                  <h3 className="studio-principle__title">
+                    {principle.title.map((line, lineIndex) =>
+                      lineIndex === principle.serifLine ? (
+                        <em
+                          className={`t-stagger-line t-stagger-line--${lineIndex + 2}`}
+                          key={line}
+                        >
+                          {line}
+                        </em>
+                      ) : (
+                        <span
+                          className={`t-stagger-line t-stagger-line--${lineIndex + 2}`}
+                          key={line}
+                        >
+                          {line}
+                        </span>
+                      ),
+                    )}
+                  </h3>
+                  <p
+                    className={`studio-principle__description t-stagger-line t-stagger-line--${principle.title.length + 2}`}
+                  >
+                    {principle.description}
+                  </p>
+                </li>
+              ))}
+            </ol>
+          </section>
+        </main>
         <FinalChapter />
       </div>
-    </main>
+    </>
   );
 }

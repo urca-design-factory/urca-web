@@ -1,8 +1,5 @@
 import type { Metadata } from "next";
-import "lenis/dist/lenis.css";
 import "./globals.css";
-
-import { SmoothScroll } from "@/components/SmoothScroll";
 
 export const metadata: Metadata = {
   title: "Urca Design Factory",
@@ -14,7 +11,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body>
-        <SmoothScroll />
         {children}
       </body>
     </html>
