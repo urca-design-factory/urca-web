@@ -420,6 +420,56 @@ export default function Home() {
               ))}
             </ol>
           </section>
+
+          <section
+            className="product page-grid"
+            id="studioos"
+            aria-labelledby="studioos-title"
+          >
+            <ViewportReveal
+              containerSelector="#studioos"
+              blockSelector=".product__inner.t-stagger"
+            />
+            <div className="product__inner t-stagger">
+              <p className="eyebrow product__label t-stagger-line t-stagger-line--1">
+                IN THE FACTORY / OUR OWN PRODUCT
+              </p>
+
+              <h2 className="product__title" id="studioos-title">
+                <span className="t-stagger-line t-stagger-line--2">
+                  StudioOS
+                </span>
+                <em className="t-stagger-line t-stagger-line--3">
+                  The whole game, on one board.
+                </em>
+              </h2>
+
+              <p className="product__summary t-stagger-line t-stagger-line--4">
+                A design and build desk for people making games with AI. Talk
+                an idea through and it takes shape as cards, links and
+                decisions with their reasons. When the design is ready,
+                StudioOS hands the work to Claude Code one small task at a
+                time and follows its progress.
+              </p>
+
+              <ul
+                className="product__meta t-stagger-line t-stagger-line--5"
+                aria-label="StudioOS details"
+              >
+                <li>AI product / Games</li>
+                <li>Built with Claude</li>
+                <li>In development — 2026</li>
+              </ul>
+
+              <a
+                className="product__link t-stagger-line t-stagger-line--5"
+                href="https://studioos.urcadesign.com"
+              >
+                <span>studioos.urcadesign.com</span>
+                <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </section>
         </main>
         <FinalChapter />
       </div>

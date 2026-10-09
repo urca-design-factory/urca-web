@@ -56,17 +56,21 @@ function FooterMeta({ currentYear }: { currentYear: number }) {
       >
         <Link href="/capabilities">Capabilities</Link>
         <Link href="/#studio">Studio</Link>
+        <a href="https://studioos.urcadesign.com">StudioOS</a>
         <a href="#contact">Contact</a>
+        <Link href="/privacy">Privacy</Link>
       </nav>
 
       <address className="site-footer__address t-stagger-line t-stagger-line--6">
-        Str. 23 August, 244E, Nr 23,
+        Str. 23 August nr. 244E, Corp C1, Ap. 23,
         <br />
-        Otopeni/Ilfov ROMANIA
+        Otopeni, Ilfov, Romania
       </address>
 
       <p className="site-footer__copyright t-stagger-line t-stagger-line--6">
-        © {currentYear} Urca Design Factory
+        © {currentYear} Urca Design Factory S.R.L.
+        <br />
+        CUI 55202236 / J2026044271002
       </p>
     </div>
   );

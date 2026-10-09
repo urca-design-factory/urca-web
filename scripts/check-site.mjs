@@ -37,9 +37,9 @@ async function audit(page, label) {
 }
 
 try {
-  for (const route of ["/", "/capabilities"]) {
+  for (const route of ["/", "/capabilities", "/privacy"]) {
     for (const width of [320, 390, 768, 1024, 1440, 2560]) {
-      const label = `${route === "/" ? "home" : "capabilities"}-${width}`;
+      const label = `${route === "/" ? "home" : route.slice(1)}-${width}`;
       const page = await browser.newPage({
         viewport: { width, height: 900 },
         reducedMotion: "reduce",
@@ -57,8 +57,8 @@ try {
       });
       await page.goto(baseURL + route, { waitUntil: "networkidle" });
       assert.equal(await page.locator("h1").count(), 1, label);
-      assert.match(await page.locator("footer address").innerText(), /Str\. 23 August, 244E, Nr 23,/);
-      assert.match(await page.locator("footer address").innerText(), /Otopeni\/Ilfov ROMANIA/);
+      assert.match(await page.locator("footer address").innerText(), /Str\. 23 August nr\. 244E, Corp C1, Ap\. 23,/);
+      assert.match(await page.locator("footer address").innerText(), /Otopeni, Ilfov, Romania/);
       if (width >= 768) {
         assert.equal(await page.getByRole("link", {name: "Home", exact: true}).getAttribute("href"), "/");
       }
@@ -191,7 +191,7 @@ try {
   await audit(mobile, "service-expanded");
   await mobile.close();
 
-  for (const route of ["/", "/capabilities"]) {
+  for (const route of ["/", "/capabilities", "/privacy"]) {
     const page = await browser.newPage({
       javaScriptEnabled: false,
       viewport: { width: 390, height: 844 },
@@ -207,7 +207,7 @@ try {
     if (route === "/capabilities") {
       await page.locator("summary").first().click();
       assert.equal(await page.locator("details[open]").count(), 1);
-    } else {
+    } else if (route === "/") {
       assert.ok(
         Number(
           await page
@@ -217,7 +217,7 @@ try {
       );
     }
     await page.screenshot({
-      path: `${output}/no-js-${route === "/" ? "home" : "capabilities"}.png`,
+      path: `${output}/no-js-${route === "/" ? "home" : route.slice(1)}.png`,
       fullPage: true,
     });
     await page.close();

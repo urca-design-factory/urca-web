@@ -45,7 +45,11 @@ const mobileNavigation = [
   },
 ] as const;
 
-export function SiteHeader({ currentPage }: { currentPage?: "capabilities" }) {
+export function SiteHeader({
+  currentPage,
+}: {
+  currentPage?: "capabilities" | "privacy";
+}) {
   const headerRef = useRef<HTMLElement>(null);
   const navigationRef = useRef<HTMLDivElement>(null);
   const menuToggleRef = useRef<HTMLButtonElement>(null);
