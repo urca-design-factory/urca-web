@@ -8,6 +8,7 @@ import kilnHeatmap from "@/public/images/lab/kiln-heatmap.jpg";
 import kilnTrace from "@/public/images/lab/kiln-trace.jpg";
 import moreiraHolm from "@/public/images/lab/moreira-holm.jpg";
 import parity from "@/public/images/lab/parity.jpg";
+import parityFooter from "@/public/images/lab/parity-footer.jpg";
 import turndown from "@/public/images/lab/turndown.jpg";
 
 export type LabImage = {
@@ -103,7 +104,12 @@ export const labEntries: LabEntry[] = [
       {
         src: parity,
         alt: "Parity website hero, Ship the design you signed off, above a compare view that splits a payment card between its Figma design and production, with the drifted button marked in magenta, a list of three drifts and a pull request check.",
-        label: "Overview",
+        label: "Hero",
+      },
+      {
+        src: parityFooter,
+        alt: "Parity footer: a wide photo of stacked acrylic sheets with the line Catch drift before it ships, the Parity wordmark rising out of the photo with its lower half shifted slightly, and footer links.",
+        label: "Footer",
       },
     ],
   },
