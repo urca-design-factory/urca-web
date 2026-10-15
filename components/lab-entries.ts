@@ -1,4 +1,7 @@
 import type { StaticImageData } from "next/image";
+import kaldaBasalt from "@/public/images/lab/kalda-basalt.jpg";
+import kaldaRain from "@/public/images/lab/kalda-rain.jpg";
+import kaldaSource from "@/public/images/lab/kalda-source.jpg";
 import halden from "@/public/images/lab/halden.jpg";
 import haldenDock from "@/public/images/lab/halden-dock.jpg";
 import haldenException from "@/public/images/lab/halden-exception.jpg";
@@ -146,6 +149,27 @@ export const labEntries: LabEntry[] = [
         src: offpeakMap,
         alt: "Offpeak grid map over a night photo of Europe from orbit, countries glowing by carbon intensity from Norway at 28 to Poland at 640 grams per kilowatt hour.",
         label: "Grid map",
+      },
+    ],
+  },  {
+    number: "07",
+    name: "Kaldá",
+    category: "Mineral water, a story in three chapters",
+    images: [
+      {
+        src: kaldaRain,
+        alt: "Kaldá chapter one: rain falling on a black lava field under a storm sky, with the line It fell as rain on black lava.",
+        label: "01 Rain",
+      },
+      {
+        src: kaldaBasalt,
+        alt: "Kaldá chapter two: a cut-open block of layered basalt with a glowing thread of water winding down through it, tagged with depths and years, and the minerals it picks up.",
+        label: "02 Basalt",
+      },
+      {
+        src: kaldaSource,
+        alt: "Kaldá chapter three: a clear glass bottle of water standing on a hexagonal basalt column in caustic light, with the line It comes up at four degrees.",
+        label: "03 Source",
       },
     ],
   },
