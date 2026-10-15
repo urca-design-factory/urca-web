@@ -20,7 +20,6 @@ export type LabEntry = {
   number: string;
   name: string;
   category: string;
-  year: string;
   images: LabImage[];
 };
 
@@ -30,7 +29,6 @@ export const labEntries: LabEntry[] = [
     number: "01",
     name: "Halden",
     category: "Logistics operations platform",
-    year: "2026",
     images: [
       {
         src: halden,
@@ -53,7 +51,6 @@ export const labEntries: LabEntry[] = [
     number: "02",
     name: "Turndown",
     category: "Evening routine app",
-    year: "2026",
     images: [
       {
         src: turndown,
@@ -66,7 +63,6 @@ export const labEntries: LabEntry[] = [
     number: "03",
     name: "Kiln",
     category: "Remote build cache",
-    year: "2026",
     images: [
       {
         src: kiln,
@@ -79,7 +75,6 @@ export const labEntries: LabEntry[] = [
     number: "04",
     name: "Moreira Holm",
     category: "Architecture practice",
-    year: "2026",
     images: [
       {
         src: moreiraHolm,
@@ -92,7 +87,6 @@ export const labEntries: LabEntry[] = [
     number: "05",
     name: "Parity",
     category: "Design QA for pull requests",
-    year: "2026",
     images: [
       {
         src: parity,
@@ -105,7 +99,6 @@ export const labEntries: LabEntry[] = [
     number: "06",
     name: "Glyphtracker",
     category: "Browser music tracker",
-    year: "2026",
     images: [
       {
         src: glyphtracker,

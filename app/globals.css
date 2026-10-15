@@ -2703,9 +2703,6 @@ a {
   color: var(--color-ink);
 }
 
-.lab-entry__meta {
-  margin-left: auto;
-}
 
 @media (max-width: 900px) {
 
@@ -2724,9 +2721,6 @@ a {
     height: min(58svh, calc((100vw - 2 * var(--gutter)) * 0.75));
   }
 
-  .lab-entry__meta {
-    margin-left: 0;
-  }
 }
 
 /* Selected Work styles — retained with the commented homepage section.

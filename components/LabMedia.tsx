@@ -114,7 +114,6 @@ export function LabMedia({ entry }: { entry: LabEntry }) {
         <span>{entry.number}</span>
         <span className="lab-entry__name">{entry.name}</span>
         <span className="lab-entry__category">{entry.category}</span>
-        <span className="lab-entry__meta">Concept, {entry.year}</span>
       </figcaption>
     </figure>
   );
