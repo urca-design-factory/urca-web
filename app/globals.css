@@ -2757,17 +2757,18 @@ html[data-lightbox] {
   margin: 0;
   padding: 0;
   border: 0;
-  background: #0e0e0d;
+  background: rgb(14 14 13);
   color: #f4f3ef;
   overscroll-behavior: contain;
 }
 
 .lab-lightbox::backdrop {
-  background: #0e0e0d;
+  background: transparent;
 }
 
-.lab-lightbox[open] {
-  animation: lab-lightbox-in 320ms var(--ease-out);
+/* The card's own image steps aside while its copy is open full screen. */
+.lab-entry[data-lifted] .lab-media__image {
+  visibility: hidden;
 }
 
 .lab-lightbox__stage {
@@ -2775,12 +2776,19 @@ html[data-lightbox] {
   inset: clamp(3.5rem, 7vh, 5rem) clamp(1rem, 7vw, 7.5rem) clamp(4rem, 9vh, 5.5rem);
 }
 
+.lab-lightbox__frame {
+  position: absolute;
+  overflow: hidden;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
 .lab-lightbox__image {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   transition: opacity 420ms var(--ease-out);
 }
 
@@ -2865,10 +2873,6 @@ html[data-lightbox] {
   margin-left: auto;
 }
 
-@keyframes lab-lightbox-in {
-  from { opacity: 0; }
-}
-
 @media (max-width: 900px) {
 
   .lab-lightbox__arrow {
@@ -2885,10 +2889,6 @@ html[data-lightbox] {
 }
 
 @media (prefers-reduced-motion: reduce) {
-
-  .lab-lightbox[open] {
-    animation: none;
-  }
 
   .lab-lightbox__image {
     transition: none;

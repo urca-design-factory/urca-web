@@ -14,6 +14,7 @@ import { LabLightbox } from "@/components/LabLightbox";
  */
 export function LabMedia({ entry }: { entry: LabEntry }) {
   const rootRef = useRef<HTMLElement>(null);
+  const mediaRef = useRef<HTMLDivElement>(null);
   const [index, setIndex] = useState(0);
   const [manual, setManual] = useState(false);
   // Extra images load once the entry has been on screen, one ahead of the current.
@@ -77,10 +78,11 @@ export function LabMedia({ entry }: { entry: LabEntry }) {
       className="lab-entry t-stagger"
       ref={rootRef}
       data-manual={manual ? "" : undefined}
+      data-lifted={open ? "" : undefined}
       aria-roledescription={count > 1 ? "carousel" : undefined}
       aria-label={count > 1 ? `${entry.name}, ${count} images` : undefined}
     >
-      <div className="lab-media">
+      <div className="lab-media" ref={mediaRef}>
         <button
           type="button"
           className="lab-media__open"
@@ -137,6 +139,7 @@ export function LabMedia({ entry }: { entry: LabEntry }) {
         <LabLightbox
           entry={entry}
           start={index}
+          getOrigin={() => mediaRef.current?.getBoundingClientRect() ?? null}
           onClose={(last) => {
             setOpen(false);
             if (last !== index) jump(last);
