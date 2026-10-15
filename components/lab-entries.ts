@@ -1,0 +1,68 @@
+import type { StaticImageData } from "next/image";
+import glyphtracker from "@/public/images/lab/glyphtracker.jpg";
+import halden from "@/public/images/lab/halden.jpg";
+import kiln from "@/public/images/lab/kiln.jpg";
+import moreiraHolm from "@/public/images/lab/moreira-holm.jpg";
+import parity from "@/public/images/lab/parity.jpg";
+import turndown from "@/public/images/lab/turndown.jpg";
+
+export type LabEntry = {
+  number: string;
+  name: string;
+  category: string;
+  year: string;
+  image: StaticImageData;
+  alt: string;
+};
+
+/* Self-initiated concepts. Every brand here is fictional. */
+export const labEntries: LabEntry[] = [
+  {
+    number: "01",
+    name: "Halden",
+    category: "Logistics operations platform",
+    year: "2026",
+    image: halden,
+    alt: "Halden lanes dashboard showing live shipping routes across the North Sea and Baltic, on a plaster wall in afternoon light.",
+  },
+  {
+    number: "02",
+    name: "Turndown",
+    category: "Evening routine app",
+    year: "2026",
+    image: turndown,
+    alt: "Turndown brand board: a clay sphere on linen under the sign Evening service from 21:30, a folded-blanket app icon, door hangers reading Turndown please and Do not disturb, a phone preparing the bedroom, a bedroom poster reading Your room has been turned down, and a lock-screen notice.",
+  },
+  {
+    number: "03",
+    name: "Kiln",
+    category: "Remote build cache",
+    year: "2026",
+    image: kiln,
+    alt: "Kiln landing section: an isometric stack of build layers, the cached ones glowing acid green and the changed ones drawn as wireframes, above the headline Builds that start warm, CI stats and a terminal run.",
+  },
+  {
+    number: "04",
+    name: "Moreira Holm",
+    category: "Architecture practice",
+    year: "2026",
+    image: moreiraHolm,
+    alt: "Moreira Holm brand board: gouache paintings of a sunlit room, white houses on a hillside and a stone stair, a wide logotype split by a solid bar, business cards with two studio addresses and a floor plan, and a palette named Cal, Ocre, Oliva and Ardósia.",
+  },
+  {
+    number: "05",
+    name: "Parity",
+    category: "Design QA for pull requests",
+    year: "2026",
+    image: parity,
+    alt: "Parity website hero, Ship the design you signed off, above a compare view that splits a payment card between its Figma design and production, with the drifted button marked in magenta, a list of three drifts and a pull request check.",
+  },
+  {
+    number: "06",
+    name: "Glyphtracker",
+    category: "Browser music tracker",
+    year: "2026",
+    image: glyphtracker,
+    alt: "Glyphtracker in the browser: a four-channel pattern editor with hex rows and a yellow playhead, an ASCII scene of loudspeaker rings driven by the kick and lead, mapping sliders, transport, an oscilloscope and channel meters.",
+  },
+];
