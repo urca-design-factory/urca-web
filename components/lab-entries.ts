@@ -6,12 +6,14 @@ import kiln from "@/public/images/lab/kiln.jpg";
 import kilnHeatmap from "@/public/images/lab/kiln-heatmap.jpg";
 import kilnTrace from "@/public/images/lab/kiln-trace.jpg";
 import moreiraHolm from "@/public/images/lab/moreira-holm.jpg";
+import moreiraHolmProject from "@/public/images/lab/moreira-holm-project.jpg";
 import offpeak from "@/public/images/lab/offpeak.jpg";
 import offpeakMap from "@/public/images/lab/offpeak-map.jpg";
 import offpeakNight from "@/public/images/lab/offpeak-night.jpg";
 import parity from "@/public/images/lab/parity.jpg";
 import parityFooter from "@/public/images/lab/parity-footer.jpg";
 import turndown from "@/public/images/lab/turndown.jpg";
+import turndownFlow from "@/public/images/lab/turndown-flow.jpg";
 
 export type LabImage = {
   src: StaticImageData;
@@ -60,7 +62,12 @@ export const labEntries: LabEntry[] = [
       {
         src: turndown,
         alt: "Turndown brand board: a clay sphere on linen under the sign Evening service from 21:30, a folded-blanket app icon, door hangers reading Turndown please and Do not disturb, a phone preparing the bedroom, a bedroom poster reading Your room has been turned down, and a lock-screen notice.",
-        label: "Overview",
+        label: "Brand board",
+      },
+      {
+        src: turndownFlow,
+        alt: "Turndown evening flow: three phone screens for setting the evening, the room getting ready and a morning note for room 214, a dawn bedroom photo reading Good morning, room 214, and home-screen widgets.",
+        label: "Evening flow",
       },
     ],
   },
@@ -94,7 +101,12 @@ export const labEntries: LabEntry[] = [
       {
         src: moreiraHolm,
         alt: "Moreira Holm brand board: gouache paintings of a sunlit room, white houses on a hillside and a stone stair, a wide logotype split by a solid bar, business cards with two studio addresses and a floor plan, and a palette named Cal, Ocre, Oliva and Ardósia.",
-        label: "Overview",
+        label: "Brand board",
+      },
+      {
+        src: moreiraHolmProject,
+        alt: "Moreira Holm website project page for Casa Lentisco on Paros: a house in three rooms around a courtyard and an olive tree, with a title block, a gouache of the courtyard and thumbnails with the floor plan.",
+        label: "Project page",
       },
     ],
   },
