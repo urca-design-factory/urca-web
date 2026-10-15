@@ -143,10 +143,11 @@ export function LabMedia({ entry }: { entry: LabEntry }) {
           getPreview={() =>
             mediaRef.current?.querySelector<HTMLImageElement>('.lab-media__image[data-active="true"]')?.currentSrc ?? null
           }
-          onClose={(last) => {
-            setOpen(false);
+          onClosing={(last) => {
             if (last !== index) jump(last);
           }}
+          onLanded={() => rootRef.current?.removeAttribute("data-lifted")}
+          onClose={() => setOpen(false)}
         />
       ) : null}
     </figure>

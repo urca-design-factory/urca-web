@@ -11,7 +11,11 @@ type LabLightboxProps = {
   getOrigin: () => DOMRect | null;
   /* The card's already loaded image, shown while the full-size file arrives. */
   getPreview: () => string | null;
-  onClose: (index: number) => void;
+  /* Called as closing starts, with the image last viewed, while the card is still hidden. */
+  onClosing: (index: number) => void;
+  /* Called once the image has landed on the card; the card should show its own image again. */
+  onLanded: () => void;
+  onClose: () => void;
 };
 
 const DURATION = 560;
@@ -23,7 +27,7 @@ const EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
  * between the entry's images. The image grows out of its card on open and
  * shrinks back into it on close.
  */
-export function LabLightbox({ entry, start, getOrigin, getPreview, onClose }: LabLightboxProps) {
+export function LabLightbox({ entry, start, getOrigin, getPreview, onClosing, onLanded, onClose }: LabLightboxProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
@@ -100,6 +104,7 @@ export function LabLightbox({ entry, start, getOrigin, getPreview, onClose }: La
     const frame = frameRef.current;
     if (!dialog || !frame || closingRef.current) return;
     closingRef.current = true;
+    onClosing(index);
     const target = from(getOrigin());
     const motion = !reduced() && target;
     const out: Animation[] = [];
@@ -117,8 +122,12 @@ export function LabLightbox({ entry, start, getOrigin, getPreview, onClose }: La
       out.push(frame.animate([{ transform: "none" }, { transform: target }], { duration: DURATION * 0.85, easing: EASE, fill: "forwards" }));
     }
     await Promise.all(out.map((animation) => animation.finished.catch(() => undefined)));
+    // Reveal the card's image under the landed copy first, then remove the copy,
+    // so there is never a frame with neither.
+    onLanded();
+    await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
     dialog.close();
-    onClose(index);
+    onClose();
   };
 
   const go = (direction: 1 | -1) => setIndex((current) => (current + direction + count) % count);

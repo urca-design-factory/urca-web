@@ -2769,6 +2769,8 @@ html[data-lightbox] {
 /* The card's own image steps aside while its copy is open full screen. */
 .lab-entry[data-lifted] .lab-media__image {
   visibility: hidden;
+  /* Swap to the image last viewed instantly while hidden, no crossfade. */
+  transition: none;
 }
 
 .lab-lightbox__stage {
