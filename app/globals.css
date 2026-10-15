@@ -2583,6 +2583,44 @@ a {
   background: var(--color-wash);
 }
 
+/* Extra images stack on the first and crossfade. */
+.lab-media__image[data-stacked] {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  object-fit: cover;
+}
+
+.lab-media__image[data-active="false"] {
+  opacity: 0;
+}
+
+.lab-entry__pager {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-left: auto;
+  color: var(--color-ink);
+}
+
+.lab-entry__pager button {
+  padding: 0 0.15rem;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.lab-entry__pager button:focus-visible {
+  outline: 2px solid var(--color-signal);
+  outline-offset: 2px;
+}
+
+.lab-entry__pager + .lab-entry__meta {
+  margin-left: 0;
+}
+
 .lab-media__image {
   display: block;
   width: auto;

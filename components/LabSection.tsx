@@ -1,7 +1,7 @@
 import { labEntries } from "@/components/lab-entries";
+import { LabMedia } from "@/components/LabMedia";
 import { LabStrip } from "@/components/LabStrip";
 import { ViewportReveal } from "@/components/ViewportReveal";
-import Image from "next/image";
 
 export function LabSection() {
   return (
@@ -25,23 +25,7 @@ export function LabSection() {
 
       <LabStrip label="Lab concepts. Scroll sideways, drag, or use the arrow buttons to browse.">
         {labEntries.map((entry) => (
-          <figure className="lab-entry t-stagger" key={entry.number}>
-            <div className="lab-media">
-              <Image
-                className="lab-media__image"
-                src={entry.image}
-                alt={entry.alt}
-                sizes="(max-width: 900px) 90vw, 60vw"
-                draggable={false}
-              />
-            </div>
-            <figcaption className="lab-entry__caption eyebrow t-stagger-line t-stagger-line--2">
-              <span>{entry.number}</span>
-              <span className="lab-entry__name">{entry.name}</span>
-              <span className="lab-entry__category">{entry.category}</span>
-              <span className="lab-entry__meta">Concept, {entry.year}</span>
-            </figcaption>
-          </figure>
+          <LabMedia entry={entry} key={entry.number} />
         ))}
       </LabStrip>
     </section>
