@@ -9,6 +9,8 @@ type LabLightboxProps = {
   start: number;
   /* Where the image sits on the page, so it can grow out of and back into it. */
   getOrigin: () => DOMRect | null;
+  /* The card's already loaded image, shown while the full-size file arrives. */
+  getPreview: () => string | null;
   onClose: (index: number) => void;
 };
 
@@ -21,7 +23,7 @@ const EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
  * between the entry's images. The image grows out of its card on open and
  * shrinks back into it on close.
  */
-export function LabLightbox({ entry, start, getOrigin, onClose }: LabLightboxProps) {
+export function LabLightbox({ entry, start, getOrigin, getPreview, onClose }: LabLightboxProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
@@ -62,9 +64,15 @@ export function LabLightbox({ entry, start, getOrigin, onClose }: LabLightboxPro
     const dialog = dialogRef.current;
     const frame = frameRef.current;
     if (!dialog || !frame) return;
-    dialog.showModal();
+    if (!dialog.open) dialog.showModal();
+    // Measure the untransformed frame: clear any animation from an earlier run of this effect.
+    frame.getAnimations().forEach((animation) => animation.cancel());
+    dialog.getAnimations().forEach((animation) => animation.cancel());
     document.documentElement.dataset.lightbox = "";
     fit();
+    // Show the card's loaded image at once; the full-size file covers it when ready.
+    const preview = getPreview();
+    if (preview) frame.style.backgroundImage = `url("${preview}")`;
     const start = from(getOrigin());
     const motion = !reduced() && start;
     dialog.animate([{ backgroundColor: "rgb(14 14 13 / 0)" }, { backgroundColor: "rgb(14 14 13 / 1)" }], {
@@ -172,6 +180,9 @@ export function LabLightbox({ entry, start, getOrigin, onClose }: LabLightboxPro
               data-active={i === index}
               aria-hidden={i !== index}
               priority={i === index}
+              onLoad={() => {
+                if (frameRef.current) frameRef.current.style.backgroundImage = "";
+              }}
             />
           ))}
         </div>

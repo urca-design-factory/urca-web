@@ -2779,6 +2779,8 @@ html[data-lightbox] {
 .lab-lightbox__frame {
   position: absolute;
   overflow: hidden;
+  background-position: center;
+  background-size: cover;
   transform-origin: 0 0;
   will-change: transform;
 }

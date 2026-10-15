@@ -140,6 +140,9 @@ export function LabMedia({ entry }: { entry: LabEntry }) {
           entry={entry}
           start={index}
           getOrigin={() => mediaRef.current?.getBoundingClientRect() ?? null}
+          getPreview={() =>
+            mediaRef.current?.querySelector<HTMLImageElement>('.lab-media__image[data-active="true"]')?.currentSrc ?? null
+          }
           onClose={(last) => {
             setOpen(false);
             if (last !== index) jump(last);
