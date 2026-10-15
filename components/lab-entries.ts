@@ -1,5 +1,4 @@
 import type { StaticImageData } from "next/image";
-import glyphtracker from "@/public/images/lab/glyphtracker.jpg";
 import halden from "@/public/images/lab/halden.jpg";
 import haldenDock from "@/public/images/lab/halden-dock.jpg";
 import haldenException from "@/public/images/lab/halden-exception.jpg";
@@ -7,6 +6,7 @@ import kiln from "@/public/images/lab/kiln.jpg";
 import kilnHeatmap from "@/public/images/lab/kiln-heatmap.jpg";
 import kilnTrace from "@/public/images/lab/kiln-trace.jpg";
 import moreiraHolm from "@/public/images/lab/moreira-holm.jpg";
+import offpeak from "@/public/images/lab/offpeak.jpg";
 import parity from "@/public/images/lab/parity.jpg";
 import parityFooter from "@/public/images/lab/parity-footer.jpg";
 import turndown from "@/public/images/lab/turndown.jpg";
@@ -115,13 +115,13 @@ export const labEntries: LabEntry[] = [
   },
   {
     number: "06",
-    name: "Glyphtracker",
-    category: "Browser music tracker",
+    name: "Offpeak",
+    category: "Home energy scheduling",
     images: [
       {
-        src: glyphtracker,
-        alt: "Glyphtracker in the browser: a four-channel pattern editor with hex rows and a yellow playhead, an ASCII scene of loudspeaker rings driven by the kick and lead, mapping sliders, transport, an oscilloscope and channel meters.",
-        label: "Overview",
+        src: offpeak,
+        alt: "Offpeak website hero, The cleanest hour today is 03:00, above a 24-hour band coloured by forecast grid carbon intensity from coral evening peak to mint night low, with a dishwasher moved to 03:00.",
+        label: "Hero",
       },
     ],
   },
