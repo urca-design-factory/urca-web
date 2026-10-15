@@ -589,6 +589,14 @@ a {
   display: block;
 }
 
+/* The mask clips to the border box; extra bottom room keeps descenders
+   (the "p" in "experiences") from being cut off by the tight line-height. */
+.hero__title-base,
+.hero__title-inverse {
+  padding-bottom: 0.2em;
+  margin-bottom: -0.2em;
+}
+
 .hero[data-inverse-text="true"] .hero__title-base,
 .hero[data-inverse-text="true"] .hero__summary-base {
   -webkit-mask-image: radial-gradient(
