@@ -2595,30 +2595,79 @@ a {
   opacity: 0;
 }
 
-.lab-entry__pager {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  margin-left: auto;
-  color: var(--color-ink);
+/* Carousel progress: one bar per image, the active one fills over 4.5 s. */
+.lab-progress {
+  position: absolute;
+  right: 0.9rem;
+  bottom: 0.9rem;
+  display: flex;
+  gap: 0.2rem;
+  padding: 0.35rem 0.45rem;
+  border-radius: 999px;
+  background: rgb(17 17 17 / 32%);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
 
-.lab-entry__pager button {
-  padding: 0 0.15rem;
+.lab-progress__bar {
+  position: relative;
+  width: 1.6rem;
+  height: 1rem;
+  padding: 0;
   border: 0;
   background: none;
-  color: inherit;
-  font: inherit;
   cursor: pointer;
 }
 
-.lab-entry__pager button:focus-visible {
-  outline: 2px solid var(--color-signal);
-  outline-offset: 2px;
+.lab-progress__bar::before,
+.lab-progress__bar i {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 2px;
+  margin-top: -1px;
+  border-radius: 1px;
 }
 
-.lab-entry__pager + .lab-entry__meta {
-  margin-left: 0;
+.lab-progress__bar::before {
+  right: 0;
+  background: rgb(255 255 255 / 38%);
+  content: "";
+}
+
+.lab-progress__bar i {
+  width: 0;
+  background: #fff;
+}
+
+.lab-progress__bar[data-state="done"] i,
+.lab-entry[data-manual] .lab-progress__bar[data-state="active"] i {
+  width: 100%;
+}
+
+.lab-entry:not([data-manual]) .lab-progress__bar[data-state="active"] i {
+  animation: lab-progress 4.5s linear forwards;
+}
+
+.lab-entry[data-paused]:not([data-manual]) .lab-progress__bar[data-state="active"] i {
+  animation-play-state: paused;
+}
+
+.lab-progress__bar:focus-visible {
+  outline: 2px solid var(--color-signal);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+@keyframes lab-progress {
+  to { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lab-entry:not([data-manual]) .lab-progress__bar[data-state="active"] i {
+    width: 100%;
+    animation: none;
+  }
 }
 
 .lab-media__image {

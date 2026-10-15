@@ -4,12 +4,12 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import type { LabEntry } from "@/components/lab-entries";
 
-const INTERVAL_MS = 4500;
-
 /*
  * One Lab entry. A single image renders as is; several images crossfade in
- * place, advancing on their own while the entry is on screen and nobody is
- * interacting with it, with previous/next controls in the caption.
+ * place. Progress bars over the image show the current image and fill while
+ * it is on screen; the next image follows when a bar completes. Hovering or
+ * focusing the entry pauses the fill, and clicking a bar jumps to that image
+ * and stops autoplay.
  */
 export function LabMedia({ entry }: { entry: LabEntry }) {
   const rootRef = useRef<HTMLElement>(null);
@@ -18,62 +18,58 @@ export function LabMedia({ entry }: { entry: LabEntry }) {
   const { images } = entry;
   const count = images.length;
 
+  // Pause the fill while off screen, hovered, focused or in a hidden tab.
   useEffect(() => {
     const root = rootRef.current;
-    if (!root || count < 2 || manual) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
+    if (!root || count < 2) return;
     let visible = false;
     let held = false;
-    let timer = 0;
-    const schedule = () => {
-      window.clearInterval(timer);
-      if (visible && !held && !document.hidden) {
-        timer = window.setInterval(() => setIndex((current) => (current + 1) % count), INTERVAL_MS);
-      }
+    const sync = () => {
+      if (visible && !held && !document.hidden) delete root.dataset.paused;
+      else root.dataset.paused = "";
     };
     const observer = new IntersectionObserver(
       ([item]) => {
         visible = item.isIntersecting;
-        schedule();
+        sync();
       },
       { threshold: 0.5 },
     );
     const hold = () => {
       held = true;
-      schedule();
+      sync();
     };
     const release = () => {
       held = false;
-      schedule();
+      sync();
     };
+    sync();
     observer.observe(root);
     root.addEventListener("pointerenter", hold);
     root.addEventListener("pointerleave", release);
     root.addEventListener("focusin", hold);
     root.addEventListener("focusout", release);
-    document.addEventListener("visibilitychange", schedule);
+    document.addEventListener("visibilitychange", sync);
     return () => {
-      window.clearInterval(timer);
       observer.disconnect();
       root.removeEventListener("pointerenter", hold);
       root.removeEventListener("pointerleave", release);
       root.removeEventListener("focusin", hold);
       root.removeEventListener("focusout", release);
-      document.removeEventListener("visibilitychange", schedule);
+      document.removeEventListener("visibilitychange", sync);
     };
-  }, [count, manual]);
+  }, [count]);
 
-  // Arrows take over from autoplay for this entry.
-  const go = (direction: 1 | -1) => {
+  const jump = (target: number) => {
     setManual(true);
-    setIndex((current) => (current + direction + count) % count);
+    setIndex(target);
   };
 
   return (
     <figure
       className="lab-entry t-stagger"
       ref={rootRef}
+      data-manual={manual ? "" : undefined}
       aria-roledescription={count > 1 ? "carousel" : undefined}
       aria-label={count > 1 ? `${entry.name}, ${count} images` : undefined}
     >
@@ -91,24 +87,33 @@ export function LabMedia({ entry }: { entry: LabEntry }) {
             data-stacked={i > 0 ? "" : undefined}
           />
         ))}
+        {count > 1 ? (
+          <div className="lab-progress">
+            {images.map((image, i) => (
+              <button
+                key={image.label}
+                type="button"
+                className="lab-progress__bar"
+                data-state={i < index ? "done" : i === index ? "active" : "next"}
+                aria-label={`Show ${image.label}`}
+                aria-current={i === index ? "true" : undefined}
+                onClick={() => jump(i)}
+              >
+                <i
+                  key={`${index}-${i}`}
+                  onAnimationEnd={() => {
+                    if (!manual && i === index) setIndex((index + 1) % count);
+                  }}
+                />
+              </button>
+            ))}
+          </div>
+        ) : null}
       </div>
       <figcaption className="lab-entry__caption eyebrow t-stagger-line t-stagger-line--2">
         <span>{entry.number}</span>
         <span className="lab-entry__name">{entry.name}</span>
         <span className="lab-entry__category">{entry.category}</span>
-        {count > 1 ? (
-          <span className="lab-entry__pager">
-            <button type="button" onClick={() => go(-1)} aria-label={`Previous ${entry.name} image`}>
-              ←
-            </button>
-            <span aria-live={manual ? "polite" : "off"}>
-              {index + 1}/{count} {images[index].label}
-            </span>
-            <button type="button" onClick={() => go(1)} aria-label={`Next ${entry.name} image`}>
-              →
-            </button>
-          </span>
-        ) : null}
         <span className="lab-entry__meta">Concept, {entry.year}</span>
       </figcaption>
     </figure>
