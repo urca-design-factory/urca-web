@@ -4,6 +4,8 @@ import halden from "@/public/images/lab/halden.jpg";
 import haldenDock from "@/public/images/lab/halden-dock.jpg";
 import haldenException from "@/public/images/lab/halden-exception.jpg";
 import kiln from "@/public/images/lab/kiln.jpg";
+import kilnHeatmap from "@/public/images/lab/kiln-heatmap.jpg";
+import kilnTrace from "@/public/images/lab/kiln-trace.jpg";
 import moreiraHolm from "@/public/images/lab/moreira-holm.jpg";
 import parity from "@/public/images/lab/parity.jpg";
 import turndown from "@/public/images/lab/turndown.jpg";
@@ -67,7 +69,17 @@ export const labEntries: LabEntry[] = [
       {
         src: kiln,
         alt: "Kiln landing section: an isometric stack of build layers, the cached ones glowing acid green and the changed ones drawn as wireframes, above the headline Builds that start warm, CI stats and a terminal run.",
-        label: "Overview",
+        label: "Landing",
+      },
+      {
+        src: kilnTrace,
+        alt: "Kiln build trace for build 4812: built in 48 seconds with 11 of 14 targets warm, a waterfall of targets with cached ones in acid green and three rebuilt ones in bone, and the critical path.",
+        label: "Build trace",
+      },
+      {
+        src: kilnHeatmap,
+        alt: "Kiln cache page: 94.2% hit rate, 212 hours saved, a 30-day heatmap of hit rate per package, and the packages with the most cold starts with suggested fixes.",
+        label: "Cache",
       },
     ],
   },
