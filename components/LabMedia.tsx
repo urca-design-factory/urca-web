@@ -15,6 +15,9 @@ export function LabMedia({ entry }: { entry: LabEntry }) {
   const rootRef = useRef<HTMLElement>(null);
   const [index, setIndex] = useState(0);
   const [manual, setManual] = useState(false);
+  // Extra images load once the entry has been on screen, one ahead of the current.
+  const [primed, setPrimed] = useState(false);
+  const [reach, setReach] = useState(0);
   const { images } = entry;
   const count = images.length;
 
@@ -31,6 +34,7 @@ export function LabMedia({ entry }: { entry: LabEntry }) {
     const observer = new IntersectionObserver(
       ([item]) => {
         visible = item.isIntersecting;
+        if (visible) setPrimed(true);
         sync();
       },
       { threshold: 0.5 },
@@ -63,6 +67,7 @@ export function LabMedia({ entry }: { entry: LabEntry }) {
   const jump = (target: number) => {
     setManual(true);
     setIndex(target);
+    setReach((current) => Math.max(current, target));
   };
 
   return (
@@ -74,7 +79,8 @@ export function LabMedia({ entry }: { entry: LabEntry }) {
       aria-label={count > 1 ? `${entry.name}, ${count} images` : undefined}
     >
       <div className="lab-media">
-        {images.map((image, i) => (
+        {images.map((image, i) =>
+          i > reach && !(primed && i === (index + 1) % count) ? null : (
           <Image
             key={image.src.src}
             className="lab-media__image"
@@ -86,7 +92,8 @@ export function LabMedia({ entry }: { entry: LabEntry }) {
             data-active={i === index}
             data-stacked={i > 0 ? "" : undefined}
           />
-        ))}
+          ),
+        )}
         {count > 1 ? (
           <div className="lab-progress">
             {images.map((image, i) => (
@@ -102,7 +109,10 @@ export function LabMedia({ entry }: { entry: LabEntry }) {
                 <i
                   key={`${index}-${i}`}
                   onAnimationEnd={() => {
-                    if (!manual && i === index) setIndex((index + 1) % count);
+                    if (manual || i !== index) return;
+                    const next = (index + 1) % count;
+                    setIndex(next);
+                    setReach((current) => Math.max(current, next));
                   }}
                 />
               </button>
