@@ -3,13 +3,14 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import type { LabEntry } from "@/components/lab-entries";
+import { LabLightbox } from "@/components/LabLightbox";
 
 /*
  * One Lab entry. A single image renders as is; several images crossfade in
  * place. Progress bars over the image show the current image and fill while
  * it is on screen; the next image follows when a bar completes. Hovering or
  * focusing the entry pauses the fill, and clicking a bar jumps to that image
- * and stops autoplay.
+ * and stops autoplay. Clicking the image opens it full screen.
  */
 export function LabMedia({ entry }: { entry: LabEntry }) {
   const rootRef = useRef<HTMLElement>(null);
@@ -18,6 +19,7 @@ export function LabMedia({ entry }: { entry: LabEntry }) {
   // Extra images load once the entry has been on screen, one ahead of the current.
   const [primed, setPrimed] = useState(false);
   const [reach, setReach] = useState(0);
+  const [open, setOpen] = useState(false);
   const { images } = entry;
   const count = images.length;
 
@@ -79,6 +81,12 @@ export function LabMedia({ entry }: { entry: LabEntry }) {
       aria-label={count > 1 ? `${entry.name}, ${count} images` : undefined}
     >
       <div className="lab-media">
+        <button
+          type="button"
+          className="lab-media__open"
+          onClick={() => setOpen(true)}
+          aria-label={`Open ${entry.name} full screen`}
+        />
         {images.map((image, i) =>
           i > reach && !(primed && i === (index + 1) % count) ? null : (
           <Image
@@ -125,6 +133,16 @@ export function LabMedia({ entry }: { entry: LabEntry }) {
         <span className="lab-entry__name">{entry.name}</span>
         <span className="lab-entry__category">{entry.category}</span>
       </figcaption>
+      {open ? (
+        <LabLightbox
+          entry={entry}
+          start={index}
+          onClose={(last) => {
+            setOpen(false);
+            if (last !== index) jump(last);
+          }}
+        />
+      ) : null}
     </figure>
   );
 }

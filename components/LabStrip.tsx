@@ -66,6 +66,12 @@ export function LabStrip({ children, label }: LabStripProps) {
       if (track.hasPointerCapture(event.pointerId)) track.releasePointerCapture(event.pointerId);
       delete track.dataset.dragging;
     };
+    const swallowDragClick = (event: MouseEvent) => {
+      if (!moved) return;
+      moved = false;
+      event.preventDefault();
+      event.stopPropagation();
+    };
     const preventDragImage = (event: DragEvent) => event.preventDefault();
 
     // Smooth scrolling (Lenis) listens for wheel events on the page and treats
@@ -82,6 +88,7 @@ export function LabStrip({ children, label }: LabStripProps) {
     track.addEventListener("pointerup", onUp);
     track.addEventListener("pointercancel", onUp);
     track.addEventListener("dragstart", preventDragImage);
+    track.addEventListener("click", swallowDragClick, true);
     track.addEventListener("wheel", keepHorizontalWheel, { passive: true });
     const images = track.querySelectorAll("img");
     images.forEach((image) => image.addEventListener("load", schedule));
@@ -95,6 +102,7 @@ export function LabStrip({ children, label }: LabStripProps) {
       track.removeEventListener("pointerup", onUp);
       track.removeEventListener("pointercancel", onUp);
       track.removeEventListener("dragstart", preventDragImage);
+      track.removeEventListener("click", swallowDragClick, true);
       track.removeEventListener("wheel", keepHorizontalWheel);
       images.forEach((image) => image.removeEventListener("load", schedule));
     };
