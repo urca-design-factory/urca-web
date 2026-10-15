@@ -7,6 +7,8 @@ import kilnHeatmap from "@/public/images/lab/kiln-heatmap.jpg";
 import kilnTrace from "@/public/images/lab/kiln-trace.jpg";
 import moreiraHolm from "@/public/images/lab/moreira-holm.jpg";
 import offpeak from "@/public/images/lab/offpeak.jpg";
+import offpeakMap from "@/public/images/lab/offpeak-map.jpg";
+import offpeakNight from "@/public/images/lab/offpeak-night.jpg";
 import parity from "@/public/images/lab/parity.jpg";
 import parityFooter from "@/public/images/lab/parity-footer.jpg";
 import turndown from "@/public/images/lab/turndown.jpg";
@@ -122,6 +124,16 @@ export const labEntries: LabEntry[] = [
         src: offpeak,
         alt: "Offpeak website hero, The cleanest hour today is 03:00, above a 24-hour band coloured by forecast grid carbon intensity from coral evening peak to mint night low, with a dishwasher moved to 03:00.",
         label: "Hero",
+      },
+      {
+        src: offpeakNight,
+        alt: "Offpeak at 03:04: a dark kitchen lit by moonlight and the dishwasher, with the line Your dishwasher is running on wind, a live run card and the night's queue.",
+        label: "Night",
+      },
+      {
+        src: offpeakMap,
+        alt: "Offpeak grid map over a night photo of Europe from orbit, countries glowing by carbon intensity from Norway at 28 to Poland at 640 grams per kilowatt hour.",
+        label: "Grid map",
       },
     ],
   },
