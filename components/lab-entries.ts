@@ -17,6 +17,9 @@ import parity from "@/public/images/lab/parity.jpg";
 import parityFooter from "@/public/images/lab/parity-footer.jpg";
 import turndown from "@/public/images/lab/turndown.jpg";
 import turndownFlow from "@/public/images/lab/turndown-flow.jpg";
+import nightswim from "@/public/images/lab/nightswim.jpg";
+import nightswimMap from "@/public/images/lab/nightswim-map.jpg";
+import nightswimBoard from "@/public/images/lab/nightswim-board.jpg";
 
 export type LabImage = {
   src: StaticImageData;
@@ -158,7 +161,7 @@ export const labEntries: LabEntry[] = [
     images: [
       {
         src: kaldaRain,
-        alt: "Kaldá chapter one: rain falling on a black lava field under a storm sky, with the line It fell as rain on black lava.",
+        alt: "Kaldá chapter one: rain falling on a wet black lava field flecked with moss, mountains fading into the storm, with the line It fell as rain on black lava.",
         label: "01 Rain",
       },
       {
@@ -168,8 +171,30 @@ export const labEntries: LabEntry[] = [
       },
       {
         src: kaldaSource,
-        alt: "Kaldá chapter three: a clear glass bottle of water standing on a hexagonal basalt column in caustic light, with the line It comes up at four degrees.",
+        alt: "Kaldá chapter three: a clear glass bottle beaded with condensation, standing on a hexagonal basalt column among other columns in a cold teal haze, with the line It comes up at four degrees.",
         label: "03 Source",
+      },
+    ],
+  },
+  {
+    number: "08",
+    name: "Tanabe Bros.",
+    category: "Snowboard maker, a board for night riding",
+    images: [
+      {
+        src: nightswim,
+        alt: "Tanabe Bros. product page for the Nightswim snowboard: three boards with a lime, white, cobalt and black contour topsheet and one black base, beside the price in yen, sizes and specs.",
+        label: "Product",
+      },
+      {
+        src: nightswimMap,
+        alt: "The Nightswim topsheet art shown as a trail map, with lifts, numbered lit and unlit runs, elevations and the strip the 154 board is cut from, next to the board itself.",
+        label: "Trail map",
+      },
+      {
+        src: nightswimBoard,
+        alt: "Tanabe Bros. brand board: a night snowboarder under floodlights, the logotype, the line Last chair leaves at 20:20, an app screen showing lit runs, a palette, line icons, a night lift ticket, stickers, a screen-printing workshop, a portrait outside a lodge and a volcano above lit ski runs.",
+        label: "Brand board",
       },
     ],
   },
