@@ -20,6 +20,9 @@ import turndownFlow from "@/public/images/lab/turndown-flow.jpg";
 import nightswim from "@/public/images/lab/nightswim.jpg";
 import nightswimMap from "@/public/images/lab/nightswim-map.jpg";
 import nightswimBoard from "@/public/images/lab/nightswim-board.jpg";
+import belisha from "@/public/images/lab/belisha.jpg";
+import belishaCrossings from "@/public/images/lab/belisha-crossings.jpg";
+import belishaBoard from "@/public/images/lab/belisha-board.jpg";
 
 export type LabImage = {
   src: StaticImageData;
@@ -101,6 +104,28 @@ export const labEntries: LabEntry[] = [
   },
   {
     number: "04",
+    name: "Belisha",
+    category: "Fitted caps, Peckham",
+    images: [
+      {
+        src: belisha,
+        alt: "Belisha drop page for Whorl, a fitted cap printed all over with black and white liquid stripes, with a zebra patch and an amber brim sticker, beside the price, fitted sizes from 7 to 7¾ and a stock bar drawn as a zebra crossing.",
+        label: "Drop",
+      },
+      {
+        src: belishaCrossings,
+        alt: "Belisha archive at night: a young man in the Whorl cap beside an amber Belisha beacon at a wet zebra crossing, the line Named after the crossing, past drops named Pelican, Toucan, Puffin and Pegasus, and the cap wall of the shop under a railway arch.",
+        label: "Archive",
+      },
+      {
+        src: belishaBoard,
+        alt: "Belisha brand board: a zebra head logo, the Whorl print with an amber size sticker, the street photo, a palette of tarmac, kerb, beacon and stripe, a fitted size chart, the shop wall, an amber hang tag, a type specimen and the cap's amber undervisor.",
+        label: "Brand board",
+      },
+    ],
+  },
+  {
+    number: "05",
     name: "Kaldá",
     category: "Mineral water, a story in three chapters",
     images: [
@@ -122,7 +147,7 @@ export const labEntries: LabEntry[] = [
     ],
   },
   {
-    number: "05",
+    number: "06",
     name: "Halden",
     category: "Logistics operations platform",
     images: [
@@ -144,7 +169,7 @@ export const labEntries: LabEntry[] = [
     ],
   },
   {
-    number: "06",
+    number: "07",
     name: "Turndown",
     category: "Evening routine app",
     images: [
@@ -161,7 +186,7 @@ export const labEntries: LabEntry[] = [
     ],
   },
   {
-    number: "07",
+    number: "08",
     name: "Kiln",
     category: "Remote build cache",
     images: [
@@ -183,7 +208,7 @@ export const labEntries: LabEntry[] = [
     ],
   },
   {
-    number: "08",
+    number: "09",
     name: "Parity",
     category: "Design QA for pull requests",
     images: [
