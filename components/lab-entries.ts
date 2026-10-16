@@ -40,73 +40,34 @@ export type LabEntry = {
 export const labEntries: LabEntry[] = [
   {
     number: "01",
-    name: "Halden",
-    category: "Logistics operations platform",
+    name: "Tanabe Bros.",
+    category: "Snowboard maker, a board for night riding",
     images: [
       {
-        src: halden,
-        alt: "Halden lanes dashboard showing live shipping routes across the North Sea and Baltic, on a plaster wall in afternoon light.",
-        label: "Lanes",
+        src: nightswim,
+        alt: "Tanabe Bros. product page for the Nightswim snowboard: three boards with a lime, white, cobalt and black contour topsheet and one black base, beside the price in yen, sizes and specs.",
+        label: "Product",
       },
       {
-        src: haldenDock,
-        alt: "Halden dock schedule for Gdańsk T2: six berths on a timeline with a now line at 13:40 and a suggestion to move MV Skagen to Berth 2.",
-        label: "Docks",
+        src: nightswimMap,
+        alt: "The Nightswim topsheet art shown as a trail map, with lifts, numbered lit and unlit runs, elevations and the strip the 154 board is cut from, next to the board itself.",
+        label: "Trail map",
       },
       {
-        src: haldenException,
-        alt: "Halden exception detail for a reefer container drifting above its temperature limit, with a six-hour chart, an event timeline and actions.",
-        label: "Exception",
+        src: nightswimBoard,
+        alt: "Tanabe Bros. brand board: a night snowboarder under floodlights, the logotype, the line Last chair leaves at 20:20, an app screen showing lit runs, a palette, line icons, a night lift ticket, stickers, a screen-printing workshop, a portrait outside a lodge and a volcano above lit ski runs.",
+        label: "Brand board",
       },
     ],
   },
   {
     number: "02",
-    name: "Turndown",
-    category: "Evening routine app",
-    images: [
-      {
-        src: turndown,
-        alt: "Turndown brand board: a clay sphere on linen under the sign Evening service from 21:30, a folded-blanket app icon, door hangers reading Turndown please and Do not disturb, a phone preparing the bedroom, a bedroom poster reading Your room has been turned down, and a lock-screen notice.",
-        label: "Brand board",
-      },
-      {
-        src: turndownFlow,
-        alt: "Turndown evening flow: three phone screens for setting the evening, the room getting ready and a morning note for room 214, a dawn bedroom photo reading Good morning, room 214, and home-screen widgets.",
-        label: "Evening flow",
-      },
-    ],
-  },
-  {
-    number: "03",
-    name: "Kiln",
-    category: "Remote build cache",
-    images: [
-      {
-        src: kiln,
-        alt: "Kiln landing section: an isometric stack of build layers, the cached ones glowing acid green and the changed ones drawn as wireframes, above the headline Builds that start warm, CI stats and a terminal run.",
-        label: "Landing",
-      },
-      {
-        src: kilnTrace,
-        alt: "Kiln build trace for build 4812: built in 48 seconds with 11 of 14 targets warm, a waterfall of targets with cached ones in acid green and three rebuilt ones in bone, and the critical path.",
-        label: "Build trace",
-      },
-      {
-        src: kilnHeatmap,
-        alt: "Kiln cache page: 94.2% hit rate, 212 hours saved, a 30-day heatmap of hit rate per package, and the packages with the most cold starts with suggested fixes.",
-        label: "Cache",
-      },
-    ],
-  },
-  {
-    number: "04",
     name: "Moreira Holm",
     category: "Architecture practice",
     images: [
       {
         src: moreiraHolm,
-        alt: "Moreira Holm brand board: gouache paintings of a sunlit room, white houses on a hillside and a stone stair, a wide logotype split by a solid bar, business cards with two studio addresses and a floor plan, and a palette named Cal, Ocre, Oliva and Ardósia.",
+        alt: "Moreira Holm brand board: gouache paintings of a sunlit room, white houses on a hillside and a stone stair, a wide logotype split by a solid bar, business cards with two studio addresses on the front and the logotype on an ochre back, and a palette named Cal, Ocre, Oliva and Ardósia.",
         label: "Brand board",
       },
       {
@@ -117,24 +78,7 @@ export const labEntries: LabEntry[] = [
     ],
   },
   {
-    number: "05",
-    name: "Parity",
-    category: "Design QA for pull requests",
-    images: [
-      {
-        src: parity,
-        alt: "Parity website hero, Ship the design you signed off, above a compare view that splits a payment card between its Figma design and production, with the drifted button marked in magenta, a list of three drifts and a pull request check.",
-        label: "Hero",
-      },
-      {
-        src: parityFooter,
-        alt: "Parity footer: a wide photo of stacked acrylic sheets with the line Catch drift before it ships, the Parity wordmark rising out of the photo with its lower half shifted slightly, and footer links.",
-        label: "Footer",
-      },
-    ],
-  },
-  {
-    number: "06",
+    number: "03",
     name: "Offpeak",
     category: "Home energy scheduling",
     images: [
@@ -150,12 +94,13 @@ export const labEntries: LabEntry[] = [
       },
       {
         src: offpeakMap,
-        alt: "Offpeak grid map over a night photo of Europe from orbit, countries glowing by carbon intensity from Norway at 28 to Poland at 640 grams per kilowatt hour.",
+        alt: "Offpeak grid map on a dotted globe of Europe, each country's dots coloured by carbon intensity from Norway at 28 to Poland at 640 grams per kilowatt hour.",
         label: "Grid map",
       },
     ],
-  },  {
-    number: "07",
+  },
+  {
+    number: "04",
     name: "Kaldá",
     category: "Mineral water, a story in three chapters",
     images: [
@@ -177,24 +122,80 @@ export const labEntries: LabEntry[] = [
     ],
   },
   {
-    number: "08",
-    name: "Tanabe Bros.",
-    category: "Snowboard maker, a board for night riding",
+    number: "05",
+    name: "Halden",
+    category: "Logistics operations platform",
     images: [
       {
-        src: nightswim,
-        alt: "Tanabe Bros. product page for the Nightswim snowboard: three boards with a lime, white, cobalt and black contour topsheet and one black base, beside the price in yen, sizes and specs.",
-        label: "Product",
+        src: halden,
+        alt: "Halden lanes dashboard showing live shipping routes across the North Sea and Baltic, on a plaster wall in afternoon light.",
+        label: "Lanes",
       },
       {
-        src: nightswimMap,
-        alt: "The Nightswim topsheet art shown as a trail map, with lifts, numbered lit and unlit runs, elevations and the strip the 154 board is cut from, next to the board itself.",
-        label: "Trail map",
+        src: haldenDock,
+        alt: "Halden dock schedule for Gdańsk T2: six berths on a timeline with a now line at 13:40 and a suggestion to move MV Skagen to Berth 2.",
+        label: "Docks",
       },
       {
-        src: nightswimBoard,
-        alt: "Tanabe Bros. brand board: a night snowboarder under floodlights, the logotype, the line Last chair leaves at 20:20, an app screen showing lit runs, a palette, line icons, a night lift ticket, stickers, a screen-printing workshop, a portrait outside a lodge and a volcano above lit ski runs.",
+        src: haldenException,
+        alt: "Halden exception detail for a reefer container drifting above its temperature limit, with a six-hour chart, an event timeline and actions.",
+        label: "Exception",
+      },
+    ],
+  },
+  {
+    number: "06",
+    name: "Turndown",
+    category: "Evening routine app",
+    images: [
+      {
+        src: turndown,
+        alt: "Turndown brand board: a clay sphere on linen under the sign Evening service from 21:30, a folded-blanket app icon, door hangers reading Turndown please and Do not disturb, a phone preparing the bedroom, a bedroom poster reading Your room has been turned down, and a lock-screen notice.",
         label: "Brand board",
+      },
+      {
+        src: turndownFlow,
+        alt: "Turndown evening flow: three phone screens for setting the evening, the room getting ready and a morning note for room 214, a dawn bedroom photo reading Good morning, room 214, and home-screen widgets.",
+        label: "Evening flow",
+      },
+    ],
+  },
+  {
+    number: "07",
+    name: "Kiln",
+    category: "Remote build cache",
+    images: [
+      {
+        src: kiln,
+        alt: "Kiln landing section: an isometric stack of build layers, the cached ones glowing acid green and the changed ones drawn as wireframes, above the headline Builds that start warm, CI stats and a terminal run.",
+        label: "Landing",
+      },
+      {
+        src: kilnTrace,
+        alt: "Kiln build trace for build 4812: built in 48 seconds with 11 of 14 targets warm, a waterfall of targets with cached ones in acid green and three rebuilt ones in bone, and the critical path.",
+        label: "Build trace",
+      },
+      {
+        src: kilnHeatmap,
+        alt: "Kiln cache page: 94.2% hit rate, 212 hours saved, a 30-day heatmap of hit rate per package, and the packages with the most cold starts with suggested fixes.",
+        label: "Cache",
+      },
+    ],
+  },
+  {
+    number: "08",
+    name: "Parity",
+    category: "Design QA for pull requests",
+    images: [
+      {
+        src: parity,
+        alt: "Parity website hero, Ship the design you signed off, above a compare view that splits a payment card between its Figma design and production, with the drifted button marked in magenta, a list of three drifts and a pull request check.",
+        label: "Hero",
+      },
+      {
+        src: parityFooter,
+        alt: "Parity footer: a wide photo of stacked acrylic sheets with the line Catch drift before it ships, the Parity wordmark rising out of the photo with its lower half shifted slightly, and footer links.",
+        label: "Footer",
       },
     ],
   },
