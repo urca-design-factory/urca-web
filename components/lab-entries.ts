@@ -1,7 +1,7 @@
 import type { StaticImageData } from "next/image";
-import kaldaBasalt from "@/public/images/lab/kalda-basalt.jpg";
-import kaldaRain from "@/public/images/lab/kalda-rain.jpg";
-import kaldaSource from "@/public/images/lab/kalda-source.jpg";
+import brix from "@/public/images/lab/brix.jpg";
+import brixPrint from "@/public/images/lab/brix-print.jpg";
+import brixShop from "@/public/images/lab/brix-shop.jpg";
 import halden from "@/public/images/lab/halden.jpg";
 import haldenDock from "@/public/images/lab/halden-dock.jpg";
 import haldenException from "@/public/images/lab/halden-exception.jpg";
@@ -126,23 +126,23 @@ export const labEntries: LabEntry[] = [
   },
   {
     number: "05",
-    name: "Kaldá",
-    category: "Mineral water, a story in three chapters",
+    name: "Brix Bageri",
+    category: "Neighbourhood bakery, Aarhus",
     images: [
       {
-        src: kaldaRain,
-        alt: "Kaldá chapter one: rain falling on a wet black lava field flecked with moss, mountains fading into the storm, with the line It fell as rain on black lava.",
-        label: "01 Rain",
+        src: brix,
+        alt: "Brix Bageri identity: a red kringle mark above the wordmark Brix Bageri in a large serif, a black display reading Now serving 47, three red queue tickets numbered 47 to 49, and a palette of paper, oat, ticket red and ink.",
+        label: "Identity",
       },
       {
-        src: kaldaBasalt,
-        alt: "Kaldá chapter two: a cut-open block of layered basalt with a glowing thread of water winding down through it, tagged with depths and years, and the minerals it picks up.",
-        label: "02 Basalt",
+        src: brixShop,
+        alt: "Brix Bageri in use: an ochre bakery front on a cobbled Aarhus street with a gilded kringle sign over the door, the line Take a number, opening hours, cinnamon snails and sliced rye bread.",
+        label: "Shop",
       },
       {
-        src: kaldaSource,
-        alt: "Kaldá chapter three: a clear glass bottle beaded with condensation, standing on a hexagonal basalt column among other columns in a cold teal haze, with the line It comes up at four degrees.",
-        label: "03 Source",
+        src: brixPrint,
+        alt: "Brix Bageri print shown flat: a white bread bag printed in red with the number 07 of a run of 100, a roll of queue tickets, a Sunday kringle box lid, a red vanilla rings sticker and the day's counter list with a cardamom bun gone at 10:40.",
+        label: "Print",
       },
     ],
   },
