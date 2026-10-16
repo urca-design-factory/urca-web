@@ -12,8 +12,8 @@ import {
 
 const navigation = {
   left: [
-    ["Home", "/"],
     ["Capabilities", "/capabilities"],
+    ["Studies", "/studies"],
   ],
   right: [
     ["Studio", "/#studio"],
@@ -33,12 +33,18 @@ const mobileNavigation = [
   },
   {
     number: "02",
+    label: "Studies",
+    href: "/studies",
+    visual: "/images/lab/nightswim.jpg",
+  },
+  {
+    number: "03",
     label: "Studio",
     href: "/#studio",
     visual: "/images/capabilities/interactive.webp",
   },
   {
-    number: "03",
+    number: "04",
     label: "Contact",
     href: "#contact",
     visual: "/images/capabilities/ascent.webp",
@@ -48,7 +54,7 @@ const mobileNavigation = [
 export function SiteHeader({
   currentPage,
 }: {
-  currentPage?: "capabilities" | "privacy";
+  currentPage?: "capabilities" | "studies" | "privacy";
 }) {
   const headerRef = useRef<HTMLElement>(null);
   const navigationRef = useRef<HTMLDivElement>(null);
@@ -445,6 +451,7 @@ export function SiteHeader({
       <noscript>
         <nav className="no-script-nav" aria-label="Mobile navigation">
           <Link href="/capabilities">Capabilities</Link>
+          <Link href="/studies">Studies</Link>
           <Link href="/#studio">Studio</Link>
           <a href="#contact">Contact</a>
         </nav>

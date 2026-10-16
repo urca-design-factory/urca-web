@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { labEntries } from "@/components/lab-entries";
 import { LabMedia } from "@/components/LabMedia";
 import { LabStrip } from "@/components/LabStrip";
@@ -20,6 +21,11 @@ export function LabSection() {
         <p className="lab__note t-stagger-line t-stagger-line--3">
           Self-initiated concepts. Fictional brands and products, designed and
           built in-house to test ideas we care about.
+          <br />
+          <Link className="lab__link" href="/studies">
+            <span>All studies</span>
+            <span aria-hidden="true">↗</span>
+          </Link>
         </p>
       </div>
 
