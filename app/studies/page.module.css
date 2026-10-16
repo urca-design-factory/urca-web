@@ -1,0 +1,93 @@
+.page {
+  --studies-space: clamp(5rem, 10vw, 10rem);
+  --studies-gap: clamp(2rem, 5vw, 5rem);
+  --studies-body: clamp(1rem, 1.2vw, 1.2rem);
+  --studies-rule: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  overflow-wrap: anywhere;
+}
+
+.label { grid-column: 1 / 5; color: var(--color-muted); }
+.hero {
+  padding-top: clamp(10rem, 16vh, 13rem);
+  padding-bottom: var(--studies-space);
+}
+.heroNote { grid-column: 8 / -1; text-align: right; color: var(--color-muted); }
+.heroTitle {
+  grid-column: 1 / -1;
+  margin: clamp(3rem, 6vw, 6rem) 0 var(--studies-gap);
+  font-family: var(--font-sans);
+  font-size: clamp(3.5rem, 8.7vw, 11rem);
+  font-weight: 400;
+  letter-spacing: -0.07em;
+  line-height: 0.9;
+}
+.heroTitle > span, .heroTitle > em { display: block; }
+.heroTitle em {
+  margin-left: 17%;
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.04em;
+}
+.period { color: var(--color-signal-text); }
+.heroSummary {
+  grid-column: 8 / -1;
+  margin: 0;
+  max-width: 34rem;
+  font-size: var(--studies-body);
+  line-height: 1.5;
+  letter-spacing: -0.025em;
+  color: var(--color-muted);
+}
+
+/* One study: name on the left, every image on the right. */
+.number { margin: 0; color: var(--color-signal-text); font: 0.75rem/1.4 var(--font-mono); }
+.study {
+  align-items: start;
+  padding-bottom: var(--studies-space);
+  scroll-margin-top: var(--masthead-height);
+}
+.studyHeading {
+  position: sticky;
+  top: calc(var(--masthead-height) + var(--grid-gap));
+  grid-column: 1 / 4;
+  padding-top: 1.25rem;
+  border-top: var(--studies-rule);
+}
+.studyHeading h2 {
+  margin: 1.5rem 0 0;
+  font-size: clamp(2rem, 3.4vw, 4rem);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.06em;
+}
+.category {
+  margin: 1rem 0 0;
+  max-width: 22ch;
+  color: var(--color-muted);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+.studyMedia {
+  grid-column: 4 / -1;
+  padding-top: 1.25rem;
+  border-top: var(--studies-rule);
+}
+
+@media (max-width: 900px) {
+  .label, .heroNote, .heroSummary { grid-column: 1 / -1; }
+  .heroNote { text-align: left; margin-top: 0.5rem; }
+  .heroTitle em { margin-left: 8%; }
+  .studyHeading {
+    position: static;
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 1rem;
+    align-items: baseline;
+  }
+  .studyHeading h2 { margin: 0; }
+  .category { grid-column: 2; margin-top: 0.5rem; }
+  .studyMedia { grid-column: 1 / -1; margin-top: 1.5rem; padding-top: 0; border-top: 0; }
+}

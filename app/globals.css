@@ -3388,3 +3388,123 @@ html[data-lightbox] {
   }
 }
 */
+
+/* Studies page — every image of a study, laid out side by side */
+
+.study-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 2rem);
+}
+
+/* Landscape: the first image runs full width, the rest pair up below. */
+.study-gallery[data-orientation="landscape"] .study-shot:first-child,
+.study-gallery[data-orientation="landscape"] .study-shot:last-child:nth-child(even) {
+  grid-column: 1 / -1;
+}
+
+/* Portrait: all images in one row. */
+.study-gallery[data-orientation="portrait"] {
+  grid-template-columns: repeat(var(--study-columns, 2), minmax(0, 1fr));
+}
+
+.study-shot {
+  margin: 0;
+}
+
+.study-shot__media {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-wash);
+}
+
+.study-shot__image {
+  display: block;
+  width: 100%;
+  height: auto;
+  user-select: none;
+  transition:
+    opacity 1100ms var(--ease-out),
+    filter 1100ms var(--ease-out),
+    transform 1400ms var(--ease-out);
+}
+
+.study[data-reveal="pending"] .study-shot__image {
+  opacity: 0;
+  filter: blur(16px);
+  transform: scale(1.03);
+  transition: none;
+}
+
+.study-shot[data-lifted] .study-shot__image {
+  visibility: hidden;
+  transition: none;
+}
+
+.study-shot__open {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+}
+
+.study-shot__open:focus-visible {
+  outline: 2px solid var(--color-signal);
+  outline-offset: -4px;
+}
+
+.study-shot__caption {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.75rem;
+  color: var(--color-muted);
+  text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+  .study-gallery[data-orientation="landscape"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .study-gallery[data-orientation="portrait"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .study-gallery[data-orientation="portrait"] .study-shot:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Homepage Lab: link to the Studies page */
+
+.lab__link {
+  display: inline-flex;
+  gap: 0.55rem;
+  align-items: center;
+  margin-top: 1.75rem;
+  padding-bottom: 0.45rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-ink) 48%, transparent);
+  color: var(--color-ink);
+  font-family: var(--font-mono);
+  font-size: clamp(0.68rem, 0.76vw, 0.8rem);
+  line-height: 1;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.lab__link span {
+  transition: transform var(--duration-medium) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .lab__link:hover {
+    border-color: var(--color-ink);
+  }
+
+  .lab__link:hover span:last-child {
+    transform: translate(0.35rem, -0.12rem);
+  }
+}

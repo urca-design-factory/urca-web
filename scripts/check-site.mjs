@@ -37,7 +37,7 @@ async function audit(page, label) {
 }
 
 try {
-  for (const route of ["/", "/capabilities", "/privacy"]) {
+  for (const route of ["/", "/capabilities", "/studies", "/privacy"]) {
     for (const width of [320, 390, 768, 1024, 1440, 2560]) {
       const label = `${route === "/" ? "home" : route.slice(1)}-${width}`;
       const page = await browser.newPage({
@@ -191,7 +191,7 @@ try {
   await audit(mobile, "service-expanded");
   await mobile.close();
 
-  for (const route of ["/", "/capabilities", "/privacy"]) {
+  for (const route of ["/", "/capabilities", "/studies", "/privacy"]) {
     const page = await browser.newPage({
       javaScriptEnabled: false,
       viewport: { width: 390, height: 844 },
