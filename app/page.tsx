@@ -1,6 +1,7 @@
 import { FactorySection } from "@/components/FactorySection";
 import { FinalChapter } from "@/components/FinalChapter";
 import { HeroArtwork } from "@/components/HeroArtwork";
+import { LabSection } from "@/components/LabSection";
 import { SiteHeader } from "@/components/SiteHeader";
 import { ViewportReveal } from "@/components/ViewportReveal";
 import brandVisual from "@/public/images/capabilities/brand.webp";
@@ -172,6 +173,8 @@ export default function Home() {
               </div>
             </section>
           </div>
+
+          <LabSection />
 
           {/* Selected Work — retained for the next content release.
 <section className="selected-work page-grid" id="selected-work" aria-labelledby="work-title">

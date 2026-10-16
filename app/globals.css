@@ -589,6 +589,14 @@ a {
   display: block;
 }
 
+/* The mask clips to the border box; extra bottom room keeps descenders
+   (the "p" in "experiences") from being cut off by the tight line-height. */
+.hero__title-base,
+.hero__title-inverse {
+  padding-bottom: 0.2em;
+  margin-bottom: -0.2em;
+}
+
 .hero[data-inverse-text="true"] .hero__title-base,
 .hero[data-inverse-text="true"] .hero__summary-base {
   -webkit-mask-image: radial-gradient(
@@ -2437,6 +2445,458 @@ a {
   transform: none;
   filter: none;
   transition: none;
+}
+
+/* Lab — self-initiated concepts */
+
+.lab {
+  padding-top: var(--space-section);
+  padding-bottom: var(--space-section);
+  scroll-margin-top: calc(var(--masthead-height) + var(--grid-gap));
+}
+
+.lab__intro {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  align-items: start;
+  column-gap: var(--grid-gap);
+}
+
+.lab__label {
+  grid-column: 2 / span 1;
+  padding-top: 0.7rem;
+}
+
+.lab__title {
+  grid-column: 4 / 12;
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: clamp(3.75rem, 7vw, 7.25rem);
+  font-weight: 400;
+  line-height: 0.86;
+  letter-spacing: -0.07em;
+}
+
+.lab__title span,
+.lab__title em {
+  display: block;
+}
+
+.lab__title em {
+  margin-top: 0.08em;
+  font-family: var(--font-display);
+  font-style: italic;
+  letter-spacing: -0.04em;
+}
+
+.lab__note {
+  grid-column: 9 / span 3;
+  max-width: 24rem;
+  margin: clamp(2.5rem, 4vw, 4rem) 0 0;
+  color: var(--color-muted);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.lab-strip {
+  grid-column: 1 / -1;
+  margin-top: clamp(5rem, 8vw, 8rem);
+  margin-inline: calc(var(--gutter) * -1);
+}
+
+.lab-strip__track {
+  display: flex;
+  gap: clamp(1rem, 2vw, 2rem);
+  padding-inline: var(--gutter);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  cursor: grab;
+}
+
+.lab-strip__track::-webkit-scrollbar {
+  display: none;
+}
+
+.lab-strip__track[data-dragging="true"] {
+  cursor: grabbing;
+}
+
+.lab-strip__track:focus-visible {
+  outline: 2px solid var(--color-signal);
+  outline-offset: -2px;
+}
+
+.lab-strip__controls {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-top: clamp(1.75rem, 3vw, 2.5rem);
+  padding-inline: var(--gutter);
+}
+
+.lab-strip__rail {
+  position: relative;
+  flex: 1;
+  height: 1px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--color-ink) 18%, transparent);
+}
+
+.lab-strip__thumb {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 100%;
+  background: var(--color-ink);
+}
+
+.lab-strip__button {
+  padding: 0.25rem;
+  border: 0;
+  background: none;
+  color: var(--color-ink);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.lab-strip__button:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+.lab-strip__button:focus-visible {
+  outline: 2px solid var(--color-signal);
+  outline-offset: 3px;
+}
+
+.lab-entry {
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+.lab-media {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-wash);
+}
+
+/* Extra images stack on the first and crossfade. */
+.lab-media__image[data-stacked] {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  object-fit: cover;
+}
+
+.lab-media__image[data-active="false"] {
+  opacity: 0;
+}
+
+/* Carousel progress: one bar per image, the active one fills over 4.5 s. */
+.lab-progress {
+  position: absolute;
+  right: 0.9rem;
+  bottom: 0.9rem;
+  display: flex;
+  gap: 0.2rem;
+  padding: 0.35rem 0.45rem;
+  border-radius: 999px;
+  background: rgb(17 17 17 / 32%);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.lab-progress__bar {
+  position: relative;
+  width: 1.6rem;
+  height: 1rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.lab-progress__bar::before,
+.lab-progress__bar i {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 2px;
+  margin-top: -1px;
+  border-radius: 1px;
+}
+
+.lab-progress__bar::before {
+  right: 0;
+  background: rgb(255 255 255 / 38%);
+  content: "";
+}
+
+.lab-progress__bar i {
+  width: 0;
+  background: #fff;
+}
+
+.lab-progress__bar[data-state="done"] i,
+.lab-entry[data-manual] .lab-progress__bar[data-state="active"] i {
+  width: 100%;
+}
+
+.lab-entry:not([data-manual]) .lab-progress__bar[data-state="active"] i {
+  animation: lab-progress 4.5s linear forwards;
+}
+
+.lab-entry[data-paused]:not([data-manual]) .lab-progress__bar[data-state="active"] i {
+  animation-play-state: paused;
+}
+
+.lab-progress__bar:focus-visible {
+  outline: 2px solid var(--color-signal);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+@keyframes lab-progress {
+  to { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lab-entry:not([data-manual]) .lab-progress__bar[data-state="active"] i {
+    width: 100%;
+    animation: none;
+  }
+}
+
+.lab-media__image {
+  display: block;
+  width: auto;
+  height: clamp(24rem, 64svh, 46rem);
+  user-select: none;
+  transition:
+    opacity 1100ms var(--ease-out),
+    filter 1100ms var(--ease-out),
+    transform 1400ms var(--ease-out);
+}
+
+/* Images settle in with a blur and fade once the entry scrolls into view. */
+.lab-entry[data-reveal="pending"] .lab-media__image {
+  opacity: 0;
+  filter: blur(16px);
+  transform: scale(1.03);
+  transition: none;
+}
+
+.lab-entry__caption {
+  contain: inline-size;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.75rem;
+  margin-top: 1.1rem;
+  color: var(--color-muted);
+  text-transform: uppercase;
+}
+
+.lab-entry__name {
+  color: var(--color-ink);
+}
+
+
+@media (max-width: 900px) {
+
+  .lab__label,
+  .lab__title,
+  .lab__note {
+    grid-column: 1 / -1;
+  }
+
+  .lab__title {
+    margin-top: 1.5rem;
+  }
+
+  /* Keep the strip short enough that the next entry always peeks in. */
+  .lab-media__image {
+    height: min(58svh, calc((100vw - 2 * var(--gutter)) * 0.75));
+  }
+
+}
+
+/* Lab lightbox */
+.lab-media__open {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+}
+
+.lab-media__open:focus-visible {
+  outline: 2px solid var(--color-signal);
+  outline-offset: -4px;
+}
+
+.lab-progress {
+  z-index: 2;
+}
+
+html[data-lightbox] {
+  overflow: hidden;
+}
+
+.lab-lightbox {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: rgb(14 14 13);
+  color: #f4f3ef;
+  overscroll-behavior: contain;
+}
+
+.lab-lightbox::backdrop {
+  background: transparent;
+}
+
+/* The card's own image steps aside while its copy is open full screen. */
+.lab-entry[data-lifted] .lab-media__image {
+  visibility: hidden;
+  /* Swap to the image last viewed instantly while hidden, no crossfade. */
+  transition: none;
+}
+
+.lab-lightbox__stage {
+  position: absolute;
+  inset: clamp(3.5rem, 7vh, 5rem) clamp(1rem, 7vw, 7.5rem) clamp(4rem, 9vh, 5.5rem);
+}
+
+.lab-lightbox__frame {
+  position: absolute;
+  overflow: hidden;
+  background-position: center;
+  background-size: cover;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+.lab-lightbox__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 420ms var(--ease-out);
+}
+
+.lab-lightbox__image[data-active="false"] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.lab-lightbox__arrow,
+.lab-lightbox__close {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 8%);
+  color: inherit;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.lab-lightbox__arrow:hover,
+.lab-lightbox__close:hover {
+  background: rgb(255 255 255 / 16%);
+}
+
+.lab-lightbox__arrow:focus-visible,
+.lab-lightbox__close:focus-visible {
+  outline: 2px solid var(--color-signal);
+  outline-offset: 3px;
+}
+
+.lab-lightbox svg {
+  width: 45%;
+  height: 45%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.lab-lightbox__arrow {
+  top: 50%;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-top: -1.75rem;
+}
+
+.lab-lightbox__arrow--prev {
+  left: clamp(0.75rem, 2vw, 2rem);
+}
+
+.lab-lightbox__arrow--next {
+  right: clamp(0.75rem, 2vw, 2rem);
+}
+
+.lab-lightbox__close {
+  top: clamp(0.75rem, 2vh, 1.25rem);
+  right: clamp(0.75rem, 2vw, 2rem);
+  width: 2.75rem;
+  height: 2.75rem;
+}
+
+.lab-lightbox__bar {
+  position: absolute;
+  left: clamp(1rem, 7vw, 7.5rem);
+  right: clamp(1rem, 7vw, 7.5rem);
+  bottom: clamp(1.25rem, 3.5vh, 2rem);
+  display: flex;
+  gap: 1.75rem;
+  color: rgb(244 243 239 / 55%);
+  text-transform: uppercase;
+}
+
+.lab-lightbox__name {
+  color: #f4f3ef;
+}
+
+.lab-lightbox__count {
+  margin-left: auto;
+}
+
+@media (max-width: 900px) {
+
+  .lab-lightbox__arrow {
+    top: auto;
+    bottom: clamp(3.5rem, 8vh, 4.5rem);
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-top: 0;
+  }
+
+  .lab-lightbox__stage {
+    inset: 3.75rem 0.75rem 8rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .lab-lightbox__image {
+    transition: none;
+  }
 }
 
 /* Selected Work styles — retained with the commented homepage section.
