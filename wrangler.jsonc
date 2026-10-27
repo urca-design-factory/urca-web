@@ -12,5 +12,14 @@
     { "binding": "WORKER_SELF_REFERENCE", "service": "urca-web" }
   ],
   "images": { "binding": "IMAGES" },
+  // Project briefs submitted at /brief (docs/BRIEF.md).
+  "d1_databases": [
+    {
+      "binding": "BRIEFS_DB",
+      "database_name": "urca-briefs",
+      "database_id": "5622fb04-42c0-438b-bd64-ea854458997e",
+      "migrations_dir": "migrations"
+    }
+  ],
   "observability": { "enabled": true }
 }

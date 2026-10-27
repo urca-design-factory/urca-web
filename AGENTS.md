@@ -566,3 +566,7 @@ If yes to the final question, remove it.
 **Do not optimize Urca for looking like a modern website.**
 
 Optimize it for looking unmistakably like **Urca Design Factory**.
+
+## Project brief
+
+`/brief` and `/brief/tr` are an unlisted client questionnaire backed by D1. Read `docs/BRIEF.md` before changing them; questions live only in `components/brief-questions.ts`.
