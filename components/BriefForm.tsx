@@ -9,6 +9,7 @@ import {
   type BriefField,
   type BriefLocale,
 } from "@/components/brief-questions";
+import { jumpToElement } from "@/components/SmoothScroll";
 import styles from "./BriefPage.module.css";
 
 // Public key of the "Urca project brief" Turnstile widget. Development uses
@@ -184,7 +185,7 @@ export function BriefForm({ locale }: { locale: BriefLocale }) {
   useEffect(() => {
     if (status !== "done" || !doneRef.current) return;
     // The form is much taller than the thank-you note, so bring the note into view.
-    doneRef.current.scrollIntoView({ block: "start" });
+    jumpToElement(doneRef.current);
     doneRef.current.focus({ preventScroll: true });
   }, [status]);
 

@@ -4,6 +4,23 @@ import Lenis from "lenis";
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 
+let activeLenis: Lenis | undefined;
+
+/**
+ * Jumps to an element without animation. Lenis owns the scroll position on
+ * fine-pointer devices, so a native scrollIntoView would be overridden there.
+ * Honours the element's scroll-margin-top.
+ */
+export function jumpToElement(element: HTMLElement) {
+  if (activeLenis) {
+    const margin = Number.parseFloat(getComputedStyle(element).scrollMarginTop) || 0;
+    activeLenis.resize();
+    activeLenis.scrollTo(element, { immediate: true, force: true, offset: -margin });
+  } else {
+    element.scrollIntoView({ block: "start", behavior: "instant" });
+  }
+}
+
 export function SmoothScroll() {
   const pathname = usePathname();
 
@@ -15,6 +32,7 @@ export function SmoothScroll() {
     const configure = () => {
       lenis?.destroy();
       lenis = undefined;
+      activeLenis = undefined;
       if (reducedMotion.matches || !finePointer.matches) return;
 
       lenis = new Lenis({
@@ -25,6 +43,7 @@ export function SmoothScroll() {
         smoothWheel: true,
         wheelMultiplier: 0.85,
       });
+      activeLenis = lenis;
     };
 
     configure();
@@ -34,6 +53,7 @@ export function SmoothScroll() {
       reducedMotion.removeEventListener("change", configure);
       finePointer.removeEventListener("change", configure);
       lenis?.destroy();
+      activeLenis = undefined;
     };
   }, [pathname]);
 

@@ -14,18 +14,20 @@ const copy = {
     titleBottom: "your store.",
     summary:
       "About ten minutes. Answer what you can; “not sure yet” is a perfectly good answer. We’ll use it to prepare a proposal with options for different scopes.",
-    switchLabel: "Türkçe",
+    switchLabel: "TR",
+    switchName: "Turkish version",
     switchHref: "/brief/tr",
     switchLang: "tr",
   },
   tr: {
     skip: "Forma geç",
-    label: "PROJE BRIEFİ / ONLINE MAĞAZA",
+    label: "PROJE FORMU / E-TİCARET SİTESİ",
     titleTop: "Bize mağazanızı",
     titleBottom: "anlatın.",
     summary:
       "Yaklaşık on dakika sürer. Bildiğiniz kadarını yanıtlayın; “henüz emin değilim” de geçerli bir cevap. Yanıtlarınıza göre farklı kapsamlarda seçenekli bir teklif hazırlayacağız.",
-    switchLabel: "English",
+    switchLabel: "EN",
+    switchName: "İngilizce sürüm",
     switchHref: "/brief",
     switchLang: "en",
   },
@@ -35,12 +37,12 @@ export function BriefPage({ locale }: { locale: BriefLocale }) {
   const t = copy[locale];
 
   return (
-    <div className={styles.page}>
+    <div className={styles.page} lang={locale}>
       <a className="skip-link" href="#brief-content">
         {t.skip}
       </a>
-      <SiteHeader currentPage="brief" />
-      <main id="brief-content" tabIndex={-1} lang={locale}>
+      <SiteHeader currentPage="brief" locale={locale} />
+      <main id="brief-content" tabIndex={-1}>
         <section className={`${styles.hero} page-grid`} aria-labelledby="brief-title">
           <p className={`${styles.kicker} eyebrow`}>{t.label}</p>
           <Link
@@ -48,8 +50,9 @@ export function BriefPage({ locale }: { locale: BriefLocale }) {
             href={t.switchHref}
             hrefLang={t.switchLang}
             lang={t.switchLang}
+            aria-label={t.switchName}
           >
-            {t.switchLabel.toLocaleUpperCase(t.switchLang)}
+            {t.switchLabel}
           </Link>
           <h1 className={styles.title} id="brief-title">
             <span>{t.titleTop}</span>
@@ -60,7 +63,7 @@ export function BriefPage({ locale }: { locale: BriefLocale }) {
 
         <BriefForm locale={locale} />
       </main>
-      <FinalChapter />
+      <FinalChapter locale={locale} />
     </div>
   );
 }

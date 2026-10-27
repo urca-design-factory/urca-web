@@ -21,6 +21,34 @@ const navigation = {
   ],
 } as const;
 
+const turkishLabels: Record<string, string> = {
+  Capabilities: "Hizmetler",
+  Studies: "Çalışmalar",
+  Studio: "Stüdyo",
+  Contact: "İletişim",
+};
+
+const headerCopy = {
+  en: {
+    menu: "Menu",
+    close: "Close",
+    explore: (label: string) => `Explore ${label.toLowerCase()}`,
+    home: "Urca Design Factory, home",
+    primary: "Primary navigation",
+    mobile: "Mobile navigation",
+    site: "Site navigation",
+  },
+  tr: {
+    menu: "Menü",
+    close: "Kapat",
+    explore: (label: string) => `${label} sayfasına git`,
+    home: "Urca Design Factory, ana sayfa",
+    primary: "Ana menü",
+    mobile: "Mobil menü",
+    site: "Site menüsü",
+  },
+} as const;
+
 type NavigationItem =
   (typeof navigation.left)[number] | (typeof navigation.right)[number];
 
@@ -53,9 +81,14 @@ const mobileNavigation = [
 
 export function SiteHeader({
   currentPage,
+  locale = "en",
 }: {
   currentPage?: "capabilities" | "studies" | "privacy" | "brief";
+  locale?: "en" | "tr";
 }) {
+  const t = headerCopy[locale];
+  const translate = (label: string) =>
+    locale === "tr" ? (turkishLabels[label] ?? label) : label;
   const headerRef = useRef<HTMLElement>(null);
   const navigationRef = useRef<HTMLDivElement>(null);
   const menuToggleRef = useRef<HTMLButtonElement>(null);
@@ -302,7 +335,7 @@ export function SiteHeader({
       }
       key={label}
     >
-      {label}
+      {translate(label)}
     </Link>
   );
 
@@ -311,7 +344,7 @@ export function SiteHeader({
       ref={navigationRef}
       role={mobileMenuOpen ? "dialog" : undefined}
       aria-modal={mobileMenuOpen || undefined}
-      aria-label={mobileMenuOpen ? "Site navigation" : undefined}
+      aria-label={mobileMenuOpen ? t.site : undefined}
     >
       <header
         className="site-header"
@@ -324,7 +357,7 @@ export function SiteHeader({
         <div
           className={`site-header__reveal t-enter-line${currentPage ? "" : " t-stagger-line t-stagger-line--1"}`}
         >
-          <nav className="site-nav" aria-label="Primary navigation">
+          <nav className="site-nav" aria-label={t.primary}>
             <div className="site-nav__group site-nav__group--left">
               {navigation.left.map(renderLink)}
             </div>
@@ -332,7 +365,7 @@ export function SiteHeader({
             <Link
               className="brand"
               href={currentPage ? "/" : "#top"}
-              aria-label="Urca Design Factory, home"
+              aria-label={t.home}
               onClick={closeMobileMenu}
             >
               <Image
@@ -357,7 +390,7 @@ export function SiteHeader({
                 aria-expanded={mobileMenuOpen}
                 onClick={() => setMobileMenuOpen((open) => !open)}
               >
-                <span>{mobileMenuOpen ? "Close" : "Menu"}</span>
+                <span>{mobileMenuOpen ? t.close : t.menu}</span>
                 <span className="site-nav__mobile-icon" aria-hidden="true">
                   <i />
                   <i />
@@ -374,7 +407,7 @@ export function SiteHeader({
         className="mobile-menu t-panel-slide"
         id="mobile-menu"
         data-lenis-prevent
-        aria-label="Mobile navigation"
+        aria-label={t.mobile}
         data-open={mobileMenuOpen}
         aria-hidden={!mobileMenuOpen}
         inert={!mobileMenuOpen}
@@ -402,7 +435,7 @@ export function SiteHeader({
                   }
                 >
                   <span className="mobile-menu__number">{item.number}</span>
-                  <span className="mobile-menu__title">{item.label}</span>
+                  <span className="mobile-menu__title">{translate(item.label)}</span>
                   <span className="mobile-menu__mark" aria-hidden="true" />
                 </button>
 
@@ -425,7 +458,7 @@ export function SiteHeader({
                       )}
                       <div className="mobile-menu__visual-meta">
                         <span aria-hidden="true">
-                          {item.number} / {item.label}
+                          {item.number} / {translate(item.label)}
                         </span>
                         <Link
                           href={item.href}
@@ -436,7 +469,7 @@ export function SiteHeader({
                               : undefined
                           }
                         >
-                          Explore {item.label.toLowerCase()}{" "}
+                          {t.explore(translate(item.label))}{" "}
                           <span aria-hidden="true">↗</span>
                         </Link>
                       </div>
@@ -449,11 +482,11 @@ export function SiteHeader({
         </div>
       </nav>
       <noscript>
-        <nav className="no-script-nav" aria-label="Mobile navigation">
-          <Link href="/capabilities">Capabilities</Link>
-          <Link href="/studies">Studies</Link>
-          <Link href="/#studio">Studio</Link>
-          <a href="#contact">Contact</a>
+        <nav className="no-script-nav" aria-label={t.mobile}>
+          <Link href="/capabilities">{translate("Capabilities")}</Link>
+          <Link href="/studies">{translate("Studies")}</Link>
+          <Link href="/#studio">{translate("Studio")}</Link>
+          <a href="#contact">{translate("Contact")}</a>
         </nav>
         <style>{`.site-nav__mobile { display: none !important; }`}</style>
       </noscript>
