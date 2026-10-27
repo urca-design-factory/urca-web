@@ -105,7 +105,8 @@ async function verifyTurnstile(token: string, secret: string, ip: string | null)
       method: "POST",
       body: form,
     });
-    const outcome = (await result.json()) as { success?: boolean };
+    const outcome = (await result.json()) as { success?: boolean; "error-codes"?: string[] };
+    if (outcome.success !== true) console.warn("turnstile rejected", outcome["error-codes"]);
     return outcome.success === true;
   } catch (error) {
     console.error("turnstile verification failed", error);

@@ -5,6 +5,8 @@ An unlisted questionnaire sent to prospective clients before a proposal. `/brief
 - Questions, options and both languages live in `components/brief-questions.ts`. The form, the API validation and the text summary all read it, so edit questions there only.
 - `POST /api/brief` (`app/api/brief/route.ts`) checks Cloudflare Turnstile, keeps only known answers and stores the brief in the `urca-briefs` D1 database (`migrations/`). No IP address or user agent is stored.
 - If `RESEND_API_KEY` is set, a plain-text summary is also emailed to contact@urcadesign.com with the client as reply-to. A failed email never fails the submission.
+- Turnstile runs in `execute` mode: the challenge starts when the visitor presses send, not on page load, because tokens expire after five minutes and are single-use. The widget is hidden unless it needs a click. Rejections are logged with Turnstile's error codes.
+- Answers are saved to `localStorage` (`urca-brief-draft`, shared by both languages) on every change and restored on return; the draft is cleared after a successful send or with "Clear form".
 - If the database or Turnstile secret is missing, the API answers 503 and the form tells the visitor to email us.
 - If the consent sentence changes, bump `CONSENT_VERSION` in the route. Briefs are described on `/privacy`.
 
