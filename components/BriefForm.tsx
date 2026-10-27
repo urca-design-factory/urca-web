@@ -11,10 +11,10 @@ import {
 } from "@/components/brief-questions";
 import styles from "./BriefPage.module.css";
 
-// Public key of the "urcadesign.com" Turnstile widget. Development uses
+// Public key of the "Urca project brief" Turnstile widget. Development uses
 // Cloudflare's always-passing test key.
 const TURNSTILE_SITE_KEY =
-  process.env.NODE_ENV === "production" ? "0x4AAAAAAFSPFzHE7QaAeH4P" : "1x00000000000000000000AA";
+  process.env.NODE_ENV === "production" ? "0x4AAAAAAFnyb559usQkaq-H" : "1x00000000000000000000AA";
 const TURNSTILE_SCRIPT = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
 
 type Turnstile = {

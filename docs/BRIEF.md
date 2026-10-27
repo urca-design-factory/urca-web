@@ -10,11 +10,9 @@ An unlisted questionnaire sent to prospective clients before a proposal. `/brief
 
 ## Setup (once)
 
-1. `npx wrangler d1 create urca-briefs`, then put the `database_id` in `wrangler.jsonc`.
-2. `npm run db:migrate:remote`
-3. In Cloudflare Turnstile, add `urcadesign.com` to the existing widget (site key `0x4AAAAAAFSPFzHE7QaAeH4P`), then `npx wrangler secret put TURNSTILE_SECRET_KEY` with the same secret key.
-4. Optional email: verify `urcadesign.com` in Resend, then `npx wrangler secret put RESEND_API_KEY`.
-5. `npm run deploy:cloudflare`
+Done on 2026-10-27: D1 database `urca-briefs` created and migrated, Turnstile widget "Urca project brief" (site key in `components/BriefForm.tsx`, domains urcadesign.com and www) created, and its secret stored as `TURNSTILE_SECRET_KEY` on the `urca-web` worker.
+
+New migrations: `npm run db:migrate:remote`. Optional email: verify `urcadesign.com` in Resend, then `npx wrangler secret put RESEND_API_KEY`.
 
 ## Local
 
