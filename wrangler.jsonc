@@ -12,5 +12,15 @@
     { "binding": "WORKER_SELF_REFERENCE", "service": "urca-web" }
   ],
   "images": { "binding": "IMAGES" },
+  // Project briefs submitted at /brief. Create once with
+  // `npx wrangler d1 create urca-briefs` and paste the id below.
+  "d1_databases": [
+    {
+      "binding": "BRIEFS_DB",
+      "database_name": "urca-briefs",
+      "database_id": "REPLACE_WITH_D1_DATABASE_ID",
+      "migrations_dir": "migrations"
+    }
+  ],
   "observability": { "enabled": true }
 }

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     "How Urca Design Factory S.R.L. handles personal data on urcadesign.com and studioos.urcadesign.com.",
 };
 
-const lastUpdated = "9 October 2026";
+const lastUpdated = "27 October 2026";
 
 const sections = [
   {
@@ -26,6 +26,10 @@ const sections = [
       [
         "Messages you send us",
         "When you email us, we receive your name, email address and whatever you choose to include. We use it to reply and, if we work together, to prepare and perform a contract. Legal basis: steps prior to a contract and our legitimate interest in answering enquiries.",
+      ],
+      [
+        "Project briefs",
+        "If you fill in a project brief on urcadesign.com, we store your answers together with your name, brand and email address, to prepare a proposal and, if we work together, to plan the project. Legal basis: steps prior to a contract, taken at your request.",
       ],
       [
         "StudioOS waitlist",
@@ -46,7 +50,7 @@ const sections = [
   {
     title: "Who processes data for us",
     body: [
-      "We use Cloudflare to host and protect our websites and to store waitlist sign-ups, and an email provider to send and receive messages. These providers act on our instructions under data processing agreements. Some of them may process data outside the European Economic Area; where they do, the transfer relies on safeguards recognised under the GDPR, such as an adequacy decision or the European Commission's Standard Contractual Clauses.",
+      "We use Cloudflare to host and protect our websites and to store project briefs and waitlist sign-ups, and an email provider to send and receive messages. These providers act on our instructions under data processing agreements. Some of them may process data outside the European Economic Area; where they do, the transfer relies on safeguards recognised under the GDPR, such as an adequacy decision or the European Commission's Standard Contractual Clauses.",
       "We do not sell personal data, and we do not share it with anyone else unless the law requires us to.",
     ],
   },
@@ -56,6 +60,10 @@ const sections = [
       [
         "Correspondence",
         "As long as needed to handle your enquiry or our work together, and afterwards only as long as accounting or other legal obligations require.",
+      ],
+      [
+        "Project briefs",
+        "As long as needed to prepare a proposal. If we do not work together, we delete a brief within 12 months of receiving it.",
       ],
       [
         "Waitlist",

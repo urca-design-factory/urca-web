@@ -54,7 +54,7 @@ const mobileNavigation = [
 export function SiteHeader({
   currentPage,
 }: {
-  currentPage?: "capabilities" | "studies" | "privacy";
+  currentPage?: "capabilities" | "studies" | "privacy" | "brief";
 }) {
   const headerRef = useRef<HTMLElement>(null);
   const navigationRef = useRef<HTMLDivElement>(null);
